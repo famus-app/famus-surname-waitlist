@@ -75,14 +75,11 @@ function Index() {
 
       <main className="relative z-10 mx-auto flex w-full max-w-[960px] flex-col px-6 pb-16 pt-16 sm:px-10 sm:pt-24">
         <p aria-live="polite" className="text-center font-display text-[clamp(4.5rem,16vw,9.5rem)] leading-[0.82] tabular-nums">
-          {remaining.toLocaleString("en-US")}
+          {remaining.toLocaleString("en-US")} <span className="text-[clamp(1.5rem,4vw,2.75rem)] text-muted-foreground">left</span>
         </p>
         <h1 className="mx-auto mt-7 max-w-[18ch] text-balance text-center font-display text-[clamp(2.25rem,5vw,4rem)] leading-none text-foreground">
           One family name. One agent. Yours first.
         </h1>
-        <p className="mx-auto mt-5 max-w-[50ch] text-pretty text-center text-base leading-relaxed text-muted-foreground">
-          Claim your surname in seconds. We’ll let you know when your family agent is ready to come home.
-        </p>
 
         <section className="mt-12 border-y border-border py-8 sm:mt-16 sm:py-10">
           {!claimed ? (
