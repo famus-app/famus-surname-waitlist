@@ -65,7 +65,7 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.18 0.008 58);
+  --background: oklch(0.07 0.007 58);
   --foreground: oklch(0.995 0.008 85);
   --card: oklch(0.995 0.008 85 / 8%);
   --card-foreground: oklch(0.995 0.008 85);
@@ -162,6 +162,11 @@
   100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
+@keyframes famus-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 @utility famus-glass {
   background: color-mix(in oklab, var(--foreground) 7%, transparent);
   border: 1px solid color-mix(in oklab, var(--foreground) 13%, transparent);
@@ -169,10 +174,26 @@
   backdrop-filter: blur(22px) saturate(120%);
 }
 
+@utility famus-aurora {
+  background:
+    radial-gradient(120% 90% at 18% 8%, oklch(0.24 0.014 58 / 85%) 0%, transparent 55%),
+    radial-gradient(110% 85% at 85% 92%, oklch(0.2 0.022 42 / 70%) 0%, transparent 60%),
+    linear-gradient(115deg, oklch(0.1 0.008 58), oklch(0.16 0.014 50), oklch(0.08 0.01 42), oklch(0.04 0.004 58));
+  background-size: 320% 320%;
+  animation: famus-pan 22s ease-in-out infinite;
+}
+
+@utility famus-glass-cta {
+  transition: background-color 200ms ease;
+  &:hover {
+    background: color-mix(in oklab, var(--foreground) 15%, transparent);
+  }
+}
+
 @utility famus-float { animation: famus-float 11s ease-in-out infinite; }
 @utility famus-breathe { animation: famus-breathe 9s ease-in-out infinite; }
 @utility famus-arrive { animation: famus-arrive 700ms cubic-bezier(.2,.7,.2,1) both; }
 
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora { animation: none; }
 }
