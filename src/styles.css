@@ -203,6 +203,31 @@
   }
 }
 
+@utility famus-cta {
+  box-shadow:
+    0 10px 40px -10px color-mix(in oklab, var(--primary) 55%, transparent),
+    inset 0 1px 1px color-mix(in oklab, white 35%, transparent);
+  transition: background-color 200ms ease, transform 300ms ease, box-shadow 300ms ease;
+  &:hover {
+    box-shadow:
+      0 16px 52px -8px color-mix(in oklab, var(--primary) 68%, transparent),
+      inset 0 1px 1px color-mix(in oklab, white 45%, transparent);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(to top right, transparent, color-mix(in oklab, white 14%, transparent));
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
+  }
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
 @utility famus-float { animation: famus-float 11s ease-in-out infinite; }
 @utility famus-breathe { animation: famus-breathe 9s ease-in-out infinite; }
 @utility famus-arrive { animation: famus-arrive 700ms cubic-bezier(.2,.7,.2,1) both; }
