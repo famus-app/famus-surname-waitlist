@@ -19,6 +19,12 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const alphabeticalHandles = [
+  ["@a", "@b", "@c", "@d", "@e", "@f", "@g", "@h", "@i"],
+  ["@j", "@k", "@l", "@m", "@n", "@o", "@p", "@q", "@r"],
+  ["@s", "@t", "@u", "@v", "@w", "@x", "@y", "@z"],
+];
+
 function Index() {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -29,6 +35,7 @@ function Index() {
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [popularSurnames, setPopularSurnames] = useState<string[]>([]);
   const [sharing, setSharing] = useState(false);
+  const [tickerStep, setTickerStep] = useState(0);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
@@ -52,6 +59,13 @@ function Index() {
       active = false;
       window.clearInterval(interval);
     };
+  }, []);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setTickerStep((step) => (step + 1) % 72);
+    }, 1_800);
+    return () => window.clearInterval(interval);
   }, []);
 
   async function createShareCard(): Promise<Blob | null> {
@@ -214,12 +228,20 @@ function Index() {
                 <Button type="submit" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
-              {popularSurnames.length > 0 ? (
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-                  <span className="text-[10px] uppercase tracking-[0.22em]">Already claimed</span>
-                  {popularSurnames.map((name) => <span key={name} className="famus-glass rounded-full px-3 py-1 text-foreground">@{name.toLowerCase()}</span>)}
+              <div className="mt-8 flex flex-col items-center gap-3" aria-label="Already on list">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Already on list</p>
+                <div className="flex items-center gap-2" aria-live="off">
+                  {alphabeticalHandles.map((group, groupIndex) => {
+                    const visibleHandle = group[tickerStep % group.length];
+                    return (
+                      <span key={`${groupIndex}-${visibleHandle}`} className="famus-ticker famus-glass inline-flex h-10 min-w-16 items-center justify-center overflow-hidden rounded-lg px-4 font-display text-xl text-foreground">
+                        {visibleHandle}
+                      </span>
+                    );
+                  })}
                 </div>
-              ) : null}
+                {popularSurnames.length > 0 ? <p className="text-xs text-muted-foreground">Including {popularSurnames.map((name) => `@${name.toLowerCase()}`).join(", ")}</p> : null}
+              </div>
             </>
           ) : (
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
