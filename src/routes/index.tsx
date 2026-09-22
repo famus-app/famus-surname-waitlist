@@ -221,7 +221,7 @@ function Index() {
                   <span className="sr-only">Email</span>
                   <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
                 </label>
-                <Button type="submit" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
+                <Button type="submit" variant="premium" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>

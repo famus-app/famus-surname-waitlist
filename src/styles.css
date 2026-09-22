@@ -35,6 +35,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -72,6 +73,7 @@
   --popover: oklch(0.22 0.01 58);
   --popover-foreground: oklch(0.995 0.008 85);
   --primary: oklch(0.64 0.18 42);
+  --primary-soft: oklch(0.71 0.155 42);
   --primary-foreground: oklch(0.995 0.008 85);
   --secondary: oklch(0.93 0.035 81);
   --secondary-foreground: oklch(0.18 0.008 58);
@@ -198,6 +200,31 @@
   transition: background-color 200ms ease;
   &:hover {
     background: color-mix(in oklab, var(--foreground) 15%, transparent);
+  }
+}
+
+@utility famus-cta {
+  box-shadow:
+    0 10px 40px -10px color-mix(in oklab, var(--primary) 55%, transparent),
+    inset 0 1px 1px color-mix(in oklab, white 35%, transparent);
+  transition: background-color 200ms ease, transform 300ms ease, box-shadow 300ms ease;
+  &:hover {
+    box-shadow:
+      0 16px 52px -8px color-mix(in oklab, var(--primary) 68%, transparent),
+      inset 0 1px 1px color-mix(in oklab, white 45%, transparent);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(to top right, transparent, color-mix(in oklab, white 14%, transparent));
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
+  }
+  &:hover::after {
+    opacity: 1;
   }
 }
 
