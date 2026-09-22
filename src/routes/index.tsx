@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, House, Sparkles } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
 import homecomingImage from "@/assets/famus-homecoming.jpg";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,13 +25,38 @@ function Index() {
   const [email, setEmail] = useState("");
   const [claimed, setClaimed] = useState(false);
   const [remaining, setRemaining] = useState(30_000_000);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    void supabase
+      .from("waitlist_stats")
+      .select("claimed_count")
+      .eq("id", true)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) setRemaining(Math.max(0, 30_000_000 - Number(data.claimed_count)));
+      });
+  }, []);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!cleanSurname || !email.includes("@")) return;
+    setSubmitting(true);
+    setError("");
+    const { error: claimError } = await supabase.from("waitlist_claims").insert({
+      surname: cleanSurname,
+      surname_key: handle,
+      email: email.trim().toLowerCase(),
+    });
+    setSubmitting(false);
+    if (claimError) {
+      setError(claimError.code === "23505" ? `home.${handle} has already found its family.` : "We couldn't hold that name. Please try again.");
+      return;
+    }
     setRemaining((value) => Math.max(0, value - 1));
     setClaimed(true);
   }
@@ -113,8 +139,9 @@ function Index() {
                   <span className="text-sm text-muted-foreground">Email</span>
                   <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="you@home.co" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground/50" />
                 </label>
-                <Button type="submit" disabled={!cleanSurname || !email}>Claim my agent</Button>
+                <Button type="submit" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
               </form>
+              {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>
           ) : (
             <div className="famus-arrive flex flex-col items-start gap-5 sm:flex-row sm:items-center">
