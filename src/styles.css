@@ -167,6 +167,13 @@
   50% { background-position: 100% 50%; }
 }
 
+@utility famus-glass {
+  background: color-mix(in oklab, var(--foreground) 7%, transparent);
+  border: 1px solid color-mix(in oklab, var(--foreground) 13%, transparent);
+  box-shadow: 0 26px 80px color-mix(in oklab, var(--background) 55%, transparent), inset 0 1px 0 color-mix(in oklab, var(--foreground) 12%, transparent);
+  backdrop-filter: blur(22px) saturate(120%);
+}
+
 @utility famus-aurora {
   background:
     radial-gradient(120% 90% at 18% 8%, oklch(0.24 0.014 58 / 85%) 0%, transparent 55%),
