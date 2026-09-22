@@ -252,7 +252,6 @@ function Index() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Share family card"}</Button>
-                  <Button variant="outline" onClick={() => void downloadCard()} aria-label="Download family card"><Download className="size-4" />Download</Button>
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">Coming soon</span></div>
