@@ -228,20 +228,6 @@ function Index() {
                 <Button type="submit" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
-              <div className="mt-8 flex flex-col items-center gap-3" aria-label="Already on list">
-                <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Already on list</p>
-                <div className="flex items-center gap-2" aria-live="off">
-                  {alphabeticalHandles.map((group, groupIndex) => {
-                    const visibleHandle = group[tickerStep % group.length];
-                    return (
-                      <span key={`${groupIndex}-${visibleHandle}`} className="famus-ticker famus-glass inline-flex h-10 min-w-16 items-center justify-center overflow-hidden rounded-lg px-4 font-display text-xl text-foreground">
-                        {visibleHandle}
-                      </span>
-                    );
-                  })}
-                </div>
-                {popularSurnames.length > 0 ? <p className="text-xs text-muted-foreground">Including {popularSurnames.map((name) => `@${name.toLowerCase()}`).join(", ")}</p> : null}
-              </div>
             </>
           ) : (
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
