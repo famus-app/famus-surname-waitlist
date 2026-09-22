@@ -270,7 +270,7 @@ function Index() {
               {alphabeticalHandles.map((group, groupIndex) => {
                 const visibleHandle = group[tickerStep % group.length];
                 return (
-                  <span key={`${groupIndex}-${visibleHandle}`} className="famus-ticker famus-glass inline-flex h-10 min-w-16 items-center justify-center overflow-hidden rounded-lg px-4 font-display text-xl text-foreground">
+                  <span key={`${groupIndex}-${visibleHandle}`} className="famus-ticker inline-flex h-10 min-w-16 items-center justify-center overflow-hidden rounded-lg px-4 font-display text-xl text-foreground">
                     {visibleHandle}
                   </span>
                 );
