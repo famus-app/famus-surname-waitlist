@@ -86,7 +86,7 @@ function Index() {
             <>
               <div className="flex flex-col items-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Reserve your agent</p>
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">RESERVE YOUR FAMILY AGENT</p>
                   <div className="mt-2 flex items-center justify-center gap-3">
                     <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
                     <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
