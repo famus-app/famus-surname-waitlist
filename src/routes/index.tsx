@@ -49,7 +49,7 @@ function Index() {
         supabase.rpc("claimed_popular_surnames"),
       ]);
       if (!active) return;
-      if (stats) setRemaining(Math.max(0, 130_000_000 - Number(stats.claimed_count)));
+      if (stats) setRemaining(Math.max(0, 30_000_000 - Number(stats.claimed_count)));
       if (popular) setPopularSurnames(popular.map((item) => item.surname));
     }
 
