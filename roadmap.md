@@ -5,4 +5,4 @@
 - [x] Assign stable family claim numbers
 - [x] Add a downloadable and shareable family card
 - [x] Add the Founder badge coming-soon challenge
-- [ ] Verify claim, duplicate handling, sharing, privacy, and responsive layout
+- [x] Verify claim, duplicate handling, sharing, privacy, and responsive layout
