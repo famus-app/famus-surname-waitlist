@@ -196,7 +196,7 @@ function Index() {
         <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4.5rem,16vw,9.5rem)] leading-[0.82] tabular-nums">
           {remaining.toLocaleString("en-US")} <span className="text-[clamp(1.5rem,4vw,2.75rem)] text-muted-foreground">left</span>
         </p>
-        <h1 className="mx-auto mt-7 text-center font-display text-[clamp(2.25rem,5vw,4rem)] leading-none text-foreground">
+        <h1 className="mx-auto mt-16 text-center font-display text-[clamp(2.25rem,5vw,4rem)] leading-none text-foreground">
           One family name. One agent. Yours first.
         </h1>
 
