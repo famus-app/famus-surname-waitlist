@@ -6,7 +6,6 @@ Turn the existing surname claim into a compact social-proof loop: visitors see l
 ## Experience
 1. **Live urgency above the form**
    - Keep the main inventory as **“30,000,000 left”**.
-   - Add a smaller live line beneath it: **“0 families claimed. Is yours one of them?”** using the genuine claim total.
    - Animate number changes without distracting from the minimal black, orange, beige, and glass presentation.
    - Refresh the total while the page is open so claims made by other visitors appear without reloading.
 
