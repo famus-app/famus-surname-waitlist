@@ -29,7 +29,7 @@ function Index() {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [claimed, setClaimed] = useState(false);
-  const [remaining, setRemaining] = useState(30_000_000);
+  const [remaining, setRemaining] = useState(130_000_000);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
@@ -49,7 +49,7 @@ function Index() {
         supabase.rpc("claimed_popular_surnames"),
       ]);
       if (!active) return;
-      if (stats) setRemaining(Math.max(0, 30_000_000 - Number(stats.claimed_count)));
+      if (stats) setRemaining(Math.max(0, 130_000_000 - Number(stats.claimed_count)));
       if (popular) setPopularSurnames(popular.map((item) => item.surname));
     }
 
