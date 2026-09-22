@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import scrollVideoAsset from "@/assets/famus-scroll.mp4.asset.json";
+import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
