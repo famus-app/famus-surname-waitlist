@@ -46,36 +46,20 @@ function Index() {
     const video = videoRef.current;
     if (!video) return;
 
+    // Ambient loop: autoplay everywhere, but stay paused for reduced motion.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      return;
+    }
+    void video.play().catch(() => {});
+
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
-
-    const syncVideoToScroll = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        if (!Number.isFinite(video.duration) || video.duration <= 0) return;
-        if (reducedMotion.matches) {
-          video.currentTime = 0;
-          return;
-        }
-        const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = scrollRange > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollRange)) : 0;
-        video.currentTime = progress * Math.max(0, video.duration - 0.05);
-      });
+    const handleMotionChange = () => {
+      if (reducedMotion.matches) video.pause();
+      else void video.play().catch(() => {});
     };
-
-    video.addEventListener("loadedmetadata", syncVideoToScroll);
-    window.addEventListener("scroll", syncVideoToScroll, { passive: true });
-    window.addEventListener("resize", syncVideoToScroll);
-    reducedMotion.addEventListener("change", syncVideoToScroll);
-    syncVideoToScroll();
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      video.removeEventListener("loadedmetadata", syncVideoToScroll);
-      window.removeEventListener("scroll", syncVideoToScroll);
-      window.removeEventListener("resize", syncVideoToScroll);
-      reducedMotion.removeEventListener("change", syncVideoToScroll);
-    };
+    reducedMotion.addEventListener("change", handleMotionChange);
+    return () => reducedMotion.removeEventListener("change", handleMotionChange);
   }, []);
 
   useEffect(() => {
@@ -218,12 +202,14 @@ function Index() {
   }
 
   return (
-    <div className="relative min-h-[300vh] bg-background font-body text-foreground antialiased">
+    <div className="relative min-h-screen bg-background font-body text-foreground antialiased">
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden bg-background">
         <video
           ref={videoRef}
           className="size-full object-cover"
           src={scrollVideoAsset.url}
+          autoPlay
+          loop
           muted
           playsInline
           preload="auto"
@@ -232,7 +218,7 @@ function Index() {
         <div className="absolute inset-0 bg-background/55" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/25 via-background/35 to-background/80" />
       </div>
-      <div className="sticky top-0 min-h-screen overflow-hidden">
+      <div className="relative min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-between px-6 py-5 sm:px-10">
         <a href="/" aria-label="famUS home" className="font-display text-3xl text-foreground">
           fam<span className="text-primary">US</span>
