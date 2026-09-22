@@ -6,3 +6,4 @@
 - [x] Add a downloadable and shareable family card
 - [x] Add the Founder badge coming-soon challenge
 - [x] Verify claim, duplicate handling, sharing, privacy, and responsive layout
+- [x] Add a pinned video backdrop controlled by page scroll progress

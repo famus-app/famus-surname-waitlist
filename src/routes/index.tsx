@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, House, LockKeyhole, Share2 } from "lucide-react";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,6 +27,7 @@ const alphabeticalHandles = [
 ];
 
 function Index() {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [claimed, setClaimed] = useState(false);
@@ -39,6 +41,42 @@ function Index() {
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+
+    const syncVideoToScroll = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+        if (reducedMotion.matches) {
+          video.currentTime = 0;
+          return;
+        }
+        const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollRange > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollRange)) : 0;
+        video.currentTime = progress * Math.max(0, video.duration - 0.05);
+      });
+    };
+
+    video.addEventListener("loadedmetadata", syncVideoToScroll);
+    window.addEventListener("scroll", syncVideoToScroll, { passive: true });
+    window.addEventListener("resize", syncVideoToScroll);
+    reducedMotion.addEventListener("change", syncVideoToScroll);
+    syncVideoToScroll();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      video.removeEventListener("loadedmetadata", syncVideoToScroll);
+      window.removeEventListener("scroll", syncVideoToScroll);
+      window.removeEventListener("resize", syncVideoToScroll);
+      reducedMotion.removeEventListener("change", syncVideoToScroll);
+    };
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -180,12 +218,21 @@ function Index() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background font-body text-foreground antialiased">
-      <div aria-hidden className="famus-aurora pointer-events-none fixed inset-0" />
-      <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="famus-breathe absolute -left-24 -top-32 size-[34rem] rounded-full bg-primary/15 blur-3xl" />
-        <div className="famus-breathe absolute -bottom-40 -right-20 size-[38rem] rounded-full bg-primary/10 blur-3xl [animation-delay:4s]" />
+    <div className="relative min-h-[300vh] bg-background font-body text-foreground antialiased">
+      <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden bg-background">
+        <video
+          ref={videoRef}
+          className="size-full object-cover"
+          src={scrollVideoAsset.url}
+          muted
+          playsInline
+          preload="auto"
+          tabIndex={-1}
+        />
+        <div className="absolute inset-0 bg-background/55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/25 via-background/35 to-background/80" />
       </div>
+      <div className="sticky top-0 min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-between px-6 py-5 sm:px-10">
         <a href="/" aria-label="famUS home" className="font-display text-3xl text-foreground">
           fam<span className="text-primary">US</span>
@@ -276,6 +323,7 @@ function Index() {
         ) : null}
 
       </main>
+      </div>
     </div>
   );
 }
