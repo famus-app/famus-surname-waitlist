@@ -116,7 +116,7 @@ function Index() {
                 <span className="absolute -right-1 -top-1 grid size-7 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="size-4" strokeWidth={2.5} /></span>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-primary">home.{handle} is yours</p>
+                <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon.</h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>
               </div>
