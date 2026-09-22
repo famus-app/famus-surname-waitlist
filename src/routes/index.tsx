@@ -197,7 +197,7 @@ function Index() {
           {remaining.toLocaleString("en-US")} <span className="text-[clamp(1.5rem,4vw,2.75rem)] text-muted-foreground">left</span>
         </p>
         <h1 className="mx-auto mt-7 max-w-[18ch] text-balance text-center font-display text-[clamp(2.25rem,5vw,4rem)] leading-none text-foreground">
-          One family name. One agent. Yours first.
+          One family name. One agent. Yours first.
         </h1>
 
         <section className="mt-12 border-y border-border py-8 sm:mt-16 sm:py-10">
