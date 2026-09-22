@@ -29,7 +29,7 @@ function Index() {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [claimed, setClaimed] = useState(false);
-  const [remaining, setRemaining] = useState(130_000_000);
+  const [remaining, setRemaining] = useState(30_000_000);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
