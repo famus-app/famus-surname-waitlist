@@ -38,12 +38,27 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist_stats: {
+        Row: {
+          claimed_count: number
+          id: boolean
+        }
+        Insert: {
+          claimed_count?: number
+          id?: boolean
+        }
+        Update: {
+          claimed_count?: number
+          id?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      waitlist_claim_count: { Args: never; Returns: number }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
