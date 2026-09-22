@@ -225,11 +225,11 @@ function Index() {
         </a>
       </header>
 
-      <main className="relative z-10 mx-auto flex w-full max-w-[960px] flex-col px-6 pb-16 pt-16 sm:px-10 sm:pt-24">
-        <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4.5rem,16vw,9.5rem)] leading-[0.82] tabular-nums">
-          {remaining.toLocaleString("en-US")} <span className="text-[clamp(1.5rem,4vw,2.75rem)] text-muted-foreground">left</span>
+      <main className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-col px-6 pb-16 pt-16 sm:px-10 sm:pt-24">
+        <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
+          <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}</span> <span className="whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
         </p>
-        <h1 className="mx-auto mt-16 text-center font-display text-[clamp(1.75rem,3.5vw,2.75rem)] leading-none text-foreground">
+        <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
           One family name. One agent. Built for yours.
         </h1>
 
