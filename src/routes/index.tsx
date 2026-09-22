@@ -66,12 +66,10 @@ function Index() {
         <a href="/" aria-label="famUS home" className="font-display text-3xl text-foreground">
           fam<span className="text-primary">US</span>
         </a>
-        <span className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Private early access</span>
       </header>
 
       <main className="relative z-10 mx-auto flex w-full max-w-[960px] flex-col px-6 pb-16 pt-16 sm:px-10 sm:pt-24">
-        <p className="text-center text-[11px] uppercase tracking-[0.22em] text-muted-foreground">The family agent registry</p>
-        <p aria-live="polite" className="mt-6 text-center font-display text-[clamp(4.5rem,16vw,9.5rem)] leading-[0.82] tabular-nums">
+        <p aria-live="polite" className="text-center font-display text-[clamp(4.5rem,16vw,9.5rem)] leading-[0.82] tabular-nums">
           {remaining.toLocaleString("en-US")}
         </p>
         <h1 className="mx-auto mt-7 max-w-[18ch] text-balance text-center font-display text-[clamp(2.25rem,5vw,4rem)] leading-none text-foreground">
@@ -84,15 +82,14 @@ function Index() {
         <section className="mt-12 border-y border-border py-8 sm:mt-16 sm:py-10">
           {!claimed ? (
             <>
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
                 <div className="min-w-0">
                   <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Reserve your agent</p>
                   <div className="mt-2 flex items-center gap-3">
                     <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
-                    <p className="truncate text-lg">home<span className="text-primary">.</span>{handle || "yourname"}</p>
+                    <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">No password. No setup. Just your place in line.</p>
               </div>
               <form onSubmit={handleSubmit} className="mt-7 grid gap-3 sm:grid-cols-[1fr_1.25fr_auto] sm:items-center">
                 <label className="flex h-12 items-center gap-3 rounded-lg bg-muted px-4 ring-1 ring-border transition focus-within:ring-primary">
@@ -122,7 +119,6 @@ function Index() {
           )}
         </section>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">30 million family names. Claimed one at a time.</p>
       </main>
     </div>
   );
