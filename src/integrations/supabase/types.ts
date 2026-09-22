@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       waitlist_claims: {
         Row: {
+          claim_number: number
           created_at: string
           email: string
           id: string
@@ -23,6 +24,7 @@ export type Database = {
           surname_key: string
         }
         Insert: {
+          claim_number?: never
           created_at?: string
           email: string
           id?: string
@@ -30,6 +32,7 @@ export type Database = {
           surname_key: string
         }
         Update: {
+          claim_number?: never
           created_at?: string
           email?: string
           id?: string
@@ -58,7 +61,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_waitlist_surname: {
+        Args: { p_email: string; p_surname: string; p_surname_key: string }
+        Returns: {
+          claim_number: number
+          surname: string
+          surname_key: string
+        }[]
+      }
+      claimed_popular_surnames: {
+        Args: never
+        Returns: {
+          surname: string
+          surname_key: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
