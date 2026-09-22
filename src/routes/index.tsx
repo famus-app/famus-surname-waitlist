@@ -82,10 +82,10 @@ function Index() {
         <section className="mt-12 border-y border-border py-8 sm:mt-16 sm:py-10">
           {!claimed ? (
             <>
-              <div>
-                <div className="min-w-0">
+              <div className="flex flex-col items-center">
+                <div className="min-w-0 text-center">
                   <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Reserve your agent</p>
-                  <div className="mt-2 flex items-center gap-3">
+                  <div className="mt-2 flex items-center justify-center gap-3">
                     <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
                     <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
                   </div>
