@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Download, House, LockKeyhole, Share2 } from "lucide-react";
+import { Check, House, LockKeyhole, Share2 } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -150,10 +150,6 @@ function Index() {
     URL.revokeObjectURL(url);
   }
 
-  async function downloadCard() {
-    const blob = await createShareCard();
-    if (blob) downloadBlob(blob);
-  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
