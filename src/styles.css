@@ -227,7 +227,6 @@
 @utility famus-breathe { animation: famus-breathe 9s ease-in-out infinite; }
 @utility famus-arrive { animation: famus-arrive 700ms cubic-bezier(.2,.7,.2,1) both; }
 @utility famus-count { animation: famus-count 420ms ease-out both; }
-@utility famus-ticker { animation: famus-ticker 480ms cubic-bezier(.22,.72,.28,1) both; }
 
 @utility famus-share-card {
   background:
@@ -244,6 +243,6 @@
 .famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 55%, transparent), transparent 30%, transparent 72%, color-mix(in oklab, var(--background) 72%, transparent)); }
 
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-ticker { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count { animation: none; }
   .famus-card-inner { transition: none; }
 }
