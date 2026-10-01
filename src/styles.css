@@ -174,11 +174,6 @@
   100% { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
-@keyframes famus-ticker {
-  0% { opacity: 0; transform: translate3d(0, -55%, 0); filter: blur(3px); }
-  55% { opacity: 1; transform: translate3d(0, 4%, 0); filter: blur(0); }
-  100% { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
-}
 
 @utility famus-glass {
   background: color-mix(in oklab, var(--foreground) 7%, transparent);
@@ -232,7 +227,6 @@
 @utility famus-breathe { animation: famus-breathe 9s ease-in-out infinite; }
 @utility famus-arrive { animation: famus-arrive 700ms cubic-bezier(.2,.7,.2,1) both; }
 @utility famus-count { animation: famus-count 420ms ease-out both; }
-@utility famus-ticker { animation: famus-ticker 480ms cubic-bezier(.22,.72,.28,1) both; }
 
 @utility famus-share-card {
   background:
@@ -249,6 +243,6 @@
 .famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 55%, transparent), transparent 30%, transparent 72%, color-mix(in oklab, var(--background) 72%, transparent)); }
 
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-ticker { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count { animation: none; }
   .famus-card-inner { transition: none; }
 }

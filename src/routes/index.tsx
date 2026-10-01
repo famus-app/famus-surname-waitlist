@@ -23,11 +23,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const alphabeticalHandles = [
-  ["@a", "@b", "@c", "@d", "@e", "@f", "@g", "@h", "@i"],
-  ["@j", "@k", "@l", "@m", "@n", "@o", "@p", "@q", "@r"],
-  ["@s", "@t", "@u", "@v", "@w", "@x", "@y", "@z"],
-];
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -38,10 +33,6 @@ function Index() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
-  const [popularSurnames, setPopularSurnames] = useState<string[]>([]);
-  const [sharing, setSharing] = useState(false);
-  const [cardFlipped, setCardFlipped] = useState(false);
-  const [tickerStep, setTickerStep] = useState(0);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
@@ -70,13 +61,13 @@ function Index() {
     let active = true;
 
     async function refreshPublicStatus() {
-      const [{ data: stats }, { data: popular }] = await Promise.all([
-        supabase.from("waitlist_stats").select("claimed_count").eq("id", true).maybeSingle(),
-        supabase.rpc("claimed_popular_surnames"),
-      ]);
+      const { data: stats } = await supabase
+        .from("waitlist_stats")
+        .select("claimed_count")
+        .eq("id", true)
+        .maybeSingle();
       if (!active) return;
       if (stats) setRemaining(Math.max(0, 130_000_000 - Number(stats.claimed_count)));
-      if (popular) setPopularSurnames(popular.map((item) => item.surname));
     }
 
     void refreshPublicStatus();
@@ -85,13 +76,6 @@ function Index() {
       active = false;
       window.clearInterval(interval);
     };
-  }, []);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setTickerStep((step) => (step + 1) % 72);
-    }, 1_800);
-    return () => window.clearInterval(interval);
   }, []);
 
   async function createShareCard(): Promise<Blob | null> {
@@ -233,9 +217,6 @@ function Index() {
     }
     setClaimNumber(Number(claim.claim_number));
     setRemaining((value) => Math.max(0, value - 1));
-    if (["smith", "patel", "kim", "gupta", "garcia", "williams", "singh", "chen"].includes(handle)) {
-      setPopularSurnames((current) => current.includes(cleanSurname) ? current : [...current, cleanSurname]);
-    }
     setClaimed(true);
   }
 
@@ -272,7 +253,7 @@ function Index() {
           One family name. One agent. Built for yours.
         </h1>
 
-        <section className="mt-12 border-y border-border py-8 sm:mt-16 sm:py-10">
+        <section className="mt-12 border-t border-border py-8 sm:mt-16 sm:py-10">
           {!claimed ? (
             <>
               <div className="flex flex-col items-center">
@@ -293,7 +274,7 @@ function Index() {
                   <span className="sr-only">Email</span>
                   <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
                 </label>
-                <Button type="submit" variant="premium" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
+                <Button type="submit" variant="premium" className="mt-3 h-12 w-full sm:col-span-full" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>
@@ -344,23 +325,6 @@ function Index() {
             </div>
           )}
         </section>
-
-        {!claimed ? (
-          <div className="flex flex-col items-center gap-3 pt-8" aria-label="Already on list">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Already on list</p>
-            <div className="flex items-center gap-2" aria-live="off">
-              {alphabeticalHandles.map((group, groupIndex) => {
-                const visibleHandle = group[tickerStep % group.length];
-                return (
-                  <span key={`${groupIndex}-${visibleHandle}`} className="famus-ticker inline-flex h-10 min-w-16 items-center justify-center overflow-hidden rounded-lg px-4 font-display text-xl text-foreground">
-                    {visibleHandle}
-                  </span>
-                );
-              })}
-            </div>
-            {popularSurnames.length > 0 ? <p className="text-xs text-muted-foreground">Including {popularSurnames.map((name) => `@${name.toLowerCase()}`).join(", ")}</p> : null}
-          </div>
-        ) : null}
 
       </main>
       </div>
