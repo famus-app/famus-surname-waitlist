@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, House, LockKeyhole, Share2 } from "lucide-react";
+import { House, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
+import familyGarden from "@/assets/famus-family-garden.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,6 +39,7 @@ function Index() {
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [popularSurnames, setPopularSurnames] = useState<string[]>([]);
   const [sharing, setSharing] = useState(false);
+  const [cardFlipped, setCardFlipped] = useState(false);
   const [tickerStep, setTickerStep] = useState(0);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
@@ -100,53 +102,71 @@ function Index() {
     if (!context) return null;
 
     const tokens = getComputedStyle(document.documentElement);
-    const background = tokens.getPropertyValue("--background").trim();
     const foreground = tokens.getPropertyValue("--foreground").trim();
     const primary = tokens.getPropertyValue("--primary").trim();
-    const muted = tokens.getPropertyValue("--muted-foreground").trim();
+    const background = tokens.getPropertyValue("--background").trim();
+    const garden = new Image();
+    garden.src = familyGarden;
+    try {
+      await Promise.all([garden.decode(), document.fonts.ready]);
+      const ratio = Math.max(canvas.width / garden.width, canvas.height / garden.height);
+      const width = garden.width * ratio;
+      const height = garden.height * ratio;
+      context.drawImage(garden, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+    } catch {
+      context.fillStyle = background;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
-    context.fillStyle = background;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    const glow = context.createRadialGradient(220, 260, 20, 220, 260, 700);
-    glow.addColorStop(0, primary);
-    glow.addColorStop(1, "transparent");
-    context.globalAlpha = 0.22;
-    context.fillStyle = glow;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.globalAlpha = 1;
+    const shade = context.createLinearGradient(0, 0, 0, 1920);
+    shade.addColorStop(0, "oklch(0.07 0.007 58 / 0.56)");
+    shade.addColorStop(0.4, "oklch(0.07 0.007 58 / 0.05)");
+    shade.addColorStop(1, "oklch(0.07 0.007 58 / 0.8)");
+    context.fillStyle = shade;
+    context.fillRect(0, 0, 1080, 1920);
 
     const logo = new Image();
     logo.src = famusLogo;
     try {
       await logo.decode();
-      context.drawImage(logo, 90, 76, 132, 132);
+      context.drawImage(logo, 90, 76, 112, 112);
     } catch {
       // The card remains shareable if the image cannot load.
     }
     context.fillStyle = foreground;
-    context.font = '86px "Instrument Serif", serif';
-    context.fillText("fam", 245, 162);
+    context.font = '78px "Instrument Serif", serif';
+    context.fillText("fam", 215, 157);
     const famWidth = context.measureText("fam").width;
     context.fillStyle = primary;
-    context.fillText("US", 245 + famWidth, 162);
+    context.fillText("US", 215 + famWidth, 157);
 
-    context.fillStyle = muted;
-    context.font = '32px "Work Sans", sans-serif';
-    context.fillText("A FAMILY NAME, CLAIMED", 90, 620);
+    context.textAlign = "center";
+    if (cardFlipped) {
+      context.fillStyle = foreground;
+      context.font = '32px "Work Sans", sans-serif';
+      context.fillText("A FAMILY NAME, CLAIMED", 540, 670);
+      context.font = '220px "Instrument Serif", serif';
+      context.fillText(cleanSurname, 540, 860, 900);
+      context.fillStyle = primary;
+      context.font = '55px "Work Sans", sans-serif';
+      context.fillText(`@${handle}`, 540, 965, 850);
+      context.fillStyle = foreground;
+      context.font = '40px "Work Sans", sans-serif';
+      context.fillText("FAMILY NO.", 540, 1570);
+      context.font = '124px "Instrument Serif", serif';
+      context.fillText(`#${claimNumber.toLocaleString("en-US")}`, 540, 1700, 850);
+    } else {
+      context.fillStyle = foreground;
+      context.font = '51px "Work Sans", sans-serif';
+      context.fillText("WELCOME TO", 540, 1295);
+      context.font = '160px "Instrument Serif", serif';
+      context.fillText("the famUS fam.", 540, 1460, 930);
+      context.font = '36px "Work Sans", sans-serif';
+      context.fillText("Your family name has found its place.", 540, 1550, 900);
+    }
+    context.font = '31px "Work Sans", sans-serif';
     context.fillStyle = foreground;
-    context.font = '142px "Instrument Serif", serif';
-    context.fillText(cleanSurname, 90, 805, 900);
-    context.fillStyle = primary;
-    context.font = '52px "Work Sans", sans-serif';
-    context.fillText(`@${handle}`, 90, 900);
-
-    context.fillStyle = foreground;
-    context.font = '72px "Instrument Serif", serif';
-    context.fillText(`Family #${claimNumber.toLocaleString("en-US")}`, 90, 1370);
-    context.fillStyle = muted;
-    context.font = '34px "Work Sans", sans-serif';
-    context.fillText(`${remaining.toLocaleString("en-US")} family names left.`, 90, 1440);
-    context.fillText("Coming home soon.", 90, 1735);
+    context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1835, 900);
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
   }
@@ -158,7 +178,7 @@ function Index() {
       setSharing(false);
       return;
     }
-    const file = new File([blob], `famus-${handle}.png`, { type: "image/png" });
+    const file = new File([blob], `famus-${handle}-${cardFlipped ? "details" : "welcome"}.png`, { type: "image/png" });
     try {
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], title: `The ${cleanSurname}s are on famUS` });
@@ -176,7 +196,7 @@ function Index() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `famus-${handle}.png`;
+    link.download = `famus-${handle}-${cardFlipped ? "details" : "welcome"}.png`;
     link.click();
     URL.revokeObjectURL(url);
   }
@@ -270,19 +290,34 @@ function Index() {
             </>
           ) : (
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
-              <div className="famus-share-card relative aspect-[4/5] overflow-hidden rounded-lg border border-border p-7 sm:p-9">
-                <div className="flex items-center justify-between">
-                  <p className="flex items-center gap-2 font-display text-3xl"><img src={famusLogo} alt="" className="size-11 shrink-0" />fam<span className="-ml-2 text-primary">US</span></p>
-                  <span className="grid size-10 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="size-5" /></span>
-                </div>
-                <div className="absolute inset-x-7 top-[38%] sm:inset-x-9">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">A family name, claimed</p>
-                  <h2 className="mt-2 break-words font-display text-5xl leading-none sm:text-6xl">{cleanSurname}</h2>
-                  <p className="mt-3 text-lg text-primary">@{handle}</p>
-                </div>
-                <div className="absolute inset-x-7 bottom-7 sm:inset-x-9 sm:bottom-9">
-                  <p className="font-display text-3xl">Family #{claimNumber?.toLocaleString("en-US")}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{remaining.toLocaleString("en-US")} family names left.</p>
+              <div className="famus-card-scene w-full max-w-[360px] justify-self-center">
+                <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
+                  <div className="famus-card-face absolute inset-0 overflow-hidden rounded-md border border-border">
+                    <img src={familyGarden} alt="" className="absolute inset-0 size-full object-cover" width={1080} height={1920} />
+                    <div className="famus-card-shade absolute inset-0" />
+                    <div className="absolute inset-x-6 top-6 flex items-center gap-2 font-display text-2xl"><img src={famusLogo} alt="" className="size-9" />fam<span className="-ml-2 text-primary">US</span></div>
+                    <div className="absolute inset-x-5 bottom-[19%] text-center drop-shadow-lg">
+                      <p className="text-xs uppercase text-foreground">Welcome to</p>
+                      <p className="mt-1 font-display text-5xl leading-none text-foreground">the famUS fam.</p>
+                      <p className="mt-3 text-xs text-foreground">Your family name has found its place.</p>
+                    </div>
+                    <p className="absolute inset-x-4 bottom-5 text-center text-[9px] uppercase text-foreground">One family name. One agent. Built for yours.</p>
+                  </div>
+                  <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
+                    <img src={familyGarden} alt="" className="absolute inset-0 size-full object-cover" width={1080} height={1920} />
+                    <div className="famus-card-shade absolute inset-0" />
+                    <div className="absolute inset-x-6 top-6 flex items-center gap-2 font-display text-2xl"><img src={famusLogo} alt="" className="size-9" />fam<span className="-ml-2 text-primary">US</span></div>
+                    <div className="absolute inset-x-5 top-[34%] text-center drop-shadow-lg">
+                      <p className="text-xs uppercase text-foreground">A family name, claimed</p>
+                      <h2 className="mt-3 break-words font-display text-[clamp(2rem,7vw,4.5rem)] leading-none text-foreground">{cleanSurname}</h2>
+                      <p className="mt-2 text-lg text-primary">@{handle}</p>
+                    </div>
+                    <div className="absolute inset-x-5 bottom-[11%] text-center drop-shadow-lg">
+                      <p className="text-xs uppercase text-foreground">Family no.</p>
+                      <p className="font-display text-5xl text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
+                    </div>
+                    <p className="absolute inset-x-4 bottom-5 text-center text-[9px] uppercase text-foreground">One family name. One agent. Built for yours.</p>
+                  </div>
                 </div>
               </div>
               <div className="min-w-0">
@@ -290,7 +325,8 @@ function Index() {
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon.</h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Share family card"}</Button>
+                  <Button variant="outline" onClick={() => setCardFlipped((flipped) => !flipped)}><RotateCw className="size-4" />Flip card</Button>
+                  <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">Coming soon</span></div>
