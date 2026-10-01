@@ -3,6 +3,7 @@ import { House, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { ClaimToggle } from "@/components/ui/claim-toggle";
+import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -265,17 +266,25 @@ function Index() {
                   </div>
                 </div>
               </div>
-              <form onSubmit={(event) => event.preventDefault()} className="mt-7 grid gap-3 sm:grid-cols-[1fr_1.25fr_auto] sm:items-center">
-                <label className="famus-glass flex h-12 items-center gap-3 rounded-lg px-4 transition focus-within:ring-2 focus-within:ring-primary/60">
-                  <span className="sr-only">Surname</span>
-                  <input required value={surname} onChange={(event) => setSurname(event.target.value)} autoComplete="family-name" placeholder="Surname" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
-                </label>
-                <label className="famus-glass flex h-12 items-center gap-3 rounded-lg px-4 transition focus-within:ring-2 focus-within:ring-primary/60">
-                  <span className="sr-only">Email</span>
-                  <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
-                </label>
-                <ClaimToggle idleText="Claim my agent" disabled={!cleanSurname || !email} onAction={submitClaim} onComplete={() => setClaimed(true)} className="mt-3 sm:col-span-full sm:justify-self-center" />
-              </form>
+              <ProgressiveInputStack
+                className="mx-auto mt-7 w-full max-w-md"
+                steps={[
+                  { id: "surname", placeholder: "Surname", autoComplete: "family-name" },
+                  { id: "email", placeholder: "Email address", type: "email", autoComplete: "email" },
+                ]}
+                onChange={(data) => {
+                  setSurname(data["surname"] ?? "");
+                  setEmail(data["email"] ?? "");
+                }}
+                submitControl={
+                  <ClaimToggle
+                    idleText="Claim my agent"
+                    disabled={!cleanSurname || !email}
+                    onAction={submitClaim}
+                    onComplete={() => setClaimed(true)}
+                  />
+                }
+              />
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>
           ) : (
