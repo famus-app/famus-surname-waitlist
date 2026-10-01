@@ -8,3 +8,4 @@
 - [x] Verify claim, duplicate handling, sharing, privacy, and responsive layout
 - [x] Add a pinned video backdrop controlled by page scroll progress
 - [x] Make the supplied logo transparent and place it on the site, claim card, and browser icon
+- [x] Make the claim card a flippable, illustrated welcome and family-details card with sharing for each side
