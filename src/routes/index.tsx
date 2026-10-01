@@ -33,6 +33,8 @@ function Index() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
+  const [sharing, setSharing] = useState(false);
+  const [cardFlipped, setCardFlipped] = useState(false);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
@@ -274,7 +276,7 @@ function Index() {
                   <span className="sr-only">Email</span>
                   <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
                 </label>
-                <Button type="submit" variant="premium" className="mt-3 h-12 w-full sm:col-span-full" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
+                <Button type="submit" variant="premium" className="mt-3 h-10 w-full text-sm sm:col-span-full sm:w-auto sm:justify-self-center sm:px-8" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>
