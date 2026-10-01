@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export interface StepData {
   id: string;
@@ -58,7 +59,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
 
   return (
     <div className={cn("w-full", className)}>
-      <div className="relative h-[100px] w-full">
+       <div className="relative h-[152px] w-full sm:h-[106px]">
         <AnimatePresence mode="popLayout" initial={false}>
           {steps.map((step, index) => {
             if (index > currentStep) return null;
@@ -80,8 +81,9 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                 exit={{ opacity: 0, scale: 1.15, y: 14 }}
                 transition={springTransition}
                 className={cn(
-                  "famus-glass absolute inset-x-0 bottom-0 flex h-12 items-center gap-2 rounded-lg py-2 pl-4 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
-                  !isTop && "pointer-events-none",
+                   "famus-glass absolute inset-x-0 bottom-0 flex h-[54px] items-center gap-2 rounded-lg py-1 pl-4 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
+                   isTop && currentStep > 0 && "h-[100px] flex-wrap content-center py-2 sm:h-[54px] sm:flex-nowrap sm:py-1",
+                   !isTop && "pointer-events-none max-sm:hidden",
                 )}
               >
                 <input
@@ -98,35 +100,33 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                   placeholder={step.placeholder}
                   autoComplete={step.autoComplete}
                   aria-label={step.placeholder}
-                  className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
+                   className="min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0"
                 />
 
                 {isTop ? (
-                  <div className="flex shrink-0 items-center gap-1.5">
+                   <div className="flex shrink-0 items-center gap-1.5 max-sm:ml-auto">
                     {currentStep > 0 ? (
-                      <motion.button
+                       <Button
                         type="button"
                         onClick={handleBack}
                         aria-label="Previous field"
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.85 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition hover:text-foreground"
+                         variant="outline"
+                         size="icon"
+                         className="size-9 shrink-0 rounded-full text-muted-foreground hover:text-foreground"
                       >
                         <ArrowLeft size={15} />
-                      </motion.button>
+                       </Button>
                     ) : null}
 
                     {currentStep < steps.length - 1 ? (
-                      <button
+                       <Button
                         type="button"
                         onClick={handleNext}
-                        className="flex h-9 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition hover:opacity-90"
+                         className="h-[42px] w-36 shrink-0 rounded-full shadow-sm"
                       >
                         Next
                         <ArrowRight size={15} />
-                      </button>
+                       </Button>
                     ) : (
                       submitControl
                     )}

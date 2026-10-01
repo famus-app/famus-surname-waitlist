@@ -269,8 +269,8 @@ function Index() {
               <ProgressiveInputStack
                 className="mx-auto mt-7 w-full max-w-md"
                 steps={[
-                  { id: "surname", placeholder: "Surname", autoComplete: "family-name" },
                   { id: "email", placeholder: "Email address", type: "email", autoComplete: "email" },
+                   { id: "surname", placeholder: "Family name", autoComplete: "family-name" },
                 ]}
                 onChange={(data) => {
                   setSurname(data["surname"] ?? "");
