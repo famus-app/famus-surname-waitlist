@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { House, LockKeyhole, RotateCw, Share2 } from "lucide-react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { ClaimToggle } from "@/components/ui/claim-toggle";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,7 +32,6 @@ function Index() {
   const [email, setEmail] = useState("");
   const [claimed, setClaimed] = useState(false);
   const [remaining, setRemaining] = useState(130_000_000);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
@@ -197,29 +198,26 @@ function Index() {
   }
 
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!cleanSurname || !email.includes("@")) return;
-    setSubmitting(true);
+  async function submitClaim(): Promise<boolean> {
+    if (!cleanSurname || !email.includes("@")) return false;
     setError("");
     const { data, error: claimError } = await supabase.rpc("claim_waitlist_surname", {
       p_surname: cleanSurname,
       p_surname_key: handle,
       p_email: email.trim().toLowerCase(),
     });
-    setSubmitting(false);
     if (claimError) {
       setError(claimError.code === "23505" ? `@${handle} has already been claimed.` : "We couldn't hold that name. Please try again.");
-      return;
+      return false;
     }
     const claim = data?.[0];
     if (!claim) {
       setError("We couldn't confirm that claim. Please try again.");
-      return;
+      return false;
     }
     setClaimNumber(Number(claim.claim_number));
     setRemaining((value) => Math.max(0, value - 1));
-    setClaimed(true);
+    return true;
   }
 
   return (
@@ -267,7 +265,7 @@ function Index() {
                   </div>
                 </div>
               </div>
-              <form onSubmit={handleSubmit} className="mt-7 grid gap-3 sm:grid-cols-[1fr_1.25fr_auto] sm:items-center">
+              <form onSubmit={(event) => event.preventDefault()} className="mt-7 grid gap-3 sm:grid-cols-[1fr_1.25fr_auto] sm:items-center">
                 <label className="famus-glass flex h-12 items-center gap-3 rounded-lg px-4 transition focus-within:ring-2 focus-within:ring-primary/60">
                   <span className="sr-only">Surname</span>
                   <input required value={surname} onChange={(event) => setSurname(event.target.value)} autoComplete="family-name" placeholder="Surname" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
@@ -276,7 +274,7 @@ function Index() {
                   <span className="sr-only">Email</span>
                   <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
                 </label>
-                <Button type="submit" variant="premium" className="mt-3 h-10 w-full text-sm sm:col-span-full sm:w-auto sm:justify-self-center sm:px-8" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
+                <ClaimToggle idleText="Claim my agent" disabled={!cleanSurname || !email} onAction={submitClaim} onComplete={() => setClaimed(true)} className="mt-3 sm:col-span-full sm:justify-self-center" />
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>

@@ -10,3 +10,6 @@
 - [x] Make the supplied logo transparent and place it on the site, claim card, and browser icon
 - [x] Make the claim card a flippable, illustrated welcome and family-details card with sharing for each side
 - [x] Refine the reverse-side sample: remove its lower arch, raise the upper arch, and arrange the logo and family details beneath it
+- [x] Remove the "Already on list" ticker, drop the button below the fields, and remove the bottom line
+- [x] Use the uploaded animated save-toggle button for the claim button
+
