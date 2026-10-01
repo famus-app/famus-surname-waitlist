@@ -58,7 +58,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
 
   return (
     <div className={cn("w-full", className)}>
-      <div className="relative h-12 w-full">
+      <div className="relative h-[100px] w-full">
         <AnimatePresence mode="popLayout" initial={false}>
           {steps.map((step, index) => {
             if (index > currentStep) return null;
@@ -69,18 +69,19 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
             return (
               <motion.div
                 key={step.id}
+                style={{ zIndex: steps.length - index }}
                 initial={{ opacity: 0, scale: 1.15, y: 14, z: steps.length }}
                 animate={{
-                  opacity: 1,
-                  scale: 1 - position * 0.05,
-                  y: -position * 10,
+                  opacity: isTop ? 1 : 1 - position * 0.5,
+                  scale: 1 - position * 0.04,
+                  y: -position * 46,
                   z: steps.length - position,
                 }}
                 exit={{ opacity: 0, scale: 1.15, y: 14 }}
                 transition={springTransition}
                 className={cn(
-                  "famus-glass absolute inset-0 flex h-12 items-center gap-2 rounded-lg py-2 pl-4 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
-                  !isTop && "pointer-events-none opacity-50",
+                  "famus-glass absolute inset-x-0 bottom-0 flex h-12 items-center gap-2 rounded-lg py-2 pl-4 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
+                  !isTop && "pointer-events-none",
                 )}
               >
                 <input
