@@ -3,6 +3,7 @@ import { House, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { ClaimToggle } from "@/components/ui/claim-toggle";
+import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
