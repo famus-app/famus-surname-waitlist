@@ -7,3 +7,4 @@
 - [x] Add the Founder badge coming-soon challenge
 - [x] Verify claim, duplicate handling, sharing, privacy, and responsive layout
 - [x] Add a pinned video backdrop controlled by page scroll progress
+- [x] Make the supplied logo transparent and place it on the site, claim card, and browser icon

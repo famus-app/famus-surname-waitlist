@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
+import famusLogo from "@/assets/famus-logo-transparent.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -114,12 +115,20 @@ function Index() {
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.globalAlpha = 1;
 
+    const logo = new Image();
+    logo.src = famusLogo;
+    try {
+      await logo.decode();
+      context.drawImage(logo, 90, 76, 132, 132);
+    } catch {
+      // The card remains shareable if the image cannot load.
+    }
     context.fillStyle = foreground;
     context.font = '86px "Instrument Serif", serif';
-    context.fillText("fam", 90, 150);
+    context.fillText("fam", 245, 162);
     const famWidth = context.measureText("fam").width;
     context.fillStyle = primary;
-    context.fillText("US", 90 + famWidth, 150);
+    context.fillText("US", 245 + famWidth, 162);
 
     context.fillStyle = muted;
     context.font = '32px "Work Sans", sans-serif';
@@ -221,6 +230,7 @@ function Index() {
       <div className="relative min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-between px-6 py-5 sm:px-10">
         <a href="/" aria-label="famUS home" className="font-display text-3xl text-foreground">
+          <img src={famusLogo} alt="" className="mr-2 inline-block size-10 align-middle" />
           fam<span className="text-primary">US</span>
         </a>
       </header>
@@ -262,7 +272,7 @@ function Index() {
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
               <div className="famus-share-card relative aspect-[4/5] overflow-hidden rounded-lg border border-border p-7 sm:p-9">
                 <div className="flex items-center justify-between">
-                  <p className="font-display text-3xl">fam<span className="text-primary">US</span></p>
+                  <p className="flex items-center gap-2 font-display text-3xl"><img src={famusLogo} alt="" className="size-11 shrink-0" />fam<span className="-ml-2 text-primary">US</span></p>
                   <span className="grid size-10 place-items-center rounded-full bg-primary text-primary-foreground"><Check className="size-5" /></span>
                 </div>
                 <div className="absolute inset-x-7 top-[38%] sm:inset-x-9">
