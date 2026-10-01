@@ -273,8 +273,8 @@ function Index() {
                   { id: "email", placeholder: "Email address", type: "email", autoComplete: "email" },
                 ]}
                 onChange={(data) => {
-                  setSurname(data.surname ?? "");
-                  setEmail(data.email ?? "");
+                  setSurname(data["surname"] ?? "");
+                  setEmail(data["email"] ?? "");
                 }}
                 submitControl={
                   <ClaimToggle
