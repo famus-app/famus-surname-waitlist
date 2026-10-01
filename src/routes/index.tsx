@@ -33,6 +33,8 @@ function Index() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
+  const [sharing, setSharing] = useState(false);
+  const [cardFlipped, setCardFlipped] = useState(false);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
