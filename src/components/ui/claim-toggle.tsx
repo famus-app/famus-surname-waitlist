@@ -15,7 +15,7 @@ interface ClaimToggleProps {
 
 const HEIGHT = 42;
 const CIRCLE = 42;
-const IDLE_WIDTH = 188;
+const IDLE_WIDTH = 144;
 const IVORY = "#FFF1E6";
 
 export function ClaimToggle({ idleText, disabled, onAction, onComplete, className }: ClaimToggleProps) {
