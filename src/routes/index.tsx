@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { House, LockKeyhole, RotateCw, Share2 } from "lucide-react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { ClaimToggle } from "@/components/ui/claim-toggle";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,7 +32,6 @@ function Index() {
   const [email, setEmail] = useState("");
   const [claimed, setClaimed] = useState(false);
   const [remaining, setRemaining] = useState(130_000_000);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
@@ -197,29 +198,26 @@ function Index() {
   }
 
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!cleanSurname || !email.includes("@")) return;
-    setSubmitting(true);
+  async function submitClaim(): Promise<boolean> {
+    if (!cleanSurname || !email.includes("@")) return false;
     setError("");
     const { data, error: claimError } = await supabase.rpc("claim_waitlist_surname", {
       p_surname: cleanSurname,
       p_surname_key: handle,
       p_email: email.trim().toLowerCase(),
     });
-    setSubmitting(false);
     if (claimError) {
       setError(claimError.code === "23505" ? `@${handle} has already been claimed.` : "We couldn't hold that name. Please try again.");
-      return;
+      return false;
     }
     const claim = data?.[0];
     if (!claim) {
       setError("We couldn't confirm that claim. Please try again.");
-      return;
+      return false;
     }
     setClaimNumber(Number(claim.claim_number));
     setRemaining((value) => Math.max(0, value - 1));
-    setClaimed(true);
+    return true;
   }
 
   return (
