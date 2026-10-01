@@ -174,11 +174,6 @@
   100% { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
-@keyframes famus-ticker {
-  0% { opacity: 0; transform: translate3d(0, -55%, 0); filter: blur(3px); }
-  55% { opacity: 1; transform: translate3d(0, 4%, 0); filter: blur(0); }
-  100% { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
-}
 
 @utility famus-glass {
   background: color-mix(in oklab, var(--foreground) 7%, transparent);
