@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
-import familyGarden from "@/assets/famus-family-garden.jpg";
+import cardFrontArt from "@/assets/famus-card-front-embrace.jpg";
+import cardBackArt from "@/assets/famus-card-back-arch.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -105,73 +106,76 @@ function Index() {
     const foreground = tokens.getPropertyValue("--foreground").trim();
     const primary = tokens.getPropertyValue("--primary").trim();
     const background = tokens.getPropertyValue("--background").trim();
-    const garden = new Image();
-    garden.src = familyGarden;
+
+    const art = new Image();
+    art.src = cardFlipped ? cardBackArt : cardFrontArt;
     try {
-      await Promise.all([garden.decode(), document.fonts.ready]);
-      const ratio = Math.max(canvas.width / garden.width, canvas.height / garden.height);
-      const width = garden.width * ratio;
-      const height = garden.height * ratio;
-      context.drawImage(garden, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+      await Promise.all([art.decode(), document.fonts.ready]);
+      const ratio = Math.max(canvas.width / art.width, canvas.height / art.height);
+      const width = art.width * ratio;
+      const height = art.height * ratio;
+      context.drawImage(art, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
     } catch {
       context.fillStyle = background;
       context.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     const shade = context.createLinearGradient(0, 0, 0, 1920);
-    shade.addColorStop(0, "oklch(0.07 0.007 58 / 0.56)");
-    shade.addColorStop(0.4, "oklch(0.07 0.007 58 / 0.05)");
-    shade.addColorStop(1, "oklch(0.07 0.007 58 / 0.8)");
+    shade.addColorStop(0, "oklch(0.07 0.007 58 / 0.55)");
+    shade.addColorStop(0.3, "oklch(0.07 0.007 58 / 0)");
+    shade.addColorStop(0.72, "oklch(0.07 0.007 58 / 0)");
+    shade.addColorStop(1, "oklch(0.07 0.007 58 / 0.72)");
     context.fillStyle = shade;
     context.fillRect(0, 0, 1080, 1920);
-
-    const logo = new Image();
-    logo.src = famusLogo;
-    try {
-      await logo.decode();
-      context.drawImage(logo, 90, 76, 112, 112);
-    } catch {
-      // The card remains shareable if the image cannot load.
-    }
-    context.fillStyle = foreground;
-    context.font = '78px "Instrument Serif", serif';
-    context.fillText("fam", 215, 157);
-    const famWidth = context.measureText("fam").width;
-    context.fillStyle = primary;
-    context.fillText("US", 215 + famWidth, 157);
 
     context.textAlign = "center";
     if (cardFlipped) {
       context.fillStyle = foreground;
-      context.font = '32px "Work Sans", sans-serif';
-      context.fillText("A FAMILY NAME, CLAIMED", 540, 670);
-      let surnameSize = 220;
+      context.font = '40px "Work Sans", sans-serif';
+      context.fillText("A FAMILY NAME, CLAIMED", 540, 1060);
+      let surnameSize = 170;
       context.font = `${surnameSize}px "Instrument Serif", serif`;
-      while (context.measureText(cleanSurname).width > 850 && surnameSize > 70) {
-        surnameSize -= 4;
+      while (context.measureText(cleanSurname).width > 860 && surnameSize > 70) {
+        surnameSize -= 6;
         context.font = `${surnameSize}px "Instrument Serif", serif`;
       }
-      context.fillText(cleanSurname, 540, 860, 850);
+      context.fillText(cleanSurname, 540, 1240, 860);
       context.fillStyle = primary;
-      context.font = '55px "Work Sans", sans-serif';
-      context.fillText(`@${handle}`, 540, 965, 850);
+      context.font = '52px "Work Sans", sans-serif';
+      context.fillText(`@${handle}`, 540, 1350, 860);
+      context.fillStyle = foreground;
+      context.font = '36px "Work Sans", sans-serif';
+      context.fillText("FAMILY NO.", 540, 1560);
+      context.font = '130px "Instrument Serif", serif';
+      context.fillText(`#${claimNumber.toLocaleString("en-US")}`, 540, 1695, 900);
+    } else {
+      const logo = new Image();
+      logo.src = famusLogo;
+      try {
+        await logo.decode();
+        context.drawImage(logo, 90, 76, 112, 112);
+      } catch {
+        // The card remains shareable if the image cannot load.
+      }
+      context.fillStyle = foreground;
+      context.font = '78px "Instrument Serif", serif';
+      context.textAlign = "left";
+      context.fillText("fam", 215, 157);
+      const famWidth = context.measureText("fam").width;
+      context.fillStyle = primary;
+      context.fillText("US", 215 + famWidth, 157);
+      context.textAlign = "center";
       context.fillStyle = foreground;
       context.font = '40px "Work Sans", sans-serif';
-      context.fillText("FAMILY NO.", 540, 1570);
-      context.font = '124px "Instrument Serif", serif';
-      context.fillText(`#${claimNumber.toLocaleString("en-US")}`, 540, 1700, 850);
-    } else {
-      context.fillStyle = foreground;
-      context.font = '51px "Work Sans", sans-serif';
-      context.fillText("WELCOME TO", 540, 1295);
-      context.font = '160px "Instrument Serif", serif';
-      context.fillText("the famUS fam.", 540, 1460, 930);
-      context.font = '36px "Work Sans", sans-serif';
-      context.fillText("Your family name has found its place.", 540, 1550, 900);
+      context.fillText("WELCOME TO", 540, 300);
+      context.font = '140px "Instrument Serif", serif';
+      context.fillText("the famUS fam.", 540, 430, 900);
+      context.font = '34px "Work Sans", sans-serif';
+      context.fillText("Your family name has found its place.", 540, 505, 800);
     }
-    context.font = '31px "Work Sans", sans-serif';
+    context.font = '30px "Work Sans", sans-serif';
     context.fillStyle = foreground;
-    context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1835, 900);
+    context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1830, 940);
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
   }
@@ -298,30 +302,29 @@ function Index() {
               <div className="famus-card-scene w-full max-w-[360px] justify-self-center">
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
                   <div className="famus-card-face absolute inset-0 overflow-hidden rounded-md border border-border">
-                    <img src={familyGarden} alt="" className="absolute inset-0 size-full object-cover" width={1080} height={1920} />
+                    <img src={cardFrontArt} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
                     <div className="famus-card-shade absolute inset-0" />
                     <div className="absolute inset-x-6 top-6 flex items-center gap-2 font-display text-2xl"><img src={famusLogo} alt="" className="size-9" />fam<span className="-ml-2 text-primary">US</span></div>
-                    <div className="absolute inset-x-5 bottom-[19%] text-center drop-shadow-lg">
-                      <p className="text-xs uppercase text-foreground">Welcome to</p>
-                      <p className="mt-1 font-display text-5xl leading-none text-foreground">the famUS fam.</p>
-                      <p className="mt-3 text-xs text-foreground">Your family name has found its place.</p>
+                    <div className="absolute inset-x-5 top-[24cqw] text-center drop-shadow-lg">
+                      <p className="text-[3.7cqw] uppercase leading-none text-foreground">Welcome to</p>
+                      <p className="mt-[2cqw] font-display text-[13cqw] leading-none text-foreground">the famUS fam.</p>
+                      <p className="mt-[1cqw] text-[3.15cqw] leading-snug text-foreground">Your family name has found its place.</p>
                     </div>
-                    <p className="absolute inset-x-4 bottom-5 text-center text-[9px] uppercase text-foreground">One family name. One agent. Built for yours.</p>
+                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One family name. One agent. Built for yours.</p>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
-                    <img src={familyGarden} alt="" className="absolute inset-0 size-full object-cover" width={1080} height={1920} />
+                    <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="absolute inset-x-6 top-6 flex items-center gap-2 font-display text-2xl"><img src={famusLogo} alt="" className="size-9" />fam<span className="-ml-2 text-primary">US</span></div>
-                    <div className="absolute inset-x-5 top-[34%] text-center drop-shadow-lg">
-                      <p className="text-xs uppercase text-foreground">A family name, claimed</p>
-                      <h2 className={`mt-3 break-words font-display leading-none text-foreground ${cleanSurname.length > 12 ? "text-3xl" : cleanSurname.length > 8 ? "text-5xl" : "text-6xl"}`}>{cleanSurname}</h2>
-                      <p className="mt-2 text-lg text-primary">@{handle}</p>
+                    <div className="absolute inset-x-5 top-[94.5cqw] text-center drop-shadow-lg">
+                      <p className="text-[3.7cqw] uppercase leading-none text-foreground">A family name, claimed</p>
+                      <h2 className={`mt-[4cqw] break-words font-display leading-none text-foreground ${cleanSurname.length > 12 ? "text-[9.5cqw]" : cleanSurname.length > 8 ? "text-[12.5cqw]" : "text-[15.7cqw]"}`}>{cleanSurname}</h2>
+                      <p className="mt-[3cqw] text-[4.8cqw] text-primary">@{handle}</p>
                     </div>
-                    <div className="absolute inset-x-5 bottom-[11%] text-center drop-shadow-lg">
-                      <p className="text-xs uppercase text-foreground">Family no.</p>
-                      <p className="font-display text-5xl text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
+                    <div className="absolute inset-x-5 top-[141cqw] text-center drop-shadow-lg">
+                      <p className="text-[3.3cqw] uppercase leading-none text-foreground">Family no.</p>
+                      <p className="mt-[3cqw] font-display text-[12cqw] leading-none text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
                     </div>
-                    <p className="absolute inset-x-4 bottom-5 text-center text-[9px] uppercase text-foreground">One family name. One agent. Built for yours.</p>
+                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One family name. One agent. Built for yours.</p>
                   </div>
                 </div>
               </div>

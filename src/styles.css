@@ -242,11 +242,11 @@
 }
 
 .famus-card-scene { perspective: 1200px; }
-.famus-card-inner { transform-style: preserve-3d; transition: transform 800ms cubic-bezier(.2,.7,.2,1); }
+.famus-card-inner { container-type: inline-size; transform-style: preserve-3d; transition: transform 800ms cubic-bezier(.2,.7,.2,1); }
 .famus-card-inner.is-flipped { transform: rotateY(180deg); }
 .famus-card-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .famus-card-back { transform: rotateY(180deg); }
-.famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 62%, transparent), transparent 40%, color-mix(in oklab, var(--background) 72%, transparent)); }
+.famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 55%, transparent), transparent 30%, transparent 72%, color-mix(in oklab, var(--background) 72%, transparent)); }
 
 @media (prefers-reduced-motion: reduce) {
   .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-ticker { animation: none; }
