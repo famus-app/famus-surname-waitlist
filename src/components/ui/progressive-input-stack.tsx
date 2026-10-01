@@ -51,11 +51,9 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
   };
 
   const updateField = (id: string, value: string) => {
-    setFormData((prev) => {
-      const next = { ...prev, [id]: value };
-      onChange?.(next);
-      return next;
-    });
+    const next = { ...formData, [id]: value };
+    setFormData(next);
+    onChange?.(next);
   };
 
   return (
