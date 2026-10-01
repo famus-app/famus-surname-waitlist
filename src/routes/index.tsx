@@ -145,8 +145,13 @@ function Index() {
       context.fillStyle = foreground;
       context.font = '32px "Work Sans", sans-serif';
       context.fillText("A FAMILY NAME, CLAIMED", 540, 670);
-      context.font = '220px "Instrument Serif", serif';
-      context.fillText(cleanSurname, 540, 860, 900);
+      let surnameSize = 220;
+      context.font = `${surnameSize}px "Instrument Serif", serif`;
+      while (context.measureText(cleanSurname).width > 850 && surnameSize > 70) {
+        surnameSize -= 4;
+        context.font = `${surnameSize}px "Instrument Serif", serif`;
+      }
+      context.fillText(cleanSurname, 540, 860, 850);
       context.fillStyle = primary;
       context.font = '55px "Work Sans", sans-serif';
       context.fillText(`@${handle}`, 540, 965, 850);
@@ -309,7 +314,7 @@ function Index() {
                     <div className="absolute inset-x-6 top-6 flex items-center gap-2 font-display text-2xl"><img src={famusLogo} alt="" className="size-9" />fam<span className="-ml-2 text-primary">US</span></div>
                     <div className="absolute inset-x-5 top-[34%] text-center drop-shadow-lg">
                       <p className="text-xs uppercase text-foreground">A family name, claimed</p>
-                      <h2 className="mt-3 break-words font-display text-[clamp(2rem,7vw,4.5rem)] leading-none text-foreground">{cleanSurname}</h2>
+                      <h2 className={`mt-3 break-words font-display leading-none text-foreground ${cleanSurname.length > 12 ? "text-3xl" : cleanSurname.length > 8 ? "text-5xl" : "text-6xl"}`}>{cleanSurname}</h2>
                       <p className="mt-2 text-lg text-primary">@{handle}</p>
                     </div>
                     <div className="absolute inset-x-5 bottom-[11%] text-center drop-shadow-lg">
