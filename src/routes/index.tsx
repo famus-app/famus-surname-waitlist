@@ -265,7 +265,7 @@ function Index() {
                   </div>
                 </div>
               </div>
-              <form onSubmit={handleSubmit} className="mt-7 grid gap-3 sm:grid-cols-[1fr_1.25fr_auto] sm:items-center">
+              <form onSubmit={(event) => event.preventDefault()} className="mt-7 grid gap-3 sm:grid-cols-[1fr_1.25fr_auto] sm:items-center">
                 <label className="famus-glass flex h-12 items-center gap-3 rounded-lg px-4 transition focus-within:ring-2 focus-within:ring-primary/60">
                   <span className="sr-only">Surname</span>
                   <input required value={surname} onChange={(event) => setSurname(event.target.value)} autoComplete="family-name" placeholder="Surname" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
@@ -274,7 +274,7 @@ function Index() {
                   <span className="sr-only">Email</span>
                   <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
                 </label>
-                <Button type="submit" variant="premium" className="mt-3 h-10 w-full text-sm sm:col-span-full sm:w-auto sm:justify-self-center sm:px-8" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
+                <ClaimToggle idleText="Claim my agent" disabled={!cleanSurname || !email} onAction={submitClaim} onComplete={() => setClaimed(true)} className="mt-3 sm:col-span-full sm:justify-self-center" />
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>
