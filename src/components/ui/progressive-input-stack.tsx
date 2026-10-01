@@ -83,7 +83,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                 className={cn(
                    "famus-glass absolute inset-x-0 bottom-0 flex h-[54px] items-center gap-2 rounded-lg py-1 pl-4 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
                    isTop && currentStep > 0 && "h-[100px] flex-wrap content-center py-2 sm:h-[54px] sm:flex-nowrap sm:py-1",
-                  !isTop && "pointer-events-none",
+                   !isTop && "pointer-events-none max-sm:hidden",
                 )}
               >
                 <input
