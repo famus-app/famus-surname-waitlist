@@ -253,7 +253,7 @@ function Index() {
           One family name. One agent. Built for yours.
         </h1>
 
-        <section className="mt-12 border-y border-border py-8 sm:mt-16 sm:py-10">
+        <section className="mt-12 border-t border-border py-8 sm:mt-16 sm:py-10">
           {!claimed ? (
             <>
               <div className="flex flex-col items-center">
@@ -274,7 +274,7 @@ function Index() {
                   <span className="sr-only">Email</span>
                   <input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" />
                 </label>
-                <Button type="submit" variant="premium" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
+                <Button type="submit" variant="premium" className="mt-3 h-12 w-full sm:col-span-full" disabled={!cleanSurname || !email || submitting}>{submitting ? "Holding your name…" : "Claim my agent"}</Button>
               </form>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
             </>
