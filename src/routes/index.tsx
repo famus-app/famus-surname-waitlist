@@ -23,11 +23,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const alphabeticalHandles = [
-  ["@a", "@b", "@c", "@d", "@e", "@f", "@g", "@h", "@i"],
-  ["@j", "@k", "@l", "@m", "@n", "@o", "@p", "@q", "@r"],
-  ["@s", "@t", "@u", "@v", "@w", "@x", "@y", "@z"],
-];
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -38,10 +33,6 @@ function Index() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
-  const [popularSurnames, setPopularSurnames] = useState<string[]>([]);
-  const [sharing, setSharing] = useState(false);
-  const [cardFlipped, setCardFlipped] = useState(false);
-  const [tickerStep, setTickerStep] = useState(0);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
@@ -70,13 +61,13 @@ function Index() {
     let active = true;
 
     async function refreshPublicStatus() {
-      const [{ data: stats }, { data: popular }] = await Promise.all([
-        supabase.from("waitlist_stats").select("claimed_count").eq("id", true).maybeSingle(),
-        supabase.rpc("claimed_popular_surnames"),
-      ]);
+      const { data: stats } = await supabase
+        .from("waitlist_stats")
+        .select("claimed_count")
+        .eq("id", true)
+        .maybeSingle();
       if (!active) return;
       if (stats) setRemaining(Math.max(0, 130_000_000 - Number(stats.claimed_count)));
-      if (popular) setPopularSurnames(popular.map((item) => item.surname));
     }
 
     void refreshPublicStatus();
@@ -85,13 +76,6 @@ function Index() {
       active = false;
       window.clearInterval(interval);
     };
-  }, []);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setTickerStep((step) => (step + 1) % 72);
-    }, 1_800);
-    return () => window.clearInterval(interval);
   }, []);
 
   async function createShareCard(): Promise<Blob | null> {
@@ -233,9 +217,6 @@ function Index() {
     }
     setClaimNumber(Number(claim.claim_number));
     setRemaining((value) => Math.max(0, value - 1));
-    if (["smith", "patel", "kim", "gupta", "garcia", "williams", "singh", "chen"].includes(handle)) {
-      setPopularSurnames((current) => current.includes(cleanSurname) ? current : [...current, cleanSurname]);
-    }
     setClaimed(true);
   }
 
