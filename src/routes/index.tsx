@@ -31,6 +31,8 @@ function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [priorityInterest, setPriorityInterest] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [remaining, setRemaining] = useState(130_000_000);
   const [error, setError] = useState("");
@@ -200,12 +202,14 @@ function Index() {
 
 
   async function submitClaim(): Promise<boolean> {
-    if (!cleanSurname || !email.includes("@")) return false;
+    if (!cleanSurname || !name.trim() || !email.includes("@")) return false;
     setError("");
     const { data, error: claimError } = await supabase.rpc("claim_waitlist_surname", {
       p_surname: cleanSurname,
       p_surname_key: handle,
       p_email: email.trim().toLowerCase(),
+      p_name: name.trim(),
+      p_priority_interest: priorityInterest,
     });
     if (claimError) {
       setError(claimError.code === "23505" ? `@${handle} has already been claimed.` : "We couldn't hold that name. Please try again.");
@@ -270,16 +274,20 @@ function Index() {
                 className="mx-auto mt-7 w-full max-w-md"
                 steps={[
                   { id: "email", placeholder: "Email address", type: "email", autoComplete: "email" },
+                   { id: "name", placeholder: "Your name", autoComplete: "name" },
+                   { id: "priority", type: "checkbox", placeholder: "Opt in for priority access" },
                    { id: "surname", placeholder: "Family name", autoComplete: "family-name" },
                 ]}
                 onChange={(data) => {
                   setSurname(data["surname"] ?? "");
                   setEmail(data["email"] ?? "");
+                   setName(data["name"] ?? "");
+                   setPriorityInterest(data["priority"] === "true");
                 }}
                 submitControl={
                   <ClaimToggle
                     idleText="Claim my agent"
-                    disabled={!cleanSurname || !email}
+                    disabled={!cleanSurname || !name.trim() || !email.includes("@")}
                     onAction={submitClaim}
                     onComplete={() => setClaimed(true)}
                   />
