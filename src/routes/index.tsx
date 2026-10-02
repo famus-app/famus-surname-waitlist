@@ -320,6 +320,17 @@ function Index() {
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
               One family name. One agent. Built for yours.
             </h1>
+            <div className="mt-4 flex items-center justify-center gap-1 whitespace-nowrap text-[9px] tracking-[0.1em] text-muted-foreground sm:mt-5 sm:text-[11px] sm:tracking-[0.18em]">
+              <span className="uppercase">Already claimed</span>
+              <span className="mx-2 text-primary/70">&middot;</span>
+              <span className="text-foreground/80">famus.app/</span>
+              <TextMarquee speed={2} height={22} className="text-foreground/80">
+                {["Patel", "Garcia", "Kimura", "Okafor", "Sullivan"].map((sampleName) => (
+                  <span key={sampleName} className="whitespace-nowrap">{sampleName}</span>
+                ))}
+              </TextMarquee>
+              <span>registered</span>
+            </div>
           </>
         ) : null}
 
@@ -364,16 +375,6 @@ function Index() {
                       <div className="mt-2 flex items-center justify-center gap-3">
                         <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
                         <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
-                      </div>
-                      <div className="mt-3 flex items-center justify-center gap-1 whitespace-nowrap text-[9px] uppercase tracking-[0.1em] text-muted-foreground sm:text-[11px] sm:tracking-[0.22em]">
-                        <span>Already claimed</span>
-                        <span className="mx-2 text-primary/70">·</span>
-                        <TextMarquee speed={2} height={22} className="text-foreground/80">
-                          {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
-                            <span key={sampleName} className="whitespace-nowrap">famus.app/{sampleName}</span>
-                          ))}
-                        </TextMarquee>
-                        <span>registered</span>
                       </div>
                     </div>
                   </motion.div>
