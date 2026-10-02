@@ -12,4 +12,4 @@
 - Use the same transparent logo asset for the page header and generated claim-card canvas, so both representations stay visually consistent.
 - Keep the share-card image export aligned with the visible front/back card artwork, so either side can be shared as seen.
 - Keep the waitlist claim behind the validated database function, with optional preferences saved on the claim row; this avoids exposing private registrations directly.
-- Keep social links and their sample identity previews together in a dedicated header component, so eventual real accounts replace placeholders in one place.
+- Social icons are intentionally removed from the header until the user supplies real accounts; if they return, restore them as a dedicated header component with sample-ID previews.
