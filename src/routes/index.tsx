@@ -104,8 +104,13 @@ function Index() {
       tokens.getPropertyValue("--primary-foreground").trim(),
     ];
     const timer = window.setTimeout(() => {
-      void import("canvas-confetti").then(({ default: confetti }) => {
+      const fire = () => {
         if (cancelled) return;
+        const confetti = confettiRef.current;
+        if (!confetti) {
+          window.setTimeout(fire, 100);
+          return;
+        }
         const pop = (angle: number, x: number, count: number, spread = 65) =>
           confetti({ particleCount: count, angle, spread, startVelocity: 58, gravity: 0.9, scalar: 0.9, ticks: 240, origin: { x, y: 1 }, colors });
         pop(62, -0.02, 60);
@@ -119,7 +124,8 @@ function Index() {
           pop(58, -0.02, 5, 55);
           pop(122, 1.02, 5, 55);
         }, 220);
-      });
+      };
+      fire();
     }, 150);
     return () => {
       cancelled = true;
