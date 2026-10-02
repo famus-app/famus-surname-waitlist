@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
+import { TextMarquee } from "@/components/ui/text-marquee";
 
 import { Button } from "@/components/ui/button";
 import type { Options as ConfettiOptions } from "canvas-confetti";
