@@ -37,7 +37,7 @@ function Index() {
   const [name, setName] = useState("");
   const [priorityInterest, setPriorityInterest] = useState(false);
   const [claimed, setClaimed] = useState(false);
-  const [remaining, setRemaining] = useState(30_000_000);
+  const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
@@ -79,7 +79,7 @@ function Index() {
         .eq("id", true)
         .maybeSingle();
       if (!active) return;
-      if (stats) setRemaining(Math.max(0, 30_000_000 - Number(stats.claimed_count)));
+      if (stats) setRemaining(Math.max(0, 31_000_000 - Number(stats.claimed_count)));
     }
 
     void refreshPublicStatus();
@@ -314,7 +314,7 @@ function Index() {
         {!claimed ? (
           <>
             <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
-              <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}</span> <span className="whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
+              <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}<span className="align-super text-[0.55em] text-primary">*</span></span> <span className="whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
             </p>
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
               One family name. One agent. Built for yours.
