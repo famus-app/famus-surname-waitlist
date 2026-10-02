@@ -307,7 +307,7 @@ function Index() {
       <header className="relative z-10 flex items-center justify-center px-6 py-5 sm:px-10">
         <a href="/" aria-label="famUS home" className="flex items-center gap-3 font-logo text-3xl text-foreground">
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
-          <span aria-hidden="true" className="h-7 w-px bg-foreground/40" />
+          <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
           <span className="text-secondary">fam</span><span className="text-primary">US</span>
         </a>
       </header>
