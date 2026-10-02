@@ -15,6 +15,8 @@ interface ProgressiveInputStackProps {
   steps: StepData[];
   initialData?: Record<string, string>;
   onChange?: (data: Record<string, string>) => void;
+  /** Called whenever the active step changes (0-based index). */
+  onStepChange?: (step: number) => void;
   /** Rendered inside the final field's bar, in place of the Next button. */
   submitControl?: React.ReactNode;
   className?: string;
@@ -24,6 +26,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
   steps,
   initialData,
   onChange,
+  onStepChange,
   submitControl,
   className,
 }) => {
@@ -40,6 +43,10 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
   }, []);
+
+  useEffect(() => {
+    onStepChange?.(currentStep);
+  }, [currentStep, onStepChange]);
 
   const springTransition = {
     type: "spring" as const,
