@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -86,16 +86,28 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                 className={cn(
                    "famus-glass absolute inset-x-0 bottom-0 flex h-[54px] items-center gap-2 rounded-lg py-1 pl-4 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
                    isTop && currentStep > 0 && "h-[100px] flex-wrap content-center py-2 sm:h-[54px] sm:flex-nowrap sm:py-1",
-                   !isTop && "pointer-events-none max-sm:hidden",
+                   !isTop && "pointer-events-none",
                 )}
               >
-                {step.type === "checkbox" ? (
-                  <label className={cn("flex min-w-0 flex-1 basis-full cursor-pointer items-center gap-3 text-sm text-foreground sm:basis-0", !isTop && "opacity-0")}>
+                {!isTop ? (
+                  step.type === "checkbox" ? (
+                    <span className="flex min-w-0 flex-1 items-center gap-3 text-sm">
+                      {formData[step.id] === "true" ? (
+                        <Check size={16} strokeWidth={2.5} className="shrink-0 text-primary" />
+                      ) : null}
+                      <span className="truncate text-muted-foreground">{step.placeholder}</span>
+                    </span>
+                  ) : (
+                    <span className="min-w-0 flex-1 truncate text-foreground/85">
+                      {formData[step.id] || step.placeholder}
+                    </span>
+                  )
+                ) : step.type === "checkbox" ? (
+                  <label className="flex min-w-0 flex-1 basis-full cursor-pointer items-center gap-3 text-sm text-foreground sm:basis-0">
                     <input
                       type="checkbox"
                       checked={formData[step.id] === "true"}
                       onChange={(event) => updateField(step.id, event.target.checked ? "true" : "")}
-                      disabled={!isTop}
                       className="size-5 shrink-0 accent-primary"
                     />
                     <span>{step.placeholder}</span>
@@ -115,7 +127,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                     placeholder={step.placeholder}
                     autoComplete={step.autoComplete}
                     aria-label={step.placeholder}
-                    className={cn("min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0", !isTop && "opacity-0")}
+                    className="min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0"
                   />
                 )}
 
