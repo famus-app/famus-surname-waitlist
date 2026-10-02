@@ -329,7 +329,7 @@ function Index() {
             <div className="mb-6 flex items-center justify-center gap-1 whitespace-nowrap text-[11px] tracking-[0.1em] text-muted-foreground sm:text-[13px] sm:tracking-[0.18em]">
               <span className="font-bold uppercase">Already claimed</span>
               <span className="mx-2 text-primary/70">&middot;</span>
-              <span className="text-foreground/80">famus.app/</span>
+              <span className="text-foreground/80">famus.si/</span>
               <TextMarquee speed={2} height={26}>
                 {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
                   <span key={sampleName} className="whitespace-nowrap font-bold text-primary">{sampleName}</span>
