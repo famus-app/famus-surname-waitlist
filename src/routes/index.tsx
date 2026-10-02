@@ -39,6 +39,7 @@ function Index() {
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
+  const confettiRef = useRef<((options?: Parameters<typeof import("canvas-confetti").default>[0]) => void) | null>(null);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
