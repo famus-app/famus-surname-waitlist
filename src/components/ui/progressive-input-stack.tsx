@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export interface StepData {
   id: string;
-  type?: "text" | "email";
+  type?: "text" | "email" | "checkbox";
   placeholder?: string;
   autoComplete?: string;
 }
@@ -40,6 +40,9 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
   };
 
   const handleNext = () => {
+    const step = steps[currentStep];
+    const value = step ? formData[step.id]?.trim() : "";
+    if (step?.type !== "checkbox" && (!value || (step?.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)))) return;
     if (currentStep < steps.length - 1) {
       setCurrentStep((prev) => prev + 1);
     }
@@ -62,7 +65,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
        <div className="relative h-[152px] w-full sm:h-[106px]">
         <AnimatePresence mode="popLayout" initial={false}>
           {steps.map((step, index) => {
-            if (index > currentStep) return null;
+            if (index > currentStep || index < currentStep - 1) return null;
 
             const position = currentStep - index;
             const isTop = index === currentStep;
@@ -86,22 +89,35 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                    !isTop && "pointer-events-none max-sm:hidden",
                 )}
               >
-                <input
-                  autoFocus={isTop}
-                  type={step.type === "email" ? "email" : "text"}
-                  value={formData[step.id] as string}
-                  onChange={(event) => updateField(step.id, event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault();
-                      if (isTop && currentStep < steps.length - 1) handleNext();
-                    }
-                  }}
-                  placeholder={step.placeholder}
-                  autoComplete={step.autoComplete}
-                  aria-label={step.placeholder}
-                   className="min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0"
-                />
+                {step.type === "checkbox" ? (
+                  <label className="flex min-w-0 flex-1 basis-full cursor-pointer items-center gap-3 text-sm text-foreground sm:basis-0">
+                    <input
+                      type="checkbox"
+                      checked={formData[step.id] === "true"}
+                      onChange={(event) => updateField(step.id, event.target.checked ? "true" : "")}
+                      disabled={!isTop}
+                      className="size-5 shrink-0 accent-primary"
+                    />
+                    <span>{step.placeholder}</span>
+                  </label>
+                ) : (
+                  <input
+                    autoFocus={isTop}
+                    type={step.type === "email" ? "email" : "text"}
+                    value={formData[step.id] ?? ""}
+                    onChange={(event) => updateField(step.id, event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault();
+                        if (isTop && currentStep < steps.length - 1) handleNext();
+                      }
+                    }}
+                    placeholder={step.placeholder}
+                    autoComplete={step.autoComplete}
+                    aria-label={step.placeholder}
+                    className="min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0"
+                  />
+                )}
 
                 {isTop ? (
                    <div className="flex shrink-0 items-center gap-1.5 max-sm:ml-auto">
@@ -122,6 +138,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                       <Button
                         type="button"
                         onClick={handleNext}
+                        disabled={step.type !== "checkbox" && (!formData[step.id]?.trim() || (step.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData[step.id] ?? "")))}
                         className="h-[42px] w-36 shrink-0 rounded-full shadow-sm"
                       >
                         Next
