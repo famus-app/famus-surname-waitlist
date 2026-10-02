@@ -35,7 +35,7 @@ function Index() {
   const [name, setName] = useState("");
   const [priorityInterest, setPriorityInterest] = useState(false);
   const [claimed, setClaimed] = useState(false);
-  const [remaining, setRemaining] = useState(130_000_000);
+  const [remaining, setRemaining] = useState(30_000_000);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
@@ -75,7 +75,7 @@ function Index() {
         .eq("id", true)
         .maybeSingle();
       if (!active) return;
-      if (stats) setRemaining(Math.max(0, 130_000_000 - Number(stats.claimed_count)));
+      if (stats) setRemaining(Math.max(0, 30_000_000 - Number(stats.claimed_count)));
     }
 
     void refreshPublicStatus();
