@@ -395,7 +395,7 @@ function Index() {
                       <p className="mt-[2cqw] font-display text-[13cqw] leading-none text-foreground">the famUS fam.</p>
                       <p className="mt-[1cqw] text-[3.15cqw] leading-snug text-foreground">Your family name has found its place.</p>
                     </div>
-                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One family name. One agent. Built for yours.</p>
+                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
@@ -409,7 +409,7 @@ function Index() {
                       <p className="text-[3.3cqw] uppercase leading-none text-foreground">Family no.</p>
                       <p className="mt-[3cqw] font-display text-[12cqw] leading-none text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
                     </div>
-                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One family name. One agent. Built for yours.</p>
+                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
                   </div>
                 </div>
               </div>
