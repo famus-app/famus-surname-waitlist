@@ -53,14 +53,15 @@ export function SocialLinks() {
           animate={{ opacity: 1, y: 0, scale: 1, x: reduceMotion ? 0 : offset }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: reduceMotion ? 0 : 0.18, ease: "easeOut" }}
-          className="pointer-events-none absolute right-0 top-[calc(100%+0.75rem)] z-30 w-48 overflow-hidden rounded-md border border-border bg-popover/95 p-3 text-popover-foreground shadow-lg backdrop-blur-xl"
+          className="pointer-events-none absolute right-0 top-[calc(100%+0.5rem)] z-30 w-max overflow-hidden rounded-md border border-border bg-popover/95 px-3 py-2 text-popover-foreground shadow-lg backdrop-blur-xl sm:top-[calc(100%+0.75rem)] sm:w-48 sm:p-3"
         >
-          <div className="flex items-center gap-2 border-b border-border pb-2">
+          <div className="flex items-center gap-2 sm:border-b sm:border-border sm:pb-2">
             <current.icon aria-hidden="true" className="size-4 text-primary" />
-            <span className="text-xs font-medium">{current.label}</span>
+            <span className="text-xs font-medium sm:inline">{current.label}</span>
+            <span className="text-xs text-muted-foreground sm:hidden">{current.id} · sample</span>
           </div>
-          <p className="mt-2 truncate font-display text-xl">{current.id}</p>
-          <p className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground">Sample ID · coming soon</p>
+          <p className="mt-2 hidden truncate font-display text-xl sm:block">{current.id}</p>
+          <p className="mt-1 hidden text-[10px] uppercase tracking-widest text-muted-foreground sm:block">Sample ID · coming soon</p>
         </motion.div>
       )}
     </nav>
