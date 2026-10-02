@@ -305,9 +305,8 @@ function Index() {
       </div>
       <div className="relative min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-between px-6 py-5 sm:px-10">
-        <a href="/" aria-label="famUS home" className="font-logo text-3xl text-foreground"><span className="text-secondary">fam</span><span className="text-primary">US</span></a>
           <img src={famusLogo} alt="" className="mr-2 inline-block size-10 align-middle" />
-          fam<span className="text-primary">US</span>
+          <span className="text-secondary">fam</span><span className="text-primary">US</span>
         </a>
       </header>
 
