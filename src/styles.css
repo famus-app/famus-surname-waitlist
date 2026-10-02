@@ -2,6 +2,15 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* DT Getai Grotesk Display — Black (SIL OFL 1.1, Sylvester Tan / Death of Typography) */
+@font-face {
+  font-family: "DT Getai Grotesk Display";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/fonts/DTGetaiGroteskDisplay-Black.woff") format("woff");
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*
