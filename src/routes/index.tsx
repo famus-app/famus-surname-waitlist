@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
+import { TextMarquee } from "@/components/ui/text-marquee";
 
 import { Button } from "@/components/ui/button";
 import type { Options as ConfettiOptions } from "canvas-confetti";
@@ -363,6 +364,16 @@ function Index() {
                       <div className="mt-2 flex items-center justify-center gap-3">
                         <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
                         <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
+                      </div>
+                      <div className="mt-3 flex items-center justify-center gap-1 whitespace-nowrap text-[9px] uppercase tracking-[0.1em] text-muted-foreground sm:text-[11px] sm:tracking-[0.22em]">
+                        <span>Already claimed</span>
+                        <span className="mx-2 text-primary/70">·</span>
+                        <TextMarquee speed={2} height={22} className="text-foreground/80">
+                          {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
+                            <span key={sampleName} className="whitespace-nowrap">famus.app/{sampleName}</span>
+                          ))}
+                        </TextMarquee>
+                        <span>registered</span>
                       </div>
                     </div>
                   </motion.div>
