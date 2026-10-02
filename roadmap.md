@@ -17,3 +17,4 @@
 - [x] Add X, LinkedIn, and Instagram social icons with cursor-reactive sample ID previews in the header (later removed at the user's request)
 - [x] Show an "Already claimed · famus.app/{name} registered" marquee under the agent-name preview with 5 test surnames
 
+- [x] Move "Already claimed" line above the input fields (user clarified — not the agent-name preview, which was restored below the fields)
