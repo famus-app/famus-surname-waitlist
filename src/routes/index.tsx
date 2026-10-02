@@ -336,6 +336,25 @@ function Index() {
         <section className={claimed ? "w-full" : "mt-12 border-t border-border py-8 sm:mt-16 sm:py-10"}>
           {!claimed ? (
             <>
+              <AnimatePresence>
+                {onSurnameStep ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="mb-6 flex flex-col items-center"
+                  >
+                    <div className="min-w-0 text-center">
+                      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
+                      <div className="mt-2 flex items-center justify-center gap-3">
+                        <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
+                        <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
               <ProgressiveInputStack
                 className="mx-auto w-full max-w-md"
                 onStepChange={(step) => setOnSurnameStep(step === 3)}
@@ -360,25 +379,6 @@ function Index() {
                   />
                 }
               />
-              <AnimatePresence>
-                {onSurnameStep ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="mt-10 flex flex-col items-center"
-                  >
-                    <div className="min-w-0 text-center">
-                      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
-                      <div className="mt-2 flex items-center justify-center gap-3">
-                        <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
-                        <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
 
             </>
