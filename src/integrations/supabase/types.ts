@@ -19,7 +19,9 @@ export type Database = {
           claim_number: number
           created_at: string
           email: string
+          full_name: string | null
           id: string
+          priority_interest: boolean
           surname: string
           surname_key: string
         }
@@ -27,7 +29,9 @@ export type Database = {
           claim_number?: never
           created_at?: string
           email: string
+          full_name?: string | null
           id?: string
+          priority_interest?: boolean
           surname: string
           surname_key: string
         }
@@ -35,7 +39,9 @@ export type Database = {
           claim_number?: never
           created_at?: string
           email?: string
+          full_name?: string | null
           id?: string
+          priority_interest?: boolean
           surname?: string
           surname_key?: string
         }
@@ -61,14 +67,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      claim_waitlist_surname: {
-        Args: { p_email: string; p_surname: string; p_surname_key: string }
-        Returns: {
-          claim_number: number
-          surname: string
-          surname_key: string
-        }[]
-      }
+      claim_waitlist_surname:
+        | {
+            Args: { p_email: string; p_surname: string; p_surname_key: string }
+            Returns: {
+              claim_number: number
+              surname: string
+              surname_key: string
+            }[]
+          }
+        | {
+            Args: {
+              p_email: string
+              p_name: string
+              p_priority_interest: boolean
+              p_surname: string
+              p_surname_key: string
+            }
+            Returns: {
+              claim_number: number
+              surname: string
+              surname_key: string
+            }[]
+          }
       claimed_popular_surnames: {
         Args: never
         Returns: {
