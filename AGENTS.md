@@ -11,3 +11,4 @@
 
 - Use the same transparent logo asset for the page header and generated claim-card canvas, so both representations stay visually consistent.
 - Keep the share-card image export aligned with the visible front/back card artwork, so either side can be shared as seen.
+- Keep the waitlist claim behind the validated database function, with optional preferences saved on the claim row; this avoids exposing private registrations directly.

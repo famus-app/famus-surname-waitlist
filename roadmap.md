@@ -13,4 +13,5 @@
 - [x] Remove the "Already on list" ticker, drop the button below the fields, and remove the bottom line
 - [x] Use the uploaded animated save-toggle button for the claim button
 - [x] Put email before family name and align the Next and claim buttons
+- [x] Add name and optional priority opt-in between email and family name, and save both with the claim
 
