@@ -6,6 +6,7 @@ import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
 
 import { Button } from "@/components/ui/button";
+import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
@@ -39,6 +40,7 @@ function Index() {
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
+  const confettiRef = useRef<((options?: ConfettiOptions) => void) | null>(null);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
@@ -83,6 +85,60 @@ function Index() {
       window.clearInterval(interval);
     };
   }, []);
+
+  // Preload the celebration library so the burst fires the instant the claim lands.
+  useEffect(() => {
+    void import("canvas-confetti").then((module) => {
+      confettiRef.current = module.default;
+    });
+  }, []);
+
+  // Celebration: confetti pops from both bottom corners for a few seconds.
+  useEffect(() => {
+    if (!claimed) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let cancelled = false;
+    const tokens = getComputedStyle(document.documentElement);
+    // Confetti only parses hex/rgb/hsl — normalize the site's oklch tokens first.
+    const probe = document.createElement("canvas").getContext("2d");
+    const toRgb = (value: string) => {
+      if (!probe) return "";
+      probe.fillStyle = "#000000";
+      probe.fillStyle = value;
+      return probe.fillStyle === "#000000" ? "" : probe.fillStyle;
+    };
+    const colors = ["--primary", "--primary-soft", "--primary-foreground"]
+      .map((token) => toRgb(tokens.getPropertyValue(token).trim()))
+      .filter(Boolean);
+    const timer = window.setTimeout(() => {
+      const fire = () => {
+        if (cancelled) return;
+        const confetti = confettiRef.current;
+        if (!confetti) {
+          window.setTimeout(fire, 100);
+          return;
+        }
+        const pop = (angle: number, x: number, count: number, spread = 65) =>
+          confetti({ particleCount: count, angle, spread, startVelocity: 58, gravity: 0.9, scalar: 0.9, ticks: 240, origin: { x, y: 1 }, colors });
+        pop(62, -0.02, 60);
+        pop(118, 1.02, 60);
+        const end = Date.now() + 3400;
+        const stream = window.setInterval(() => {
+          if (Date.now() > end || cancelled) {
+            window.clearInterval(stream);
+            return;
+          }
+          pop(58, -0.02, 5, 55);
+          pop(122, 1.02, 5, 55);
+        }, 220);
+      };
+      fire();
+    }, 150);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [claimed]);
 
   async function createShareCard(): Promise<Blob | null> {
     if (claimNumber === null) return null;
@@ -250,7 +306,7 @@ function Index() {
         </a>
       </header>
 
-      <main className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-col px-6 pb-16 pt-16 sm:px-10 sm:pt-24">
+      <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "px-6 pb-16 pt-16 sm:pt-24"}`}>
         {!claimed ? (
           <>
             <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
@@ -262,7 +318,7 @@ function Index() {
           </>
         ) : null}
 
-        <section className={`mt-12 py-8 sm:mt-16 sm:py-10 ${claimed ? "" : "border-t border-border"}`}>
+        <section className={claimed ? "w-full" : "mt-12 border-t border-border py-8 sm:mt-16 sm:py-10"}>
           {!claimed ? (
             <>
               <ProgressiveInputStack
