@@ -84,6 +84,41 @@ function Index() {
     };
   }, []);
 
+  // Celebration: confetti pops from both bottom corners for a few seconds.
+  useEffect(() => {
+    if (!claimed) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let cancelled = false;
+    const tokens = getComputedStyle(document.documentElement);
+    const colors = [
+      tokens.getPropertyValue("--primary").trim(),
+      tokens.getPropertyValue("--primary-soft").trim(),
+      tokens.getPropertyValue("--primary-foreground").trim(),
+    ];
+    const timer = window.setTimeout(() => {
+      void import("canvas-confetti").then(({ default: confetti }) => {
+        if (cancelled) return;
+        const pop = (angle: number, x: number, count: number, spread = 65) =>
+          confetti({ particleCount: count, angle, spread, startVelocity: 58, gravity: 0.9, scalar: 0.9, ticks: 240, origin: { x, y: 1 }, colors });
+        pop(62, -0.02, 60);
+        pop(118, 1.02, 60);
+        const end = Date.now() + 3400;
+        const stream = window.setInterval(() => {
+          if (Date.now() > end || cancelled) {
+            window.clearInterval(stream);
+            return;
+          }
+          pop(58, -0.02, 5, 55);
+          pop(122, 1.02, 5, 55);
+        }, 220);
+      });
+    }, 150);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [claimed]);
+
   async function createShareCard(): Promise<Blob | null> {
     if (claimNumber === null) return null;
     const canvas = document.createElement("canvas");
@@ -250,7 +285,7 @@ function Index() {
         </a>
       </header>
 
-      <main className="relative z-10 mx-auto flex w-full max-w-[1200px] flex-col px-6 pb-16 pt-16 sm:px-10 sm:pt-24">
+      <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "px-6 pb-16 pt-16 sm:pt-24"}`}>
         {!claimed ? (
           <>
             <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
