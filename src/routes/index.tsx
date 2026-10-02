@@ -321,15 +321,14 @@ function Index() {
               One family name. One agent. Built for yours.
             </h1>
             <div className="mt-4 flex items-center justify-center gap-1 whitespace-nowrap text-[9px] tracking-[0.1em] text-muted-foreground sm:mt-5 sm:text-[11px] sm:tracking-[0.18em]">
-              <span className="uppercase">Already claimed</span>
+              <span className="font-bold uppercase">Already claimed</span>
               <span className="mx-2 text-primary/70">&middot;</span>
               <span className="text-foreground/80">famus.app/</span>
-              <TextMarquee speed={2} height={22} className="text-foreground/80">
-                {["Patel", "Garcia", "Kimura", "Okafor", "Sullivan"].map((sampleName) => (
-                  <span key={sampleName} className="whitespace-nowrap">{sampleName}</span>
+              <TextMarquee speed={2} height={22}>
+                {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
+                  <span key={sampleName} className="whitespace-nowrap font-bold text-primary">{sampleName}</span>
                 ))}
               </TextMarquee>
-              <span>registered</span>
             </div>
           </>
         ) : null}
