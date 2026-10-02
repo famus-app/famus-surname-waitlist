@@ -40,6 +40,8 @@ function Index() {
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
+  const [onSurnameStep, setOnSurnameStep] = useState(false);
+
   const confettiRef = useRef<((options?: ConfettiOptions) => void) | null>(null);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
@@ -344,16 +346,27 @@ function Index() {
                   />
                 }
               />
-              <div className="mt-6 flex flex-col items-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
-                  <div className="mt-2 flex items-center justify-center gap-3">
-                    <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
-                    <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
-                  </div>
-                </div>
-              </div>
+              <AnimatePresence>
+                {onSurnameStep ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="mt-10 flex flex-col items-center"
+                  >
+                    <div className="min-w-0 text-center">
+                      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
+                      <div className="mt-2 flex items-center justify-center gap-3">
+                        <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
+                        <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
               {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
+
             </>
           ) : (
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
