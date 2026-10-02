@@ -119,17 +119,15 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                     ) : null}
 
                     {currentStep < steps.length - 1 ? (
-                       <Button
+                      <Button
                         type="button"
                         onClick={handleNext}
-                         className="h-[42px] w-36 shrink-0 rounded-full shadow-sm"
+                        className="h-[42px] w-36 shrink-0 rounded-full shadow-sm"
                       >
                         Next
                         <ArrowRight size={15} />
-                       </Button>
-                    ) : (
-                      submitControl
-                    )}
+                      </Button>
+                    ) : null}
                   </div>
                 ) : null}
               </motion.div>
