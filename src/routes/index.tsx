@@ -326,11 +326,11 @@ function Index() {
         <section className={claimed ? "w-full" : "mt-12 border-t border-border py-8 sm:mt-16 sm:py-10"}>
           {!claimed ? (
             <>
-            <div className="mb-6 flex items-center justify-center gap-1 whitespace-nowrap text-[9px] tracking-[0.1em] text-muted-foreground sm:text-[11px] sm:tracking-[0.18em]">
+            <div className="mb-6 flex items-center justify-center gap-1 whitespace-nowrap text-[11px] tracking-[0.1em] text-muted-foreground sm:text-[13px] sm:tracking-[0.18em]">
               <span className="font-bold uppercase">Already claimed</span>
               <span className="mx-2 text-primary/70">&middot;</span>
               <span className="text-foreground/80">famus.app/</span>
-              <TextMarquee speed={2} height={22}>
+              <TextMarquee speed={2} height={26}>
                 {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
                   <span key={sampleName} className="whitespace-nowrap font-bold text-primary">{sampleName}</span>
                 ))}
