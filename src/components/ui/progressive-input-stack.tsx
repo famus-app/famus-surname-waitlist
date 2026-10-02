@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -31,6 +31,15 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
   const [formData, setFormData] = useState<Record<string, string>>(
     initialData || steps.reduce((acc, step) => ({ ...acc, [step.id]: "" }), {}),
   );
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const springTransition = {
     type: "spring" as const,
@@ -62,7 +71,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
 
   return (
     <div className={cn("w-full", className)}>
-       <div className="relative h-[152px] w-full sm:h-[106px]">
+       <div className="relative h-[164px] w-full sm:h-[106px]">
         <AnimatePresence mode="popLayout" initial={false}>
           {steps.map((step, index) => {
             if (index > currentStep || index < currentStep - 1) return null;
@@ -78,7 +87,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                 animate={{
                   opacity: isTop ? 1 : 1 - position * 0.5,
                   scale: 1 - position * 0.04,
-                  y: -position * 46,
+                  y: -position * (isMobile ? 106 : 46),
                   z: steps.length - position,
                 }}
                 exit={{ opacity: 0, scale: 1.15, y: 14 }}
