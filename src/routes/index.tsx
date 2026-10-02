@@ -319,7 +319,20 @@ function Index() {
               <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}<span className="align-super text-[0.55em] text-primary">*</span></span> <span className="whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
             </p>
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
-              One Family Name. One Agent. Built for your Family.
+              {["One", "Family Name.", "Agent.", "Built for your Family."].map(
+                (part, i, parts) => (
+                  <motion.span
+                    key={part}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.4, duration: 0.55, ease: "easeOut" }}
+                    className="inline-block"
+                  >
+                    {part}
+                    {i < parts.length - 1 ? "\u00A0" : null}
+                  </motion.span>
+                ),
+              )}
             </h1>
           </>
         ) : null}
