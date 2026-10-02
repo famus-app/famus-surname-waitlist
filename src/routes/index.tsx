@@ -6,6 +6,7 @@ import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
 
 import { Button } from "@/components/ui/button";
+import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
@@ -39,7 +40,7 @@ function Index() {
   const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
-  const confettiRef = useRef<((options?: Parameters<typeof import("canvas-confetti").default>[0]) => void) | null>(null);
+  const confettiRef = useRef<((options?: ConfettiOptions) => void) | null>(null);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
