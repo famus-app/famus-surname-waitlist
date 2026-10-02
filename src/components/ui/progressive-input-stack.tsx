@@ -90,7 +90,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                 )}
               >
                 {step.type === "checkbox" ? (
-                  <label className="flex min-w-0 flex-1 basis-full cursor-pointer items-center gap-3 text-sm text-foreground sm:basis-0">
+                  <label className={cn("flex min-w-0 flex-1 basis-full cursor-pointer items-center gap-3 text-sm text-foreground sm:basis-0", !isTop && "opacity-0")}>
                     <input
                       type="checkbox"
                       checked={formData[step.id] === "true"}
@@ -115,7 +115,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                     placeholder={step.placeholder}
                     autoComplete={step.autoComplete}
                     aria-label={step.placeholder}
-                    className="min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0"
+                    className={cn("min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0", !isTop && "opacity-0")}
                   />
                 )}
 
