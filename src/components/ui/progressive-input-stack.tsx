@@ -135,6 +135,20 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
           })}
         </AnimatePresence>
       </div>
+      <AnimatePresence initial={false}>
+        {currentStep === steps.length - 1 && submitControl ? (
+          <motion.div
+            key="submit"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="mt-4 flex justify-center"
+          >
+            {submitControl}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 };
