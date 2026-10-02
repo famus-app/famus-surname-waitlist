@@ -297,7 +297,7 @@ function Index() {
           </>
         ) : null}
 
-        <section className={`mt-12 py-8 sm:mt-16 sm:py-10 ${claimed ? "" : "border-t border-border"}`}>
+        <section className={claimed ? "w-full" : "mt-12 border-t border-border py-8 sm:mt-16 sm:py-10"}>
           {!claimed ? (
             <>
               <ProgressiveInputStack
