@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
 import { TextMarquee } from "@/components/ui/text-marquee";
+import { TextLoop } from "@/components/ui/text-loop";
 
 import { Button } from "@/components/ui/button";
 import type { Options as ConfettiOptions } from "canvas-confetti";
@@ -320,20 +321,8 @@ function Index() {
             </p>
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
               <span>One&nbsp;</span>
-              {["Family Name.", "Agent.", "Built for your Family."].map(
-                (part, i, parts) => (
-                  <motion.span
-                    key={part}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 + i * 0.4, duration: 0.55, ease: "easeOut" }}
-                    className="inline-block"
-                  >
-                    {part}
-                    {i < parts.length - 1 ? "\u00A0" : null}
-                  </motion.span>
-                ),
-              )}
+              <TextLoop interval={2.4} values={["Family Name.", "Agent."]} />
+              <span>&nbsp;Built for your Family.</span>
             </h1>
           </>
         ) : null}
