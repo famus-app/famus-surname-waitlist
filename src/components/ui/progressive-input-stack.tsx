@@ -71,7 +71,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
 
   return (
     <div className={cn("w-full", className)}>
-       <div className="relative h-[164px] w-full sm:h-[106px]">
+       <div className="relative h-[106px] w-full">
         <AnimatePresence mode="popLayout" initial={false}>
           {steps.map((step, index) => {
             if (index > currentStep || index < currentStep - 1) return null;
@@ -87,14 +87,13 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                 animate={{
                   opacity: isTop ? 1 : 1 - position * 0.5,
                   scale: 1 - position * 0.04,
-                  y: -position * (isMobile ? 106 : 46),
+                  y: -position * 46,
                   z: steps.length - position,
                 }}
                 exit={{ opacity: 0, scale: 1.15, y: 14 }}
                 transition={springTransition}
                 className={cn(
                    "famus-glass absolute inset-x-0 bottom-0 flex h-[54px] items-center gap-2 rounded-full py-1 pl-5 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
-                   isTop && currentStep > 0 && "h-[100px] flex-wrap content-center py-2 sm:h-[54px] sm:flex-nowrap sm:py-1",
                    !isTop && "pointer-events-none",
                 )}
               >
@@ -112,14 +111,14 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                     </span>
                   )
                 ) : step.type === "checkbox" ? (
-                  <label className="flex min-w-0 flex-1 basis-full cursor-pointer items-center gap-3 text-sm text-foreground sm:basis-0">
+                  <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 text-sm text-foreground">
                     <input
                       type="checkbox"
                       checked={formData[step.id] === "true"}
                       onChange={(event) => updateField(step.id, event.target.checked ? "true" : "")}
                       className="size-5 shrink-0 accent-primary"
                     />
-                    <span>{step.placeholder}</span>
+                    <span className="truncate">{step.placeholder}</span>
                   </label>
                 ) : (
                   <input
@@ -136,12 +135,12 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                     placeholder={step.placeholder}
                     autoComplete={step.autoComplete}
                     aria-label={step.placeholder}
-                    className="min-w-0 flex-1 basis-full bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground sm:basis-0"
+                    className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
                   />
                 )}
 
                 {isTop ? (
-                   <div className="flex shrink-0 items-center gap-1.5 max-sm:ml-auto">
+                   <div className="flex shrink-0 items-center gap-1.5">
                     {currentStep > 0 ? (
                        <Button
                         type="button"
@@ -160,7 +159,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                         type="button"
                         onClick={handleNext}
                         disabled={step.type !== "checkbox" && (!formData[step.id]?.trim() || (step.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData[step.id] ?? "")))}
-                        className="h-[42px] w-36 shrink-0 rounded-full shadow-sm"
+                        className="h-[42px] w-24 shrink-0 sm:w-36 rounded-full shadow-sm"
                       >
                         Next
                         <ArrowRight size={15} />
