@@ -85,6 +85,13 @@ function Index() {
     };
   }, []);
 
+  // Preload the celebration library so the burst fires the instant the claim lands.
+  useEffect(() => {
+    void import("canvas-confetti").then((module) => {
+      confettiRef.current = module.default;
+    });
+  }, []);
+
   // Celebration: confetti pops from both bottom corners for a few seconds.
   useEffect(() => {
     if (!claimed) return;
