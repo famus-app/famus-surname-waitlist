@@ -15,4 +15,5 @@
 - [x] Put email before family name and align the Next and claim buttons
 - [x] Add name and optional priority opt-in between email and family name, and save both with the claim
 - [x] Add X, LinkedIn, and Instagram social icons with cursor-reactive sample ID previews in the header (later removed at the user's request)
+- [x] Show an "Already claimed · famus.app/{name} registered" marquee under the agent-name preview with 5 test surnames
 
