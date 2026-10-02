@@ -99,11 +99,17 @@ function Index() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let cancelled = false;
     const tokens = getComputedStyle(document.documentElement);
-    const colors = [
-      tokens.getPropertyValue("--primary").trim(),
-      tokens.getPropertyValue("--primary-soft").trim(),
-      tokens.getPropertyValue("--primary-foreground").trim(),
-    ];
+    // Confetti only parses hex/rgb/hsl — normalize the site's oklch tokens first.
+    const probe = document.createElement("canvas").getContext("2d");
+    const toRgb = (value: string) => {
+      if (!probe) return "";
+      probe.fillStyle = "#000000";
+      probe.fillStyle = value;
+      return probe.fillStyle === "#000000" ? "" : probe.fillStyle;
+    };
+    const colors = ["--primary", "--primary-soft", "--primary-foreground"]
+      .map((token) => toRgb(tokens.getPropertyValue(token).trim()))
+      .filter(Boolean);
     const timer = window.setTimeout(() => {
       const fire = () => {
         if (cancelled) return;
