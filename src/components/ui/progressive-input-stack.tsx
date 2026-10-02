@@ -15,7 +15,7 @@ interface ProgressiveInputStackProps {
   steps: StepData[];
   initialData?: Record<string, string>;
   onChange?: (data: Record<string, string>) => void;
-  /** Rendered below the stacked fields on the final step. */
+  /** Rendered inside the final field's bar, in place of the Next button. */
   submitControl?: React.ReactNode;
   className?: string;
 }
