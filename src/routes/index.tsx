@@ -320,7 +320,13 @@ function Index() {
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
               One family name. One agent. Built for yours.
             </h1>
-            <div className="mt-4 flex items-center justify-center gap-1 whitespace-nowrap text-[9px] tracking-[0.1em] text-muted-foreground sm:mt-5 sm:text-[11px] sm:tracking-[0.18em]">
+          </>
+        ) : null}
+
+        <section className={claimed ? "w-full" : "mt-12 border-t border-border py-8 sm:mt-16 sm:py-10"}>
+          {!claimed ? (
+            <>
+            <div className="mb-6 flex items-center justify-center gap-1 whitespace-nowrap text-[9px] tracking-[0.1em] text-muted-foreground sm:text-[11px] sm:tracking-[0.18em]">
               <span className="font-bold uppercase">Already claimed</span>
               <span className="mx-2 text-primary/70">&middot;</span>
               <span className="text-foreground/80">famus.app/</span>
@@ -330,12 +336,6 @@ function Index() {
                 ))}
               </TextMarquee>
             </div>
-          </>
-        ) : null}
-
-        <section className={claimed ? "w-full" : "mt-12 border-t border-border py-8 sm:mt-16 sm:py-10"}>
-          {!claimed ? (
-            <>
               <ProgressiveInputStack
                 className="mx-auto w-full max-w-md"
                 onStepChange={(step) => setOnSurnameStep(step === 3)}
