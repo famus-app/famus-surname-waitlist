@@ -365,7 +365,7 @@ function Index() {
                         <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
                         <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
                       </div>
-                      <div className="mt-3 flex items-center justify-center whitespace-nowrap text-[10px] tracking-[0.14em] text-muted-foreground sm:text-[11px] sm:tracking-[0.22em]">
+                      <div className="mt-3 flex items-center justify-center gap-1 whitespace-nowrap text-[10px] uppercase tracking-[0.14em] text-muted-foreground sm:text-[11px] sm:tracking-[0.22em]">
                         <span>Already claimed</span>
                         <span className="mx-2 text-primary/70">·</span>
                         <TextMarquee speed={2} height={22} className="text-foreground/80">
