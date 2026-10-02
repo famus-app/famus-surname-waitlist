@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
+import { SocialLinks } from "@/components/social-links";
 
 import { Button } from "@/components/ui/button";
 import type { Options as ConfettiOptions } from "canvas-confetti";
@@ -304,6 +305,7 @@ function Index() {
           <img src={famusLogo} alt="" className="mr-2 inline-block size-10 align-middle" />
           fam<span className="text-primary">US</span>
         </a>
+        <SocialLinks />
       </header>
 
       <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "px-6 pb-16 pt-16 sm:pt-24"}`}>
