@@ -365,6 +365,16 @@ function Index() {
                         <House className="size-5 shrink-0 text-primary" strokeWidth={1.7} />
                         <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
                       </div>
+                      <div className="mt-3 flex items-center justify-center text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                        <span>Already claimed</span>
+                        <span className="mx-2 text-primary/70">·</span>
+                        <TextMarquee speed={2} height={22} className="text-foreground/80">
+                          {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
+                            <span key={sampleName} className="whitespace-nowrap">famus.app/{sampleName}</span>
+                          ))}
+                        </TextMarquee>
+                        <span className="ml-2">registered</span>
+                      </div>
                     </div>
                   </motion.div>
                 ) : null}
