@@ -165,7 +165,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                         Next
                         <ArrowRight size={15} />
                       </Button>
-                    ) : null}
+                    ) : submitControl}
                   </div>
                 ) : null}
               </motion.div>
