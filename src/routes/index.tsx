@@ -207,17 +207,6 @@ function Index() {
       context.font = '30px "Work Sans", sans-serif';
       context.fillStyle = foreground;
       context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1830, 940);
-    } else {
-      // Metal finish: a faint diagonal light streak so the shared image
-      // matches the brushed-metal sheen shown on the live card.
-      const sheen = context.createLinearGradient(0, 0, 1080, 1920);
-      sheen.addColorStop(0, "rgba(255, 255, 255, 0)");
-      sheen.addColorStop(0.42, "rgba(255, 255, 255, 0.05)");
-      sheen.addColorStop(0.5, "rgba(255, 255, 255, 0.14)");
-      sheen.addColorStop(0.58, "rgba(255, 255, 255, 0.05)");
-      sheen.addColorStop(1, "rgba(255, 255, 255, 0)");
-      context.fillStyle = sheen;
-      context.fillRect(0, 0, 1080, 1920);
     }
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
@@ -390,9 +379,8 @@ function Index() {
                   <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
                     <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer absolute inset-0 size-full object-cover" width={1024} height={1536} />
-                    <div className="famus-metal-sheen absolute inset-0" aria-hidden="true" />
                     <div className="famus-card-shade absolute inset-0" />
-                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(true)} className="absolute bottom-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(true)} className="absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
                     </button>
                   </div>
@@ -409,10 +397,7 @@ function Index() {
                       <p className="mt-[3cqw] font-display text-[12cqw] leading-none text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
                     </div>
                     <p className="absolute inset-x-4 bottom-[14cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
-                    {/* The back face sits under the flipped inner card, so its
-                        local axes already read like the front's — the button
-                        goes in the same bottom-right corner. */}
-                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(false)} className="absolute bottom-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(false)} className="absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
                     </button>
                   </div>
