@@ -12,6 +12,7 @@ import { TextMarquee } from "@/components/ui/text-marquee";
 import { TextTypewriter } from "@/components/ui/text-typewriter";
 
 import { Button } from "@/components/ui/button";
+import { SocialFollow } from "@/components/ui/social-follow";
 import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
@@ -411,6 +412,9 @@ function Index() {
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">Coming soon</span></div>
                   <p className="mt-2 text-sm text-muted-foreground">Invite 3 family members to unlock your Founder badge.</p>
+                </div>
+                <div className="mt-5">
+                  <SocialFollow />
                 </div>
               </div>
             </div>
