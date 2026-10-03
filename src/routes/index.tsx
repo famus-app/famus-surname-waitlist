@@ -12,6 +12,7 @@ import { TextMarquee } from "@/components/ui/text-marquee";
 import { TextTypewriter } from "@/components/ui/text-typewriter";
 
 import { Button } from "@/components/ui/button";
+import { SocialFollow } from "@/components/ui/social-follow";
 import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
