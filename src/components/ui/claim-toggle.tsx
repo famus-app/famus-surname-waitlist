@@ -84,7 +84,7 @@ export function ClaimToggle({ idleText, disabled, onAction, onComplete, classNam
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15, x: -20 }}
-              className="absolute inset-0 flex items-center justify-center text-sm font-medium tracking-wide text-primary-foreground"
+              className="absolute inset-0 z-10 flex items-center justify-center text-sm font-medium tracking-wide text-primary-foreground"
             >
               {idleText}
             </motion.span>

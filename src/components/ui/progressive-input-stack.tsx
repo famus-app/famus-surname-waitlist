@@ -173,7 +173,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                           className="famus-metal-cta-fill pointer-events-none absolute inset-0"
                         />
                         Next
-                        <ArrowRight size={15} />
+                        <ArrowRight size={15} className="relative z-10" />
                       </Button>
                     ) : submitControl}
                   </div>
