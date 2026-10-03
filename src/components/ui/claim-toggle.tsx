@@ -68,6 +68,18 @@ export function ClaimToggle({ idleText, disabled, onAction, onComplete, classNam
         <AnimatePresence mode="popLayout">
           {status === "idle" && (
             <motion.span
+              key="metal"
+              aria-hidden="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="famus-metal-cta-fill pointer-events-none absolute inset-0"
+            />
+          )}
+
+          {status === "idle" && (
+            <motion.span
               key="idle"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
