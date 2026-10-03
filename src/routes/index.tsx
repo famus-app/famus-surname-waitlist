@@ -17,7 +17,8 @@ import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
-import cardFrontArt from "@/assets/famus-card-front-embrace.jpg";
+import cardFrontArt from "@/assets/famus-card-front-generations.png.asset.json";
+import cardFrontGlow from "@/assets/famus-card-front-glow.png.asset.json";
 import cardBackArt from "@/assets/famus-card-back-arch.jpg";
 
 export const Route = createFileRoute("/")({
@@ -163,7 +164,7 @@ function Index() {
     const background = tokens.getPropertyValue("--background").trim();
 
     const art = new Image();
-    art.src = cardFlipped ? cardBackArt : cardFrontArt;
+    art.src = cardFlipped ? cardBackArt : cardFrontArt.url;
     try {
       await Promise.all([art.decode(), document.fonts.ready]);
       const ratio = Math.max(canvas.width / art.width, canvas.height / art.height);
@@ -207,10 +208,16 @@ function Index() {
       context.fillStyle = foreground;
       context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1830, 940);
     } else {
-      context.fillStyle = foreground;
-      await document.fonts.load('113px "Manosque"');
-      context.font = '113px "Manosque", serif';
-      ["For Generations", "&", "Forever"].forEach((line, i) => context.fillText(line, 540, 200 + i * 113));
+      // Metal finish: a faint diagonal light streak so the shared image
+      // matches the brushed-metal sheen shown on the live card.
+      const sheen = context.createLinearGradient(0, 0, 1080, 1920);
+      sheen.addColorStop(0, "rgba(255, 255, 255, 0)");
+      sheen.addColorStop(0.42, "rgba(255, 255, 255, 0.05)");
+      sheen.addColorStop(0.5, "rgba(255, 255, 255, 0.14)");
+      sheen.addColorStop(0.58, "rgba(255, 255, 255, 0.05)");
+      sheen.addColorStop(1, "rgba(255, 255, 255, 0)");
+      context.fillStyle = sheen;
+      context.fillRect(0, 0, 1080, 1920);
     }
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
@@ -380,10 +387,11 @@ function Index() {
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
               <div className="famus-card-scene w-full max-w-[360px] justify-self-center">
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
-                  <div className="famus-card-face absolute inset-0 overflow-hidden rounded-md border border-border">
-                    <img src={cardFrontArt} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
+                  <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
+                    <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
+                    <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer absolute inset-0 size-full object-cover" width={1024} height={1536} />
+                    <div className="famus-metal-sheen absolute inset-0" aria-hidden="true" />
                     <div className="famus-card-shade absolute inset-0" />
-                    <p className="absolute inset-x-0 top-[7cqw] whitespace-pre-line text-center font-manosque text-[10.5cqw] leading-none text-foreground">{"For Generations\n&\nForever \n\n\n"}</p>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />

@@ -272,8 +272,47 @@
 .famus-card-back { transform: rotateY(180deg); }
 .famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 55%, transparent), transparent 30%, transparent 72%, color-mix(in oklab, var(--background) 72%, transparent)); }
 
+/* Metal card finish: brushed-steel bevel edges, plus on hover a light streak
+   sweeps across and the glowing artwork layer (title + orb) fades in. */
+.famus-metal-card {
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 22%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, white 9%, transparent),
+    inset 1px 0 0 color-mix(in oklab, white 7%, transparent),
+    inset -1px 0 0 color-mix(in oklab, white 7%, transparent);
+}
+.famus-glow-layer {
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+.famus-card-face:hover .famus-glow-layer { opacity: 1; }
+.famus-metal-sheen {
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    color-mix(in oklab, white 6%, transparent) 42%,
+    color-mix(in oklab, white 30%, transparent) 50%,
+    color-mix(in oklab, white 6%, transparent) 58%,
+    transparent 68%
+  );
+  background-size: 240% 240%;
+  background-position: 140% 140%;
+}
+.famus-card-face:hover .famus-metal-sheen {
+  animation: famus-metal-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes famus-metal-sweep {
+  0% { background-position: 140% 140%; opacity: 0; }
+  20% { opacity: 1; }
+  100% { background-position: -40% -40%; opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text, .famus-metal-sheen { animation: none; }
   .famus-card-inner { transition: none; }
 }
 
