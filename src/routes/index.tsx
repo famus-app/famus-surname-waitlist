@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 
@@ -52,7 +52,7 @@ function Index() {
 
   const cardSceneRef = useRef<HTMLDivElement>(null);
   const cardTiltRaf = useRef(0);
-  const tiltCards = (e: React.MouseEvent) => {
+  const tiltCards = (e: ReactMouseEvent) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
     if (!inner) return;
