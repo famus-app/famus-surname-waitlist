@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 export interface TextTypewriterProps {
   values: string[];
+  /** Optional per-value classes (by index), e.g. colors that swap as words cycle. */
+  valuesClassNames?: string[];
   /** Milliseconds per character while typing. */
   typingSpeed?: number;
   /** Milliseconds per character while deleting. */
@@ -18,6 +20,7 @@ export interface TextTypewriterProps {
  */
 export function TextTypewriter({
   values,
+  valuesClassNames,
   typingSpeed = 55,
   deletingSpeed = 30,
   holdDuration = 1600,
