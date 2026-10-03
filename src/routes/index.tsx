@@ -399,7 +399,7 @@ function Index() {
             </>
           ) : (
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
-              <div className="famus-card-scene w-full max-w-[360px] justify-self-center">
+              <div ref={cardSceneRef} onMouseMove={tiltCards} onMouseEnter={tiltCards} onMouseLeave={untiltCards} className="famus-card-scene w-full max-w-[360px] justify-self-center">
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
                   <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
