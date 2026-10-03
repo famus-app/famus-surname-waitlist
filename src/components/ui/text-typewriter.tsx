@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 export interface TextTypewriterProps {
   values: string[];
+  /** Optional per-value classes (by index), e.g. colors that swap as words cycle. */
+  valuesClassNames?: string[];
   /** Milliseconds per character while typing. */
   typingSpeed?: number;
   /** Milliseconds per character while deleting. */
@@ -18,6 +20,7 @@ export interface TextTypewriterProps {
  */
 export function TextTypewriter({
   values,
+  valuesClassNames,
   typingSpeed = 55,
   deletingSpeed = 30,
   holdDuration = 1600,
@@ -62,13 +65,15 @@ export function TextTypewriter({
   const value = reduced || values.length < 2 ? (values[0] ?? "") : (values[valueIndex] ?? "");
   const visible = reduced ? value : value.slice(0, charCount);
   const widest = values.reduce((longest, current) => (current.length > longest.length ? current : longest), "");
+  const activeClass =
+    (reduced || values.length < 2 ? valuesClassNames?.[0] : valuesClassNames?.[valueIndex]) ?? "";
 
   return (
     <span className={`inline-grid align-bottom ${className ?? ""}`}>
       <span aria-hidden="true" className="invisible col-start-1 row-start-1 whitespace-nowrap">
         {widest}
       </span>
-      <span className="col-start-1 row-start-1 whitespace-nowrap text-left">
+      <span className={`col-start-1 row-start-1 whitespace-nowrap text-left ${activeClass}`}>
         {visible}
         <span aria-hidden="true" className="famus-caret" />
       </span>
