@@ -319,61 +319,44 @@
   }
 }
 
-/* Social follow pill — "Follow us for updates on" + gradient socials */
-.famus-social-card {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.875rem;
-  padding: 0.5rem 0.75rem 0.5rem 1.125rem;
-  border-radius: 9999px;
-  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
-  background: linear-gradient(
-    120deg,
-    oklch(0.14 0.025 45 / 0.6),
-    oklch(0.07 0.007 58 / 0.7) 55%,
-    oklch(0.28 0.05 45 / 0.55)
-  );
-  backdrop-filter: blur(12px);
+/* Social card (user-supplied SocialCard) — scoped, famUS orange/beige/dark */
+.famus-socials { display:flex; flex-direction:column; align-items:center; gap:0.875rem; }
+.famus-socials-caption { font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--secondary); }
+.famus-socials .card {
+  position:relative; width:200px; height:200px; border-radius:30px; overflow:hidden;
+  background:oklch(0.12 0.01 58);
+  box-shadow:0 20px 50px -25px oklch(0.64 0.18 42 / 0.6);
+  transition:all 1s ease-in-out;
 }
-
-.famus-social-label {
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  white-space: nowrap;
+.famus-socials .background {
+  position:absolute; inset:0;
+  background:radial-gradient(circle at 100% 107%, var(--secondary) 0%, var(--primary-soft) 30%, var(--primary) 60%, oklch(0.07 0.007 58) 100%);
 }
-
-.famus-social-box {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 9999px;
-  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
-  background: linear-gradient(120deg, oklch(0.16 0.015 58), oklch(0.07 0.007 58));
-  color: var(--foreground);
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.25s ease;
+.famus-socials .logo {
+  position:absolute; right:50%; bottom:50%; transform:translate(50%,50%);
+  transition:all 0.6s ease-in-out; font-size:1.3em; font-weight:600; letter-spacing:3px;
+  color:oklch(0.995 0.008 85);
 }
-
-.famus-social-box:hover,
-.famus-social-box:focus-visible {
-  background: linear-gradient(135deg, var(--primary), var(--primary-soft) 55%, var(--secondary));
-  color: oklch(0.15 0.02 45);
-  border-color: transparent;
-  transform: translateY(-2px);
+.famus-socials .box {
+  position:absolute; padding:10px; text-align:right;
+  background:oklch(0.995 0.008 85 / 0.39);
+  border-top:2px solid oklch(0.995 0.008 85); border-right:1px solid oklch(0.995 0.008 85);
+  border-radius:10% 13% 42% 0% / 10% 12% 75% 0%;
+  box-shadow:oklch(0.07 0.007 58 / 0.5) -7px 7px 29px 0px;
+  transform-origin:bottom left; transition:all 1s ease-in-out;
 }
-
-.famus-social-icon {
-  display: inline-flex;
+.famus-socials .box::before {
+  content:""; position:absolute; inset:0; border-radius:inherit; opacity:0; transition:all 0.5s ease-in-out;
+  background:linear-gradient(135deg, var(--primary), var(--secondary));
 }
-
-.famus-social-icon svg {
-  width: 1.05rem;
-  height: 1.05rem;
-  fill: currentColor;
-}
+.famus-socials .box:hover::before { opacity:1; }
+.famus-socials .box:hover .svg { fill:oklch(0.07 0.007 58); }
+.famus-socials .box1 { width:70%; height:70%; bottom:-70%; left:-70%; }
+.famus-socials .box2 { width:50%; height:50%; bottom:-50%; left:-50%; }
+.famus-socials .box3 { width:30%; height:30%; bottom:-30%; left:-30%; }
+.famus-socials .box4 { width:10%; height:10%; bottom:-10%; left:-10%; }
+.famus-socials .card:hover { transform:scale(1.1); }
+.famus-socials .card:hover .box { bottom:-1px; left:-1px; }
+.famus-socials .card:hover .logo { transform:translate(70px,-52px); letter-spacing:0px; }
+.famus-socials .box .icon { position:relative; display:inline-block; width:20px; height:20px; }
+.famus-socials .box .icon .svg { width:100%; height:100%; fill:oklch(0.995 0.008 85); transition:fill 0.3s; }
