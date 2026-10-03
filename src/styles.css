@@ -268,6 +268,13 @@
   animation: famus-caret-blink 1.05s step-end infinite;
 }
 
+/* Orange glow on the typed tagline words (Family Name. / Agent.) */
+@utility famus-typed-glow {
+  text-shadow:
+    0 0 0.45em color-mix(in oklab, var(--primary) 45%, transparent),
+    0 0 1.1em color-mix(in oklab, var(--primary) 22%, transparent);
+}
+
 @keyframes famus-caret-blink {
   0%,
   100% {
