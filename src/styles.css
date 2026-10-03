@@ -256,3 +256,30 @@
   .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count { animation: none; }
   .famus-card-inner { transition: none; }
 }
+
+/* Typewriter caret for the animated tagline */
+.famus-caret {
+  display: inline-block;
+  width: 0.055em;
+  height: 1em;
+  margin-left: 0.09em;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: famus-caret-blink 1.05s step-end infinite;
+}
+
+@keyframes famus-caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .famus-caret {
+    animation: none;
+  }
+}

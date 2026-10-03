@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
 import { TextMarquee } from "@/components/ui/text-marquee";
-import { TextLoop } from "@/components/ui/text-loop";
+import { TextTypewriter } from "@/components/ui/text-typewriter";
 
 import { Button } from "@/components/ui/button";
 import type { Options as ConfettiOptions } from "canvas-confetti";
@@ -321,7 +321,7 @@ function Index() {
             </p>
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
               <span>Built for your Family: One&nbsp;</span>
-              <TextLoop interval={2.4} values={["Family Name.", "Agent."]} />
+              <TextTypewriter values={["Family Name.", "Agent."]} />
             </h1>
           </>
         ) : null}
