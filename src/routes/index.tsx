@@ -321,7 +321,7 @@ function Index() {
               <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}<span className="align-super text-[0.55em] text-primary">*</span></span> <span className="whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
             </p>
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.2rem,3vw,2.5rem)] leading-none text-foreground">
-              <span>Built for your Family: One&nbsp;</span>
+              <span>Built for your whole family: One&nbsp;</span>
               <GradientText
                 colors={["#F97316", "#d3b58f", "#f4f2f2"]}
                 animationSpeed={3}
@@ -340,7 +340,7 @@ function Index() {
           {!claimed ? (
             <>
             <div className="mb-6 flex items-center justify-center gap-1 whitespace-nowrap text-[11px] tracking-[0.1em] text-muted-foreground sm:text-[13px] sm:tracking-[0.18em]">
-              <span className="font-bold uppercase">Already claimed</span>
+              <span className="font-bold uppercase">ALREADY RESERVED</span>
               <span className="mx-2 text-primary/70">&middot;</span>
               <span className="text-foreground/80">famus.si/</span>
               <TextMarquee speed={2} height={26}>
