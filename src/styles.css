@@ -278,35 +278,19 @@
   animation: famus-caret-blink 1.05s step-end infinite;
 }
 
-/* Orange metallic glare on the typed tagline words (Family Name. / Agent.) */
-@utility famus-typed-glow {
-  text-shadow:
-    0 0 0.45em color-mix(in oklab, var(--primary) 45%, transparent),
-    0 0 1.1em color-mix(in oklab, var(--primary) 22%, transparent);
-}
-
-/* Metallic gradient fill with a light glare sweeping across the letters */
-@utility famus-metallic {
-  color: var(--primary);
-  background-image: linear-gradient(
-    105deg,
-    oklch(0.48 0.13 40) 0%,
-    oklch(0.72 0.17 48) 24%,
-    oklch(0.93 0.08 76) 38%,
-    oklch(0.71 0.155 42) 54%,
-    oklch(0.44 0.12 38) 76%,
-    oklch(0.64 0.18 42) 100%
-  );
-  background-size: 220% 100%;
+/* Animated gradient sweep on the typed tagline words (Family Name. / Agent.) */
+.famus-gradient-text {
+  color: var(--primary); /* keeps the caret's currentColor orange */
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: famus-glare 3.6s ease-in-out infinite;
+  animation: famus-gradient-move 8s linear infinite;
 }
 
-@keyframes famus-glare {
-  0%, 100% { background-position: 190% 0%; }
-  50% { background-position: -90% 0%; }
+@keyframes famus-gradient-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 @keyframes famus-caret-blink {
