@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { ClaimToggle } from "@/components/ui/claim-toggle";
 import { ProgressiveInputStack } from "@/components/ui/progressive-input-stack";
+import { GradientText } from "@/components/ui/gradient-text";
 import { TextMarquee } from "@/components/ui/text-marquee";
 import { TextTypewriter } from "@/components/ui/text-typewriter";
 
