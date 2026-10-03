@@ -263,7 +263,7 @@
 .famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 55%, transparent), transparent 30%, transparent 72%, color-mix(in oklab, var(--background) 72%, transparent)); }
 
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-metallic { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text { animation: none; }
   .famus-card-inner { transition: none; }
 }
 
