@@ -392,6 +392,9 @@ function Index() {
                     <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer absolute inset-0 size-full object-cover" width={1024} height={1536} />
                     <div className="famus-metal-sheen absolute inset-0" aria-hidden="true" />
                     <div className="famus-card-shade absolute inset-0" />
+                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(true)} className="absolute bottom-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                      <RotateCw className="size-[4.5cqw]" />
+                    </button>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
@@ -406,6 +409,12 @@ function Index() {
                       <p className="mt-[3cqw] font-display text-[12cqw] leading-none text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
                     </div>
                     <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
+                    {/* The back face is mirrored by its rotateY(180deg), so the
+                        button sits at the local bottom-left to land bottom-right
+                        on screen; the icon is counter-flipped to read clockwise. */}
+                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(false)} className="absolute bottom-[3.5cqw] left-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                      <RotateCw className="size-[4.5cqw] -scale-x-100" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -414,7 +423,6 @@ function Index() {
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon.</h2>
                 {previewing ? <p className="mt-2 text-sm leading-relaxed text-muted-foreground">A look at the card you'll receive when your family name is reserved.</p> : <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>}
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Button variant="outline" onClick={() => setCardFlipped((flipped) => !flipped)}><RotateCw className="size-4" />Flip card</Button>
                   {previewing ? <Button onClick={() => { setClaimed(false); setPreviewing(false); setSurname(""); setClaimNumber(null); setCardFlipped(false); }}>Claim your own</Button> : <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>}
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
