@@ -36,14 +36,15 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [surname, setSurname] = useState("");
+  const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [priorityInterest, setPriorityInterest] = useState(false);
-  const [claimed, setClaimed] = useState(false);
+  const [claimed, setClaimed] = useState(true);
+  const [previewing, setPreviewing] = useState(true);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
-  const [claimNumber, setClaimNumber] = useState<number | null>(null);
+  const [claimNumber, setClaimNumber] = useState<number | null>(1);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
@@ -103,7 +104,7 @@ function Index() {
 
   // Celebration: confetti pops from both bottom corners for a few seconds.
   useEffect(() => {
-    if (!claimed) return;
+    if (!claimed || previewing) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let cancelled = false;
     const tokens = getComputedStyle(document.documentElement);
@@ -146,7 +147,7 @@ function Index() {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [claimed]);
+  }, [claimed, previewing]);
 
   async function createShareCard(): Promise<Blob | null> {
     if (claimNumber === null) return null;
@@ -370,7 +371,7 @@ function Index() {
                     idleText="Claim my agent"
                     disabled={!cleanSurname || !name.trim() || !email.includes("@")}
                     onAction={submitClaim}
-                    onComplete={() => setClaimed(true)}
+                    onComplete={() => { setPreviewing(false); setClaimed(true); }}
                   />
                 }
               />
@@ -428,12 +429,12 @@ function Index() {
                 </div>
               </div>
               <div className="min-w-0">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>
+                {previewing ? <p className="text-[11px] uppercase tracking-[0.22em] text-primary">Card preview</p> : <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon.</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>
+                {previewing ? <p className="mt-2 text-sm leading-relaxed text-muted-foreground">A look at the card you'll receive when your family name is reserved.</p> : <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>}
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Button variant="outline" onClick={() => setCardFlipped((flipped) => !flipped)}><RotateCw className="size-4" />Flip card</Button>
-                  <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>
+                  {previewing ? <Button onClick={() => { setClaimed(false); setPreviewing(false); setSurname(""); setClaimNumber(null); setCardFlipped(false); }}>Claim your own</Button> : <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>}
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">Coming soon</span></div>
