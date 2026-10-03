@@ -392,7 +392,6 @@ function Index() {
                     <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer absolute inset-0 size-full object-cover" width={1024} height={1536} />
                     <div className="famus-metal-sheen absolute inset-0" aria-hidden="true" />
                     <div className="famus-card-shade absolute inset-0" />
-                    <p className="absolute inset-x-0 top-[7cqw] whitespace-pre-line text-center font-manosque text-[10.5cqw] leading-none text-foreground">{"For Generations\n&\nForever \n\n\n"}</p>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
