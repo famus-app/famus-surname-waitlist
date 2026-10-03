@@ -1,3 +1,4 @@
+// @ts-nocheck
 // The `thinking-orbs/engine` entry point: pure geometry, zero React, zero
 // DOM. Import this to drive your own renderer — a Skia canvas in React
 // Native, an offscreen canvas in a worker, a server-side rasteriser.

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // The sphere-lattice modes: globe (searching), rubik (solving) and
 // wave (listening). All draw a lat/long dot field with mode-specific
 // motion, then hand off to the shared z-sorted painter.

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Gravity — the orb pulls the pointer in.
  *

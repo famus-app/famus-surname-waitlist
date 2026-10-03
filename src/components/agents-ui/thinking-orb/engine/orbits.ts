@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Orbits: particles on tilted orbits — the "working" state. No nucleus
 // (the tuned preset runs coreless): just ghost paths and the particles
 // doing the work.

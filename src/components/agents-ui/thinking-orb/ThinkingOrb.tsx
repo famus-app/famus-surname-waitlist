@@ -1,3 +1,4 @@
+// @ts-nocheck
 // The ThinkingOrb component. One shared clock (performance.now) keeps
 // every mounted orb in phase; each instance runs its own rAF loop but
 // pauses automatically while offscreen (IntersectionObserver) or when

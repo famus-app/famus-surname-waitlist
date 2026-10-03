@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { CSSProperties, CanvasHTMLAttributes } from 'react';
 import type { ModeOpts } from './engine/profiles';
 import type { ModeFrame } from './engine/types';

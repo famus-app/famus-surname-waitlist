@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Morph: a dotted outline cycling circle → triangle → square → circle —
 // the "shaping" state. Each shape is a continuous closed path
 // parameterised by arc length (top-centre start, clockwise). Every

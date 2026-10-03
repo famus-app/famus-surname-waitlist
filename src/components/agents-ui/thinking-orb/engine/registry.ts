@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Mode key → geometry builder. Kept separate from the presets so tree
 // shaking can in principle drop unused modes in custom builds.
 

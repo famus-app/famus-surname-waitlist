@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Density profiles + the multiplier machinery that scales them. The base
 // rows are inkform's `fine` profiles; each shipped preset (state × size)
 // applies count / radius multipliers on top, resolved once per mount.

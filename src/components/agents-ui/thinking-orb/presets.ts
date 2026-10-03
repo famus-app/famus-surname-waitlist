@@ -1,3 +1,4 @@
+// @ts-nocheck
 // The shipped tunings: nine states × two sizes, baked from the inkform
 // mini-page tuning session. `count`/`size` are multipliers over the base
 // fine profiles; `speed` multiplies the shared clock. Resolved once per

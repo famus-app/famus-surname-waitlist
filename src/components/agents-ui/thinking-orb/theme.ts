@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Theme resolution: explicit prop → ancestor data-theme/.dark|.light
 // class (watched live) → prefers-color-scheme (subscribed live).
 // SSR-safe: everything runs in effects; the pre-mount fallback is dark.

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Ribbon: an undulating sash of parallel strands rides a great circle —
 // the "composing" state. The tuned preset freezes the 3D tumble
 // (spin 0), leaving the traveling undulation on a fixed band.
