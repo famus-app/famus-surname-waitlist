@@ -53,8 +53,9 @@ const SocialCard = ({
   title = "Socials",
   socialLinks = [
     { href: "#", icon: <InstagramIcon />, className: "box1", label: "Instagram" },
-    { href: "##", icon: <TwitterIcon />, className: "box2", delay: "0.2s", label: "Twitter" },
-    { href: "###", icon: <DiscordIcon />, className: "box3", delay: "0.4s", label: "Discord" },
+    { href: "##", icon: <XIcon />, className: "box2", delay: "0.2s", label: "X" },
+    { href: "###", icon: <LinkedInIcon />, className: "box3", delay: "0.4s", label: "LinkedIn" },
+
   ],
 }: SocialCardProps) => (
   <div className="card">
