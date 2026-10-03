@@ -403,26 +403,26 @@ function Index() {
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
                   <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
-                    <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer absolute inset-0 size-full object-cover" width={1024} height={1536} />
+                    <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer famus-pop absolute inset-0 size-full object-cover" style={{ ["--pop" as string]: "10px" }} width={1024} height={1536} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(true)} className="absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                    <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(true)} className="famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
                     </button>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="absolute inset-x-5 top-[94.5cqw] text-center drop-shadow-lg">
+                    <div className="famus-pop absolute inset-x-5 top-[94.5cqw] text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.7cqw] uppercase leading-none text-foreground">A family name, claimed</p>
-                      <h2 className={`mt-[4cqw] break-words font-display leading-none text-foreground ${cleanSurname.length > 12 ? "text-[9.5cqw]" : cleanSurname.length > 8 ? "text-[12.5cqw]" : "text-[15.7cqw]"}`}>{cleanSurname}</h2>
-                      <p className="mt-[3cqw] text-[4.8cqw] text-primary">@{handle}</p>
+                      <h2 className={`famus-pop mt-[4cqw] break-words font-display leading-none text-foreground ${cleanSurname.length > 12 ? "text-[9.5cqw]" : cleanSurname.length > 8 ? "text-[12.5cqw]" : "text-[15.7cqw]"}`} style={{ ["--pop" as string]: "30px" }}>{cleanSurname}</h2>
+                      <p className="famus-pop mt-[3cqw] text-[4.8cqw] text-primary" style={{ ["--pop" as string]: "22px" }}>@{handle}</p>
                     </div>
-                    <div className="absolute inset-x-5 top-[141cqw] text-center drop-shadow-lg">
+                    <div className="famus-pop absolute inset-x-5 top-[141cqw] text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.3cqw] uppercase leading-none text-foreground">Family no.</p>
-                      <p className="mt-[3cqw] font-display text-[12cqw] leading-none text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
+                      <p className="famus-pop mt-[3cqw] font-display text-[12cqw] leading-none text-foreground" style={{ ["--pop" as string]: "28px" }}>#{claimNumber?.toLocaleString("en-US")}</p>
                     </div>
-                    <p className="absolute inset-x-4 bottom-[14cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
-                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(false)} className="absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                    <p className="famus-pop absolute inset-x-4 bottom-[14cqw] text-center text-[2.8cqw] uppercase text-foreground" style={{ ["--pop" as string]: "10px" }}>One Family Name. One Agent. Built for your Family.</p>
+                    <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(false)} className="famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
                     </button>
                   </div>
