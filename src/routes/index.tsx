@@ -321,7 +321,7 @@ function Index() {
             </p>
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
               <span>Built for your Family: One&nbsp;</span>
-              <TextTypewriter interval={2.4} values={["Family Name.", "Agent."]} />
+              <TextTypewriter values={["Family Name.", "Agent."]} />
             </h1>
           </>
         ) : null}
