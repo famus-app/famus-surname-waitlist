@@ -408,12 +408,12 @@ function Index() {
                       <p className="text-[3.3cqw] uppercase leading-none text-foreground">Family no.</p>
                       <p className="mt-[3cqw] font-display text-[12cqw] leading-none text-foreground">#{claimNumber?.toLocaleString("en-US")}</p>
                     </div>
-                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
-                    {/* The back face is mirrored by its rotateY(180deg), so the
-                        button sits at the local bottom-left to land bottom-right
-                        on screen; the icon is counter-flipped to read clockwise. */}
-                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(false)} className="absolute bottom-[3.5cqw] left-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
-                      <RotateCw className="size-[4.5cqw] -scale-x-100" />
+                    <p className="absolute inset-x-4 bottom-[14cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
+                    {/* The back face sits under the flipped inner card, so its
+                        local axes already read like the front's — the button
+                        goes in the same bottom-right corner. */}
+                    <button type="button" aria-label="Flip card" onClick={() => setCardFlipped(false)} className="absolute bottom-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                      <RotateCw className="size-[4.5cqw]" />
                     </button>
                   </div>
                 </div>
