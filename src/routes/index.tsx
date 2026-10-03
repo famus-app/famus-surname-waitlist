@@ -328,7 +328,7 @@ function Index() {
                 className="text-primary"
               >
                 <TextTypewriter
-                  values={["Family Name.", "Agent."]}
+                  values={["Family Name.", "Intelligent Agent."]}
                   className="font-bold"
                 />
               </GradientText>
