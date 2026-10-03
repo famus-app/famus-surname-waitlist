@@ -38,7 +38,7 @@ export function TextTypewriter({
 
   useEffect(() => {
     if (reduced || values.length < 2) return;
-    const value = values[valueIndex];
+    const value = values[valueIndex] ?? "";
 
     if (!deleting && charCount < value.length) {
       const timer = window.setTimeout(() => setCharCount((count) => count + 1), typingSpeed);
@@ -59,7 +59,7 @@ export function TextTypewriter({
     return () => window.clearTimeout(timer);
   }, [reduced, values.length, valueIndex, charCount, deleting, typingSpeed, deletingSpeed, holdDuration]);
 
-  const value = reduced || values.length < 2 ? (values[0] ?? "") : values[valueIndex];
+  const value = reduced || values.length < 2 ? (values[0] ?? "") : (values[valueIndex] ?? "");
   const visible = reduced ? value : value.slice(0, charCount);
   const widest = values.reduce((longest, current) => (current.length > longest.length ? current : longest), "");
 
