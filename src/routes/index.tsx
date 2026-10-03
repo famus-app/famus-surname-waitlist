@@ -39,7 +39,6 @@ function Index() {
   const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [priorityInterest, setPriorityInterest] = useState(false);
   const [claimed, setClaimed] = useState(true);
   const [previewing, setPreviewing] = useState(true);
   const [remaining, setRemaining] = useState(31_000_000);
@@ -274,7 +273,7 @@ function Index() {
       p_surname_key: handle,
       p_email: email.trim().toLowerCase(),
       p_name: name.trim(),
-      p_priority_interest: priorityInterest,
+      p_priority_interest: false,
     });
     if (claimError) {
       setError(claimError.code === "23505" ? `@${handle} has already been claimed.` : "We couldn't hold that name. Please try again.");
@@ -353,18 +352,16 @@ function Index() {
             </div>
               <ProgressiveInputStack
                 className="mx-auto w-full max-w-md"
-                onStepChange={(step) => setOnSurnameStep(step === 3)}
+                onStepChange={(step) => setOnSurnameStep(step === 2)}
                 steps={[
                   { id: "email", placeholder: "Email address", type: "email", autoComplete: "email" },
-                   { id: "name", placeholder: "Your name", autoComplete: "name" },
-                   { id: "priority", type: "checkbox", placeholder: "Opt in for priority access" },
-                   { id: "surname", placeholder: "Family name", autoComplete: "family-name" },
+                  { id: "name", placeholder: "Your name", autoComplete: "name" },
+                  { id: "surname", placeholder: "Family name", autoComplete: "family-name" },
                 ]}
                 onChange={(data) => {
                   setSurname(data["surname"] ?? "");
                   setEmail(data["email"] ?? "");
-                   setName(data["name"] ?? "");
-                   setPriorityInterest(data["priority"] === "true");
+                  setName(data["name"] ?? "");
                 }}
                 submitControl={
                   <ClaimToggle
