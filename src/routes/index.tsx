@@ -50,6 +50,31 @@ function Index() {
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
 
+  const cardSceneRef = useRef<HTMLDivElement>(null);
+  const cardTiltRaf = useRef(0);
+  const tiltCards = (e: React.MouseEvent) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
+    if (!inner) return;
+    const rect = cardSceneRef.current!.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    cancelAnimationFrame(cardTiltRaf.current);
+    cardTiltRaf.current = requestAnimationFrame(() => {
+      inner.classList.add("is-tilting");
+      inner.style.setProperty("--tilt-x", `${(-py * 12).toFixed(2)}deg`);
+      inner.style.setProperty("--tilt-y", `${(px * 12).toFixed(2)}deg`);
+    });
+  };
+  const untiltCards = () => {
+    const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
+    if (!inner) return;
+    cancelAnimationFrame(cardTiltRaf.current);
+    inner.classList.remove("is-tilting");
+    inner.style.setProperty("--tilt-x", "0deg");
+    inner.style.setProperty("--tilt-y", "0deg");
+  };
+
   const confettiRef = useRef<((options?: ConfettiOptions) => void) | null>(null);
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
