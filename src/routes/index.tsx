@@ -319,7 +319,7 @@ function Index() {
             <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
               <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}<span className="align-super text-[0.55em] text-primary">*</span></span> <span className="whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
             </p>
-            <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.5rem,3vw,2.5rem)] leading-none text-foreground">
+            <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.2rem,3vw,2.5rem)] leading-none text-foreground">
               <span>Built for your Family: One&nbsp;</span>
               <TextTypewriter values={["Family Name.", "Agent."]} className="font-logo text-primary famus-typed-glow" />
             </h1>
