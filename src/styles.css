@@ -11,6 +11,15 @@
   src: url("/fonts/DTGetaiGroteskDisplay-Black.woff") format("woff");
 }
 
+/* Canarina — Regular 400 (SIL OFL 1.1, Ariel Martín Pérez / Tunera Type Foundry) */
+@font-face {
+  font-family: "Canarina";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/Canarina-Chica.woff2") format("woff2"), url("/fonts/Canarina-Chica.woff") format("woff");
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*
