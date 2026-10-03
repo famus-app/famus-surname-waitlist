@@ -60,7 +60,14 @@ const SocialCard = ({
 }: SocialCardProps) => (
   <div className="card">
     <div className="background" />
-    <div className="logo">{title}</div>
+    <div
+      className="logo famus-gradient-text"
+      style={{
+        backgroundImage:
+          "linear-gradient(90deg, #F97316, #d3b58f, #f4f2f2, #d3b58f, #F97316)",
+        animationDuration: "3s",
+      }}
+    >{title}</div>
 
     {socialLinks.map((link, index) => (
       <SocialBox key={index} {...link} />
