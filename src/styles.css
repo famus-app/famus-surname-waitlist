@@ -308,17 +308,3 @@
     animation: none;
   }
 }
-
-.famus-orbital-ring-a { animation: famus-orbit 3.2s linear infinite; transform: rotateX(62deg) rotateZ(0deg); }
-.famus-orbital-ring-b { animation: famus-orbit-rev 2.4s linear infinite; }
-.famus-orbital-core { box-shadow: 0 0 10px 2px color-mix(in oklab, var(--primary) 70%, transparent); animation: famus-core-pulse 2.2s ease-in-out infinite; }
-.famus-orbital-glow { filter: blur(6px); opacity: .45; animation: famus-core-pulse 2.2s ease-in-out infinite; }
-.famus-orbital.is-active .famus-orbital-ring-a { animation-duration: 1.4s; }
-.famus-orbital.is-active .famus-orbital-ring-b { animation-duration: 1s; }
-.famus-orbital.is-active .famus-orbital-glow { opacity: .75; }
-@keyframes famus-orbit { to { transform: rotateX(62deg) rotateZ(360deg); } }
-@keyframes famus-orbit-rev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-@keyframes famus-core-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
-@media (prefers-reduced-motion: reduce) {
-  .famus-orbital-ring-a, .famus-orbital-ring-b, .famus-orbital-core, .famus-orbital-glow { animation: none; }
-}
