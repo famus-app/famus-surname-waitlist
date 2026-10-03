@@ -68,7 +68,7 @@ export function TextTypewriter({
       <span aria-hidden="true" className="invisible col-start-1 row-start-1 whitespace-nowrap">
         {widest}
       </span>
-      <span className="col-start-1 row-start-1 whitespace-nowrap">
+      <span className="col-start-1 row-start-1 whitespace-nowrap text-left">
         {visible}
         <span aria-hidden="true" className="famus-caret" />
       </span>
