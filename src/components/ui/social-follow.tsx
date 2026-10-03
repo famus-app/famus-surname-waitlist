@@ -73,7 +73,7 @@ const SocialCard = ({
 export function SocialFollow() {
   return (
     <div className="famus-socials">
-      <SocialCard title="JOIN THE MIX " />
+      <SocialCard title="BE AN INSIDER " />
     </div>
   );
 }
