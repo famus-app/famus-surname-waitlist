@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 
@@ -49,6 +49,31 @@ function Index() {
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
+
+  const cardSceneRef = useRef<HTMLDivElement>(null);
+  const cardTiltRaf = useRef(0);
+  const tiltCards = (e: ReactMouseEvent) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
+    if (!inner) return;
+    const rect = cardSceneRef.current!.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    cancelAnimationFrame(cardTiltRaf.current);
+    cardTiltRaf.current = requestAnimationFrame(() => {
+      inner.classList.add("is-tilting");
+      inner.style.setProperty("--tilt-x", `${(-py * 12).toFixed(2)}deg`);
+      inner.style.setProperty("--tilt-y", `${(px * 12).toFixed(2)}deg`);
+    });
+  };
+  const untiltCards = () => {
+    const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
+    if (!inner) return;
+    cancelAnimationFrame(cardTiltRaf.current);
+    inner.classList.remove("is-tilting");
+    inner.style.setProperty("--tilt-x", "0deg");
+    inner.style.setProperty("--tilt-y", "0deg");
+  };
 
   const confettiRef = useRef<((options?: ConfettiOptions) => void) | null>(null);
 
@@ -374,7 +399,7 @@ function Index() {
             </>
           ) : (
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
-              <div className="famus-card-scene w-full max-w-[360px] justify-self-center">
+              <div ref={cardSceneRef} onMouseMove={tiltCards} onMouseEnter={tiltCards} onMouseLeave={untiltCards} className="famus-card-scene w-full max-w-[360px] justify-self-center">
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
                   <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
