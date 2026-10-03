@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LockKeyhole, RotateCw, Share2 } from "lucide-react";
-import { AgentOrbital } from "@/components/ui/agent-orbital";
+import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -386,7 +386,7 @@ function Index() {
                     <div className="min-w-0 text-center">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
                       <div className="mt-2 flex items-center justify-center gap-3">
-                        <AgentOrbital size={28} active={Boolean(handle)} />
+                        <ThinkingOrb state={handle ? "weaving" : "breathing"} size={32} theme="dark" color="#F97316" className="shrink-0" aria-label="Your family agent" />
                         <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
                       </div>
                     </div>
