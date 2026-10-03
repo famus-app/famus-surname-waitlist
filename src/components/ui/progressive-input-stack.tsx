@@ -166,8 +166,12 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                         type="button"
                         onClick={handleNext}
                         disabled={step.type !== "checkbox" && (!formData[step.id]?.trim() || (step.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData[step.id] ?? "")))}
-                        className="h-[42px] w-24 shrink-0 sm:w-36 rounded-full shadow-sm"
+                        className="relative h-[42px] w-24 shrink-0 overflow-hidden sm:w-36 rounded-full shadow-sm"
                       >
+                        <span
+                          aria-hidden="true"
+                          className="famus-metal-cta-fill pointer-events-none absolute inset-0"
+                        />
                         Next
                         <ArrowRight size={15} />
                       </Button>
