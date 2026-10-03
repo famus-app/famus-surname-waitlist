@@ -308,34 +308,3 @@
     animation: none;
   }
 }
-
-/* Metallic fill overlay for primary buttons — same brand orange, shaded like brushed metal with a light sweep */
-.famus-metal-cta-fill {
-  background: linear-gradient(
-    105deg,
-    oklch(0.44 0.12 38) 0%,
-    oklch(0.72 0.17 48) 22%,
-    oklch(0.9 0.07 76) 36%,
-    oklch(0.71 0.155 42) 52%,
-    oklch(0.4 0.11 38) 76%,
-    oklch(0.64 0.18 42) 100%
-  );
-  background-size: 220% 100%;
-  animation: famus-glare 3.6s ease-in-out infinite;
-}
-
-@keyframes famus-glare {
-  0%,
-  100% {
-    background-position: 190% 0%;
-  }
-  50% {
-    background-position: -90% 0%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .famus-metal-cta-fill {
-    animation: none;
-  }
-}

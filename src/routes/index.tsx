@@ -432,7 +432,7 @@ function Index() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Button variant="outline" onClick={() => setCardFlipped((flipped) => !flipped)}><RotateCw className="size-4" />Flip card</Button>
-                  <Button onClick={() => void shareCard()} disabled={sharing} className="relative overflow-hidden"><span aria-hidden="true" className="famus-metal-cta-fill pointer-events-none absolute inset-0" /><Share2 className="relative z-10 size-4" /><span className="relative z-10">{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</span></Button>
+                  <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">Coming soon</span></div>
