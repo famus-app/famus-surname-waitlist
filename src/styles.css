@@ -253,7 +253,7 @@
 .famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 55%, transparent), transparent 30%, transparent 72%, color-mix(in oklab, var(--background) 72%, transparent)); }
 
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-metallic { animation: none; }
   .famus-card-inner { transition: none; }
 }
 
@@ -268,11 +268,35 @@
   animation: famus-caret-blink 1.05s step-end infinite;
 }
 
-/* Orange glow on the typed tagline words (Family Name. / Agent.) */
+/* Orange metallic glare on the typed tagline words (Family Name. / Agent.) */
 @utility famus-typed-glow {
   text-shadow:
     0 0 0.45em color-mix(in oklab, var(--primary) 45%, transparent),
     0 0 1.1em color-mix(in oklab, var(--primary) 22%, transparent);
+}
+
+/* Metallic gradient fill with a light glare sweeping across the letters */
+@utility famus-metallic {
+  color: var(--primary);
+  background-image: linear-gradient(
+    105deg,
+    oklch(0.48 0.13 40) 0%,
+    oklch(0.72 0.17 48) 24%,
+    oklch(0.93 0.08 76) 38%,
+    oklch(0.71 0.155 42) 54%,
+    oklch(0.44 0.12 38) 76%,
+    oklch(0.64 0.18 42) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: famus-glare 3.6s ease-in-out infinite;
+}
+
+@keyframes famus-glare {
+  0%, 100% { background-position: 190% 0%; }
+  50% { background-position: -90% 0%; }
 }
 
 @keyframes famus-caret-blink {
