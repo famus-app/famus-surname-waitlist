@@ -387,8 +387,10 @@ function Index() {
             <div className="famus-arrive mx-auto grid max-w-3xl gap-6 md:grid-cols-[minmax(0,1fr)_minmax(240px,0.72fr)] md:items-center">
               <div className="famus-card-scene w-full max-w-[360px] justify-self-center">
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
-                  <div className="famus-card-face absolute inset-0 overflow-hidden rounded-md border border-border">
-                    <img src={cardFrontArt} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
+                  <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
+                    <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
+                    <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer absolute inset-0 size-full object-cover" width={1024} height={1536} />
+                    <div className="famus-metal-sheen absolute inset-0" aria-hidden="true" />
                     <div className="famus-card-shade absolute inset-0" />
                     <p className="absolute inset-x-0 top-[7cqw] whitespace-pre-line text-center font-manosque text-[10.5cqw] leading-none text-foreground">{"For Generations\n&\nForever \n\n\n"}</p>
                   </div>
