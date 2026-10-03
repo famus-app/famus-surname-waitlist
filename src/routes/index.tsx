@@ -323,7 +323,7 @@ function Index() {
               <span>Built for your Family: One&nbsp;</span>
               <TextTypewriter
                 values={["Family Name.", "Agent."]}
-                valuesClassNames={["text-secondary", "text-primary"]}
+                valuesClassNames={["text-primary", "text-primary"]}
                 className="font-bold"
               />
             </h1>
