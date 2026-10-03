@@ -71,8 +71,7 @@ const SocialCard = ({
 export function SocialFollow() {
   return (
     <div className="famus-socials">
-      <p className="famus-socials-caption">Follow us for updates</p>
-      <SocialCard title="Socials" />
+      <SocialCard title="Follow us for updates" />
     </div>
   );
 }
