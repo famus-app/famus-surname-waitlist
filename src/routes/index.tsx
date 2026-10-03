@@ -381,7 +381,7 @@ function Index() {
                   <div className="famus-card-face absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <p className="absolute inset-x-0 top-[7cqw] whitespace-pre-line text-center font-wordmark text-[10.5cqw] leading-none text-foreground">{"For Generations\n&\nForever !!\n\n\n"}</p>
+                    <p className="absolute inset-x-0 top-[7cqw] whitespace-pre-line text-center font-wordmark text-[10.5cqw] leading-none text-foreground">{"For Generations\n&\nForever \n\n\n"}</p>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
