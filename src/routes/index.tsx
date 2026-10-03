@@ -202,34 +202,14 @@ function Index() {
       context.fillText("FAMILY NO.", 540, 1560);
       context.font = '130px "Instrument Serif", serif';
       context.fillText(`#${claimNumber.toLocaleString("en-US")}`, 540, 1695, 900);
+      context.font = '30px "Work Sans", sans-serif';
+      context.fillStyle = foreground;
+      context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1830, 940);
     } else {
-      const logo = new Image();
-      logo.src = famusLogo;
-      try {
-        await logo.decode();
-        context.drawImage(logo, 90, 76, 112, 112);
-      } catch {
-        // The card remains shareable if the image cannot load.
-      }
       context.fillStyle = foreground;
-      context.font = '78px "Instrument Serif", serif';
-      context.textAlign = "left";
-      context.fillText("fam", 215, 157);
-      const famWidth = context.measureText("fam").width;
-      context.fillStyle = primary;
-      context.fillText("US", 215 + famWidth, 157);
-      context.textAlign = "center";
-      context.fillStyle = foreground;
-      context.font = '40px "Work Sans", sans-serif';
-      context.fillText("WELCOME TO", 540, 300);
-      context.font = '140px "Instrument Serif", serif';
-      context.fillText("the famUS fam.", 540, 430, 900);
-      context.font = '34px "Work Sans", sans-serif';
-      context.fillText("Your family name has found its place.", 540, 505, 800);
+      context.font = '170px "Canarina", sans-serif';
+      context.fillText("Welcome", 540, 265);
     }
-    context.font = '30px "Work Sans", sans-serif';
-    context.fillStyle = foreground;
-    context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1830, 940);
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
   }
@@ -401,13 +381,7 @@ function Index() {
                   <div className="famus-card-face absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="absolute inset-x-6 top-6 flex items-center gap-2 font-display text-2xl"><img src={famusLogo} alt="" className="size-9" />fam<span className="-ml-2 text-primary">US</span></div>
-                    <div className="absolute inset-x-5 top-[24cqw] text-center drop-shadow-lg">
-                      <p className="text-[3.7cqw] uppercase leading-none text-foreground">Welcome to</p>
-                      <p className="mt-[2cqw] font-display text-[13cqw] leading-none text-foreground">the famUS fam.</p>
-                      <p className="mt-[1cqw] text-[3.15cqw] leading-snug text-foreground">Your family name has found its place.</p>
-                    </div>
-                    <p className="absolute inset-x-4 bottom-[7.5cqw] text-center text-[2.8cqw] uppercase text-foreground">One Family Name. One Agent. Built for your Family.</p>
+                    <p className="absolute inset-x-0 top-[7cqw] text-center font-wordmark text-[10.5cqw] leading-none text-foreground">Welcome</p>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
