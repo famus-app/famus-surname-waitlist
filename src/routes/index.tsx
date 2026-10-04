@@ -19,7 +19,7 @@ import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
 import cardFrontArt from "@/assets/famus-card-front-generations.png.asset.json";
 import cardFrontGlow from "@/assets/famus-card-front-glow.png.asset.json";
-import cardBackArt from "@/assets/famus-card-back-autumn.png";
+import cardBackArt from "@/assets/famus-card-back-foliage.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -189,7 +189,8 @@ function Index() {
     const background = tokens.getPropertyValue("--background").trim();
 
     const art = new Image();
-    art.src = cardFlipped ? cardBackArt : cardFrontArt.url;
+    art.crossOrigin = "anonymous";
+    art.src = cardFlipped ? cardBackArt.url : cardFrontArt.url;
     try {
       await Promise.all([art.decode(), document.fonts.ready]);
       const ratio = Math.max(canvas.width / art.width, canvas.height / art.height);
@@ -211,21 +212,29 @@ function Index() {
 
     context.textAlign = "center";
     if (cardFlipped) {
+      const logo = new Image();
+      logo.src = famusLogo;
+      try {
+        await logo.decode();
+        context.drawImage(logo, 480, 306, 120, 120);
+      } catch {
+        // Keep the rest of the card shareable if the logo cannot load.
+      }
       context.fillStyle = foreground;
       context.font = '38px "Work Sans", sans-serif';
-      context.fillText("RESERVED IN PERPETUITY", 540, 955);
-      context.fillText("FOR THE GENERATIONS", 540, 1010);
-      let handleSize = 150;
+      context.fillText("RESERVED IN PERPETUITY", 540, 780);
+      context.fillText("FOR THE GENERATIONS", 540, 835);
+      let handleSize = 142;
       context.font = `${handleSize}px "Instrument Serif", serif`;
       while (context.measureText(`@${handle}`).width > 900 && handleSize > 70) {
         handleSize -= 6;
         context.font = `${handleSize}px "Instrument Serif", serif`;
       }
       context.fillStyle = primary;
-      context.fillText(`@${handle}`, 540, 1205, 900);
+      context.fillText(`@${handle}`, 540, 1050, 900);
       context.fillStyle = foreground;
-      context.font = '96px "Instrument Serif", serif';
-      context.fillText(`Fam #${String(claimNumber).padStart(4, "0")}`, 540, 1390, 900);
+      context.font = '88px "Instrument Serif", serif';
+      context.fillText(`Fam #${String(claimNumber).padStart(4, "0")}`, 540, 1240, 900);
       context.font = '38px "Work Sans", sans-serif';
       context.fillText("Claim yours at famus.si/register", 540, 1660, 940);
       context.font = '30px "Work Sans", sans-serif';
@@ -408,12 +417,13 @@ function Index() {
                     </button>
                   </div>
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
-                    <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
+                    <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="famus-pop absolute inset-x-[8cqw] top-[78cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
+                    <img src={famusLogo} alt="" className="famus-pop absolute left-1/2 top-[28cqw] w-[12cqw] -translate-x-1/2" style={{ ["--pop" as string]: "18px" }} />
+                    <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
-                      <p className={`famus-pop mt-[6cqw] break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[9cqw]" : handle.length > 8 ? "text-[11.5cqw]" : "text-[14cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
+                      <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"\n\nFam #"}{String(claimNumber ?? 0).padStart(4, "0")}</p>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
