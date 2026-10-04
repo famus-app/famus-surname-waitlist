@@ -19,7 +19,7 @@ import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
 import cardFrontArt from "@/assets/famus-card-front-generations.png.asset.json";
 import cardFrontGlow from "@/assets/famus-card-front-glow.png.asset.json";
-import cardBackArt from "@/assets/famus-card-back-bushes.png.asset.json";
+import cardBackArt from "@/assets/famus-card-back-foliage.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
