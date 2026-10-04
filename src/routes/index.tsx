@@ -236,7 +236,7 @@ function Index() {
       context.font = '88px "Instrument Serif", serif';
       context.fillText(`Fam #${String(claimNumber).padStart(4, "0")}`, 540, 1240, 900);
       context.font = '38px "Work Sans", sans-serif';
-      context.fillText("Claim yours at famus.si/register", 540, 1660, 940);
+      context.fillText("Reserve yours at famus.si/register", 540, 1660, 940);
       context.font = '30px "Work Sans", sans-serif';
       context.fillText("ONE FAMILY NAME. ONE AGENT. FOR YOUR FAMILY 🫶🏻", 540, 1780, 960);
     }
