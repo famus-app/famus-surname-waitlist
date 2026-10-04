@@ -215,8 +215,8 @@ function Index() {
     if (cardFlipped) {
       context.fillStyle = foreground;
       context.font = '38px "Work Sans", sans-serif';
-      context.fillText("RESERVED IN PERPETUITY", 540, 802);
-      context.fillText("FOR THE GENERATIONS", 540, 857);
+      context.fillText("RESERVED IN PERPETUITY", 540, 780);
+      context.fillText("FOR THE GENERATIONS", 540, 835);
       let handleSize = 142;
       context.font = `${handleSize}px "Instrument Serif", serif`;
       while (context.measureText(`@${handle}`).width > 900 && handleSize > 70) {
