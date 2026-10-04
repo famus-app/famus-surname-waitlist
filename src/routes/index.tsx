@@ -212,26 +212,24 @@ function Index() {
     context.textAlign = "center";
     if (cardFlipped) {
       context.fillStyle = foreground;
-      context.font = '40px "Work Sans", sans-serif';
-      context.fillText("A FAMILY NAME, CLAIMED", 540, 1060);
-      let surnameSize = 170;
-      context.font = `${surnameSize}px "Instrument Serif", serif`;
-      while (context.measureText(cleanSurname).width > 860 && surnameSize > 70) {
-        surnameSize -= 6;
-        context.font = `${surnameSize}px "Instrument Serif", serif`;
+      context.font = '38px "Work Sans", sans-serif';
+      context.fillText("RESERVED IN PERPETUITY", 540, 1040);
+      context.fillText("FOR THE GENERATIONS", 540, 1095);
+      let handleSize = 150;
+      context.font = `${handleSize}px "Instrument Serif", serif`;
+      while (context.measureText(`@${handle}`).width > 900 && handleSize > 70) {
+        handleSize -= 6;
+        context.font = `${handleSize}px "Instrument Serif", serif`;
       }
-      context.fillText(cleanSurname, 540, 1240, 860);
       context.fillStyle = primary;
-      context.font = '52px "Work Sans", sans-serif';
-      context.fillText(`@${handle}`, 540, 1350, 860);
+      context.fillText(`@${handle}`, 540, 1290, 900);
       context.fillStyle = foreground;
-      context.font = '36px "Work Sans", sans-serif';
-      context.fillText("FAMILY NO.", 540, 1560);
-      context.font = '130px "Instrument Serif", serif';
-      context.fillText(`#${claimNumber.toLocaleString("en-US")}`, 540, 1695, 900);
+      context.font = '96px "Instrument Serif", serif';
+      context.fillText(`Fam #${String(claimNumber).padStart(4, "0")}`, 540, 1430, 900);
+      context.font = '38px "Work Sans", sans-serif';
+      context.fillText("Claim yours at famus.si/register", 540, 1760, 940);
       context.font = '30px "Work Sans", sans-serif';
-      context.fillStyle = foreground;
-      context.fillText("ONE FAMILY NAME. ONE AGENT. BUILT FOR YOURS.", 540, 1830, 940);
+      context.fillText("ONE FAMILY NAME. ONE AGENT. FOR YOUR FAMILY 🫶🏻", 540, 1840, 960);
     }
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
@@ -413,15 +411,14 @@ function Index() {
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
                     <div className="famus-card-shade absolute inset-0" />
                     <div className="famus-pop absolute inset-x-5 top-[94.5cqw] text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
-                      <p className="text-[3.7cqw] uppercase leading-none text-foreground">A family name, claimed</p>
-                      <h2 className={`famus-pop mt-[4cqw] break-words font-display leading-none text-foreground ${cleanSurname.length > 12 ? "text-[9.5cqw]" : cleanSurname.length > 8 ? "text-[12.5cqw]" : "text-[15.7cqw]"}`} style={{ ["--pop" as string]: "30px" }}>{cleanSurname}</h2>
-                      <p className="famus-pop mt-[3cqw] text-[4.8cqw] text-primary" style={{ ["--pop" as string]: "22px" }}>@{handle}</p>
+                      <p className="text-[3.4cqw] uppercase leading-snug tracking-[0.12em] text-foreground">Reserved in Perpetuity<br />for the generations</p>
+                      <p className={`famus-pop mt-[5cqw] break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[9cqw]" : handle.length > 8 ? "text-[11.5cqw]" : "text-[14cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
+                      <p className="famus-pop mt-[4cqw] font-display text-[9cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>Fam #{String(claimNumber ?? 0).padStart(4, "0")}</p>
                     </div>
-                    <div className="famus-pop absolute inset-x-5 top-[141cqw] text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
-                      <p className="text-[3.3cqw] uppercase leading-none text-foreground">Family no.</p>
-                      <p className="famus-pop mt-[3cqw] font-display text-[12cqw] leading-none text-foreground" style={{ ["--pop" as string]: "28px" }}>#{claimNumber?.toLocaleString("en-US")}</p>
+                    <div className="famus-pop absolute inset-x-4 bottom-[9cqw] text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
+                      <p className="text-[3.4cqw] text-foreground">Claim yours at <span className="text-primary">famus.si/register</span></p>
+                      <p className="mt-[3cqw] text-[2.9cqw] uppercase tracking-[0.06em] text-foreground/85">One Family Name. One Agent. For your Family 🫶🏻</p>
                     </div>
-                    <p className="famus-pop absolute inset-x-4 bottom-[14cqw] text-center text-[2.8cqw] uppercase text-foreground" style={{ ["--pop" as string]: "10px" }}>One Family Name. One Agent. Built for your Family.</p>
                     <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(false)} className="famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
                     </button>
