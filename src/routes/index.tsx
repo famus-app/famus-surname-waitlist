@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Download, Link2, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
@@ -46,14 +46,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [surname, setSurname] = useState("");
+  const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [claimed, setClaimed] = useState(false);
-  const [previewing, setPreviewing] = useState(false);
+  const [claimed, setClaimed] = useState(true);
+  const [previewing, setPreviewing] = useState(true);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
-  const [claimNumber, setClaimNumber] = useState<number | null>(null);
+  const [claimNumber, setClaimNumber] = useState<number | null>(1);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
@@ -443,11 +443,11 @@ function Index() {
       </div>
       <div className="relative min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-center px-6 py-5 sm:px-10">
-        <Link to="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
+        <a href="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
           <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
           <span className="whitespace-nowrap"><span className="text-[#d3b58f]">fam</span><span className="text-primary">US</span></span>
-        </Link>
+        </a>
       </header>
 
       <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "px-6 pb-16 pt-16 sm:pt-24"}`}>
@@ -594,7 +594,7 @@ function Index() {
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">NEXT DROP</span></div>
-                  <p className="mt-2 text-sm text-muted-foreground">Invite 2 of your other family members to unlock family founder badge and privileges</p>
+                  <p className="mt-2 text-sm text-muted-foreground">Invite 2 of your other family members to unlock Family Founder badge and privileges</p>
                 </div>
                 <div className="mt-10">
                   <SocialFollow />
