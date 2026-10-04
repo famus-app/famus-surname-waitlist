@@ -569,7 +569,7 @@ function Index() {
               <div className="min-w-0">
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon !</h2>
-                {previewing ? <p className="mt-2 text-sm leading-relaxed text-muted-foreground">A look at the card you'll receive when your family name is reserved.</p> : <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>}
+                {previewing ? <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family name is officially secured on famUS. We’ll be in touch as soon as your agent is live.</p> : <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>}
                 <div className="mt-6 flex flex-wrap gap-3">
                   {previewing ? (
                     <>
