@@ -46,14 +46,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [surname, setSurname] = useState("Pedapati");
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [claimed, setClaimed] = useState(true);
-  const [previewing, setPreviewing] = useState(true);
+  const [claimed, setClaimed] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
-  const [claimNumber, setClaimNumber] = useState<number | null>(1);
+  const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
