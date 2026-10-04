@@ -246,7 +246,7 @@ function Index() {
       alphaColor(foreground, 0.9);
       ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
       ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
-      y += tLine * 3; // includes trailing <br />
+      y += tLine * 2;
       ctx.letterSpacing = "0px";
 
       // Divider
