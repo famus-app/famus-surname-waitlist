@@ -447,7 +447,7 @@ function Index() {
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
           <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
           <span className="whitespace-nowrap"><span className="text-[#d3b58f]">fam</span><span className="text-primary">US</span></span>
-        </a>
+        </Link>
       </header>
 
       <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "px-6 pb-16 pt-16 sm:pt-24"}`}>
