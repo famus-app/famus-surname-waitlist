@@ -352,28 +352,28 @@ function Index() {
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], title: `The ${cleanSurname}s are on famUS` });
       } else {
-        downloadBlob(blob);
+        downloadBlob(blob, cardFlipped ? "back" : "front");
       }
     } catch (shareError) {
-      if (!(shareError instanceof DOMException && shareError.name === "AbortError")) downloadBlob(blob);
+      if (!(shareError instanceof DOMException && shareError.name === "AbortError")) downloadBlob(blob, cardFlipped ? "back" : "front");
     } finally {
       setSharing(false);
     }
   }
 
-  function downloadBlob(blob: Blob) {
+  function downloadBlob(blob: Blob, side: "front" | "back" = "back") {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `famus-${handle}-${cardFlipped ? "details" : "welcome"}.png`;
+    link.download = `famus-${handle}-${side === "back" ? "details" : "welcome"}.png`;
     link.click();
     URL.revokeObjectURL(url);
   }
 
   async function downloadCard() {
     setSharing(true);
-    const blob = await createShareCard();
-    if (blob) downloadBlob(blob);
+    const blob = await createShareCard("back");
+    if (blob) downloadBlob(blob, "back");
     setSharing(false);
   }
 
