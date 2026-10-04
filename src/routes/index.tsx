@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, Link2, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
