@@ -1,8 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LockKeyhole, RotateCw, Share2 } from "lucide-react";
+import { Download, Link2, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 
 import { ClaimToggle } from "@/components/ui/claim-toggle";
@@ -305,6 +313,35 @@ function Index() {
     URL.revokeObjectURL(url);
   }
 
+  async function downloadCard() {
+    setSharing(true);
+    const blob = await createShareCard();
+    if (blob) downloadBlob(blob);
+    setSharing(false);
+  }
+
+  async function copyCardLink() {
+    const link = "https://famus.si/register";
+    try {
+      await navigator.clipboard.writeText(link);
+    } catch {
+      const area = document.createElement("textarea");
+      area.value = link;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      const copied = document.execCommand("copy");
+      area.remove();
+      if (!copied) {
+        toast.error("Couldn't copy the link. Long-press the card to share instead.");
+        return;
+      }
+    }
+    toast.success("Link copied — famus.si/register");
+  }
+
 
   async function submitClaim(): Promise<boolean> {
     if (!cleanSurname || !name.trim() || !email.includes("@")) return false;
@@ -477,7 +514,27 @@ function Index() {
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon.</h2>
                 {previewing ? <p className="mt-2 text-sm leading-relaxed text-muted-foreground">A look at the card you'll receive when your family name is reserved.</p> : <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>}
                 <div className="mt-6 flex flex-wrap gap-3">
-                  {previewing ? <Button onClick={() => { setClaimed(false); setPreviewing(false); setSurname(""); setClaimNumber(null); setCardFlipped(false); }}>Claim your own</Button> : <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>}
+                  {previewing ? (
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Share card"}</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-48">
+                          <DropdownMenuItem onClick={() => void downloadCard()} className="gap-2">
+                            <Download className="size-4" />Download card
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => void shareCard()} className="gap-2">
+                            <Share2 className="size-4" />Post to socials
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => void copyCardLink()} className="gap-2">
+                            <Link2 className="size-4" />Share link
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <Button variant="outline" onClick={() => { setClaimed(false); setPreviewing(false); setSurname(""); setClaimNumber(null); setCardFlipped(false); }}>Claim your own</Button>
+                    </>
+                  ) : <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>}
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">Coming soon</span></div>
