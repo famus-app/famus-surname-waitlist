@@ -230,11 +230,22 @@ function Index() {
         handleSize -= 6;
         context.font = `${handleSize}px "Instrument Serif", serif`;
       }
-      context.fillStyle = primary;
-      context.fillText(`@${handle}`, 540, 1050, 900);
       context.fillStyle = foreground;
+      context.fillText(`@${handle}`, 540, 1050, 900);
       context.font = '88px "Instrument Serif", serif';
-      context.fillText(`Fam #${String(claimNumber).padStart(4, "0")}`, 540, 1240, 900);
+      {
+        const prefix = "fam #";
+        const num = String(claimNumber).padStart(4, "0");
+        const pw = context.measureText(prefix).width;
+        const nw = context.measureText(num).width;
+        const startX = 540 - (pw + nw) / 2;
+        context.textAlign = "left";
+        context.fillText(prefix, startX, 1240);
+        context.fillStyle = primary;
+        context.fillText(num, startX + pw, 1240);
+        context.fillStyle = foreground;
+        context.textAlign = "center";
+      }
       context.font = '38px "Work Sans", sans-serif';
       context.fillText("Reserve yours at famus.si/register", 540, 1660, 940);
       context.font = '30px "Work Sans", sans-serif';
@@ -423,8 +434,8 @@ function Index() {
                     <div className="famus-pop absolute inset-x-[8cqw] top-[69cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
-                      <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
-                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}{String(claimNumber ?? 0).padStart(4, "0")}</p>
+                      <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-foreground ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
+                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-primary">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
                       <p className="text-[3.4cqw] text-foreground">Claim yours at <span className="text-primary">famus.si/register</span></p>
