@@ -214,8 +214,8 @@ function Index() {
     if (cardFlipped) {
       context.fillStyle = foreground;
       context.font = '38px "Work Sans", sans-serif';
-      context.fillText("RESERVED IN PERPETUITY", 540, 824);
-      context.fillText("FOR THE GENERATIONS", 540, 879);
+      context.fillText("RESERVED IN PERPETUITY", 540, 802);
+      context.fillText("FOR THE GENERATIONS", 540, 857);
       let handleSize = 142;
       context.font = `${handleSize}px "Instrument Serif", serif`;
       while (context.measureText(`@${handle}`).width > 900 && handleSize > 70) {
@@ -430,7 +430,7 @@ function Index() {
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="famus-pop absolute inset-x-[8cqw] top-[69cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
+                    <div className="famus-pop absolute inset-x-[8cqw] top-[67cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
                       <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
