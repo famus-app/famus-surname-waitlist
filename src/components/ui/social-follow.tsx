@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import signalArt from "@/assets/famus-signal.png.asset.json";
 
 // Types
 interface SocialBoxProps {
@@ -58,8 +59,10 @@ const SocialCard = ({
 
   ],
 }: SocialCardProps) => (
-  <div className="card">
-    <div className="background" />
+    <div className="card">
+      <div className="background">
+        <img src={signalArt.url} alt="" className="signal-art" loading="lazy" />
+      </div>
     <div className="logo">{title}</div>
 
     {socialLinks.map((link, index) => (
