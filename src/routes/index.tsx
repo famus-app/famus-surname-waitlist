@@ -213,8 +213,8 @@ function Index() {
     if (cardFlipped) {
       context.fillStyle = foreground;
       context.font = '38px "Work Sans", sans-serif';
-      context.fillText("RESERVED IN PERPETUITY", 540, 1040);
-      context.fillText("FOR THE GENERATIONS", 540, 1095);
+      context.fillText("RESERVED IN PERPETUITY", 540, 955);
+      context.fillText("FOR THE GENERATIONS", 540, 1010);
       let handleSize = 150;
       context.font = `${handleSize}px "Instrument Serif", serif`;
       while (context.measureText(`@${handle}`).width > 900 && handleSize > 70) {
@@ -222,15 +222,14 @@ function Index() {
         context.font = `${handleSize}px "Instrument Serif", serif`;
       }
       context.fillStyle = primary;
-      context.fillText(`@${handle}`, 540, 1290, 900);
+      context.fillText(`@${handle}`, 540, 1205, 900);
       context.fillStyle = foreground;
       context.font = '96px "Instrument Serif", serif';
-      context.fillText(`Fam #${String(claimNumber).padStart(4, "0")}`, 540, 1430, 900);
+      context.fillText(`Fam #${String(claimNumber).padStart(4, "0")}`, 540, 1390, 900);
       context.font = '38px "Work Sans", sans-serif';
       context.fillText("Claim yours at famus.si/register", 540, 1660, 940);
       context.font = '30px "Work Sans", sans-serif';
-      context.fillText("ONE FAMILY NAME. ONE AGENT.", 540, 1770, 960);
-      context.fillText("FOR YOUR FAMILY 🫶🏻", 540, 1820, 960);
+      context.fillText("ONE FAMILY NAME. ONE AGENT. FOR YOUR FAMILY 🫶🏻", 540, 1780, 960);
     }
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
@@ -411,16 +410,16 @@ function Index() {
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt} alt="" className="absolute inset-0 size-full object-cover" width={848} height={1264} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="famus-pop absolute inset-x-[8cqw] top-[86cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
+                    <div className="famus-pop absolute inset-x-[8cqw] top-[78cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
                       <p className={`famus-pop mt-[6cqw] break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[9cqw]" : handle.length > 8 ? "text-[11.5cqw]" : "text-[14cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
-                      <p className="famus-pop mt-[5cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>Fam #{String(claimNumber ?? 0).padStart(4, "0")}</p>
+                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>Fam #{String(claimNumber ?? 0).padStart(4, "0")}</p>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
                       <p className="text-[3.4cqw] text-foreground">Claim yours at <span className="text-primary">famus.si/register</span></p>
                       <span aria-hidden className="my-[4cqw] h-px w-full bg-foreground/15" />
-                      <p className="text-[2.7cqw] uppercase leading-[1.6] tracking-[0.08em] text-foreground/80">One Family Name. One Agent.<br />For your Family 🫶🏻</p>
+                      <p className="text-[2.7cqw] uppercase leading-[1.6] tracking-[0.08em] text-foreground/80">One Family Name. One Agent. For your Family 🫶🏻</p>
                     </div>
                     <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(false)} className="famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
