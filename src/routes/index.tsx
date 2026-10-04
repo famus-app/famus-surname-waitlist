@@ -438,7 +438,7 @@ function Index() {
                       <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-primary">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
-                      <p className="text-[3.4cqw] text-foreground">Claim yours at <span className="text-primary">famus.si/register</span></p>
+                      <p className="text-[3.4cqw] text-foreground">Reserve yours at <span className="text-primary">famus.si/register</span></p>
                       <span aria-hidden className="my-[4cqw] h-px w-full bg-foreground/15" />
                       <p className="text-[2.7cqw] uppercase leading-[1.6] tracking-[0.08em] text-foreground/80">One Family Name. One Agent. For your Family 🫶🏻</p>
                     </div>
