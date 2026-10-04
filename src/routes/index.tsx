@@ -216,7 +216,7 @@ function Index() {
       logo.src = famusLogo;
       try {
         await logo.decode();
-        context.drawImage(logo, 480, 306, 120, 120);
+        context.drawImage(logo, 475, 302, 130, 130);
       } catch {
         // Keep the rest of the card shareable if the logo cannot load.
       }
@@ -419,7 +419,7 @@ function Index() {
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <img src={famusLogo} alt="" className="famus-pop absolute left-1/2 top-[28cqw] w-[12cqw] -translate-x-1/2" style={{ ["--pop" as string]: "18px" }} />
+                    <div className="absolute inset-x-0 top-[28cqw] flex justify-center"><img src={famusLogo} alt="" className="famus-pop w-[12cqw]" style={{ ["--pop" as string]: "18px" }} /></div>
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
