@@ -414,7 +414,7 @@ function Index() {
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
                       <p className={`famus-pop mt-[6cqw] break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[9cqw]" : handle.length > 8 ? "text-[11.5cqw]" : "text-[14cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
-                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>Fam #{String(claimNumber ?? 0).padStart(4, "0")}</p>
+                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"\n\nFam #"}{String(claimNumber ?? 0).padStart(4, "0")}</p>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
                       <p className="text-[3.4cqw] text-foreground">Claim yours at <span className="text-primary">famus.si/register</span></p>
