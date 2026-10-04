@@ -321,12 +321,25 @@ function Index() {
   }
 
   async function copyCardLink() {
+    const link = "https://famus.si/register";
     try {
-      await navigator.clipboard.writeText("https://famus.si/register");
-      toast.success("Link copied — famus.si/register");
+      await navigator.clipboard.writeText(link);
     } catch {
-      toast.error("Couldn't copy the link. Long-press the card to share instead.");
+      const area = document.createElement("textarea");
+      area.value = link;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      const copied = document.execCommand("copy");
+      area.remove();
+      if (!copied) {
+        toast.error("Couldn't copy the link. Long-press the card to share instead.");
+        return;
+      }
     }
+    toast.success("Link copied — famus.si/register");
   }
 
 
