@@ -186,6 +186,7 @@ function Index() {
     const tokens = getComputedStyle(document.documentElement);
     const foreground = tokens.getPropertyValue("--foreground").trim();
     const primary = tokens.getPropertyValue("--primary").trim();
+    const secondary = tokens.getPropertyValue("--secondary").trim();
     const background = tokens.getPropertyValue("--background").trim();
 
     const art = new Image();
