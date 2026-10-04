@@ -261,7 +261,7 @@ function Index() {
       context.globalAlpha = 1;
       const wmBaseline = logoY + logoSize * 0.72;
       context.textAlign = "left";
-      context.fillStyle = secondary;
+      context.fillStyle = "#d3b58f";
       context.fillText("fam", wmStartX + logoSize + wmGap + wmDivider + wmGap, wmBaseline);
       context.fillStyle = primary;
       context.fillText("US", wmStartX + logoSize + wmGap + wmDivider + wmGap + wmFamWidth, wmBaseline);
@@ -459,7 +459,7 @@ function Index() {
                       <div className="mt-[14cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
-                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-secondary">fam</span><span className="text-primary">US</span></span>
+                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#d3b58f]">fam</span><span className="text-primary">US</span></span>
                       </div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
