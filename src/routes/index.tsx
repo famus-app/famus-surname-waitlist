@@ -183,101 +183,158 @@ function Index() {
     };
   }, [claimed, previewing]);
 
-  async function createShareCard(): Promise<Blob | null> {
+  async function createShareCard(side: "front" | "back" = cardFlipped ? "back" : "front"): Promise<Blob | null> {
     if (claimNumber === null) return null;
+    const back = side === "back";
     const canvas = document.createElement("canvas");
     canvas.width = 1080;
     canvas.height = 1920;
     const context = canvas.getContext("2d");
     if (!context) return null;
+    const ctx = context as CanvasRenderingContext2D & { letterSpacing: string };
 
     const tokens = getComputedStyle(document.documentElement);
     const foreground = tokens.getPropertyValue("--foreground").trim();
     const primary = tokens.getPropertyValue("--primary").trim();
     const background = tokens.getPropertyValue("--background").trim();
+    const withAlpha = (c: string, a: number) => `color-mix(in oklab, ${c} ${a * 100}%, transparent)`;
+    const alphaColor = (c: string, a: number) => {
+      // Canvas may not parse color-mix; fall back to globalAlpha.
+      ctx.fillStyle = c;
+      ctx.globalAlpha = a;
+      void withAlpha;
+    };
 
     const art = new Image();
     art.crossOrigin = "anonymous";
-    art.src = cardFlipped ? cardBackArt.url : cardFrontArt.url;
+    art.src = back ? cardBackArt.url : cardFrontArt.url;
     try {
       await Promise.all([art.decode(), document.fonts.ready]);
       const ratio = Math.max(canvas.width / art.width, canvas.height / art.height);
       const width = art.width * ratio;
       const height = art.height * ratio;
-      context.drawImage(art, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+      ctx.drawImage(art, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
     } catch {
-      context.fillStyle = background;
-      context.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    const shade = context.createLinearGradient(0, 0, 0, 1920);
+    // Same shade as .famus-card-shade
+    const shade = ctx.createLinearGradient(0, 0, 0, 1920);
     shade.addColorStop(0, "oklch(0.07 0.007 58 / 0.55)");
     shade.addColorStop(0.3, "oklch(0.07 0.007 58 / 0)");
     shade.addColorStop(0.72, "oklch(0.07 0.007 58 / 0)");
     shade.addColorStop(1, "oklch(0.07 0.007 58 / 0.72)");
-    context.fillStyle = shade;
-    context.fillRect(0, 0, 1080, 1920);
+    ctx.fillStyle = shade;
+    ctx.fillRect(0, 0, 1080, 1920);
 
-    context.textAlign = "center";
-    if (cardFlipped) {
-      context.fillStyle = foreground;
-      context.font = '38px "Work Sans", sans-serif';
-      context.fillText("RESERVED IN PERPETUITY", 540, 780);
-      context.fillText("FOR THE GENERATIONS", 540, 835);
-      let handleSize = 142;
-      context.font = `${handleSize}px "Instrument Serif", serif`;
-      while (context.measureText(`@${handle}`).width > 900 && handleSize > 70) {
-        handleSize -= 6;
-        context.font = `${handleSize}px "Instrument Serif", serif`;
-      }
-      context.fillStyle = primary;
-      context.fillText(`@${handle}`, 540, 1050, 900);
-      context.font = '88px "Instrument Serif", serif';
-      {
-        const prefix = "fam #";
-        const num = String(claimNumber).padStart(4, "0");
-        const pw = context.measureText(prefix).width;
-        const nw = context.measureText(num).width;
-        const startX = 540 - (pw + nw) / 2;
-        context.textAlign = "left";
-        context.fillText(prefix, startX, 1240);
-        context.fillStyle = "#d3b58f";
-        context.fillText(num, startX + pw, 1240);
-        context.fillStyle = foreground;
-        context.textAlign = "center";
-      }
+    if (back) {
+      // 1cqw on the live card = 10.8px on this 1080px canvas.
+      const q = 10.8;
+      ctx.textBaseline = "alphabetic";
+      ctx.textAlign = "center";
+      ctx.shadowColor = "rgba(0,0,0,0.35)";
+      ctx.shadowBlur = 15;
+      ctx.shadowOffsetY = 10;
+
+      // Reserved text: top 65cqw, 3.2cqw, line-height 1.6, tracking 0.18em
+      const tSize = 3.2 * q;
+      const tLine = tSize * 1.6;
+      let y = 65 * q;
+      ctx.font = `${tSize}px "Work Sans", sans-serif`;
+      ctx.letterSpacing = `${tSize * 0.18}px`;
+      alphaColor(foreground, 0.9);
+      ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
+      ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
+      y += tLine * 3; // includes trailing <br />
+      ctx.letterSpacing = "0px";
+
+      // Divider
+      y += 6 * q;
+      alphaColor(foreground, 0.25);
+      ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
+      y += 1;
+
+      // Handle
+      y += 6 * q;
+      const hSize = (handle.length > 12 ? 8 : handle.length > 8 ? 10 : 13) * q;
+      ctx.font = `${hSize}px "Instrument Serif", serif`;
+      alphaColor(primary, 1);
+      ctx.fillText(`@${handle}`, 540, y + hSize * 0.8, 88 * q);
+      y += hSize;
+
+      // fam #0001
+      y += 9 * q;
+      const fSize = 8 * q;
+      ctx.font = `${fSize}px "Instrument Serif", serif`;
+      const prefix = "fam #";
+      const num = String(claimNumber).padStart(4, "0");
+      const pw = ctx.measureText(prefix).width;
+      const nw = ctx.measureText(num).width;
+      const startX = 540 - (pw + nw) / 2;
+      ctx.textAlign = "left";
+      alphaColor(foreground, 1);
+      ctx.fillText(prefix, startX, y + fSize * 0.8);
+      alphaColor("#d3b58f", 1);
+      ctx.fillText(num, startX + pw, y + fSize * 0.8);
+      y += fSize;
+
+      // Logo + divider + wordmark
+      y += 16 * q;
       const logo = new Image();
       logo.src = famusLogo;
-      const logoSize = 156;
-      const logoY = 1428;
-      const wmGap = 46;
-      try {
-        await logo.decode();
-      } catch {
-        // Keep the rest of the card shareable if the logo cannot load.
-      }
-      context.font = '150px "Canarina", sans-serif';
-      const wmFamWidth = context.measureText("fam").width;
-      const wmUsWidth = context.measureText("US").width;
-      const wmDivider = 3;
-      const wmGroupWidth = logoSize + wmGap * 2 + wmDivider + wmFamWidth + wmUsWidth;
-      const wmStartX = 540 - wmGroupWidth / 2;
-      if (logo.complete && logo.naturalWidth) context.drawImage(logo, wmStartX, logoY, logoSize, logoSize);
-      context.globalAlpha = 0.35;
-      context.fillRect(wmStartX + logoSize + wmGap - Math.floor(wmDivider / 2), logoY + (logoSize - 94) / 2, wmDivider, 94);
-      context.globalAlpha = 1;
-      const wmBaseline = logoY + logoSize * 0.72;
-      context.textAlign = "left";
-      context.fillStyle = "#d3b58f";
-      context.fillText("fam", wmStartX + logoSize + wmGap + wmDivider + wmGap, wmBaseline);
-      context.fillStyle = primary;
-      context.fillText("US", wmStartX + logoSize + wmGap + wmDivider + wmGap + wmFamWidth, wmBaseline);
-      context.fillStyle = foreground;
-      context.textAlign = "center";
-      context.font = '38px "Work Sans", sans-serif';
-      context.fillText("Reserve yours at famus.si/register", 540, 1660, 940);
-      context.font = '30px "Work Sans", sans-serif';
-      context.fillText("ONE FAMILY NAME. ONE AGENT. FOR YOUR FAMILY 🫶🏻", 540, 1780, 960);
+      try { await logo.decode(); } catch { /* keep card shareable */ }
+      const logoW = 12.5 * q;
+      const logoH = logo.naturalWidth ? logoW * (logo.naturalHeight / logo.naturalWidth) : logoW;
+      const wSize = 12.5 * q;
+      const gap = 2.5 * q;
+      ctx.font = `${wSize}px "Canarina", sans-serif`;
+      ctx.letterSpacing = `${-0.056 * wSize}px`;
+      const famW = ctx.measureText("fam").width;
+      const usW = ctx.measureText("US").width;
+      const rowH = Math.max(logoH, wSize);
+      const groupW = logoW + gap + 2 + gap + famW + usW;
+      let x = 540 - groupW / 2;
+      ctx.globalAlpha = 1;
+      if (logo.naturalWidth) ctx.drawImage(logo, x, y + (rowH - logoH) / 2, logoW, logoH);
+      x += logoW + gap;
+      alphaColor(foreground, 0.35);
+      ctx.fillRect(x, y + (rowH - 7.5 * q) / 2, 2, 7.5 * q);
+      x += 2 + gap;
+      const wBase = y + rowH / 2 + wSize * 0.35;
+      alphaColor("#d3b58f", 1);
+      ctx.fillText("fam", x, wBase);
+      alphaColor(primary, 1);
+      ctx.fillText("US", x + famW, wBase);
+      ctx.letterSpacing = "0px";
+
+      // Bottom block, anchored 8cqw from bottom
+      let by = 1920 - 8 * q;
+      const tagSize = 2.7 * q;
+      ctx.font = `${tagSize}px "Work Sans", sans-serif`;
+      ctx.letterSpacing = `${tagSize * 0.08}px`;
+      ctx.textAlign = "center";
+      alphaColor(foreground, 0.8);
+      ctx.fillText("ONE FAMILY NAME. ONE AGENT. FOR YOUR FAMILY 🫶🏻", 540, by - tagSize * 1.6 / 2 + tagSize * 0.35, 88 * q);
+      ctx.letterSpacing = "0px";
+      by -= tagSize * 1.6 + 4 * q;
+      alphaColor(foreground, 0.15);
+      ctx.fillRect(6 * q, by - 1, 88 * q, 2);
+      by -= 4 * q;
+      const rSize = 3.4 * q;
+      ctx.font = `${rSize}px "Work Sans", sans-serif`;
+      const a = "Reserve yours at ";
+      const b = "famus.si/register";
+      const aw = ctx.measureText(a).width;
+      const bw = ctx.measureText(b).width;
+      const rx = 540 - (aw + bw) / 2;
+      const rBase = by - rSize * 1.5 / 2 + rSize * 0.35;
+      ctx.textAlign = "left";
+      alphaColor(foreground, 1);
+      ctx.fillText(a, rx, rBase);
+      alphaColor(primary, 1);
+      ctx.fillText(b, rx + aw, rBase);
+      ctx.globalAlpha = 1;
     }
 
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
