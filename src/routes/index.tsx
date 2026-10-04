@@ -212,14 +212,6 @@ function Index() {
 
     context.textAlign = "center";
     if (cardFlipped) {
-      const logo = new Image();
-      logo.src = famusLogo;
-      try {
-        await logo.decode();
-        context.drawImage(logo, 462, 402, 156, 156);
-      } catch {
-        // Keep the rest of the card shareable if the logo cannot load.
-      }
       context.fillStyle = foreground;
       context.font = '38px "Work Sans", sans-serif';
       context.fillText("RESERVED IN PERPETUITY", 540, 824);
@@ -230,7 +222,7 @@ function Index() {
         handleSize -= 6;
         context.font = `${handleSize}px "Instrument Serif", serif`;
       }
-      context.fillStyle = "#d3b58f";
+      context.fillStyle = primary;
       context.fillText(`@${handle}`, 540, 1050, 900);
       context.font = '88px "Instrument Serif", serif';
       {
@@ -241,10 +233,18 @@ function Index() {
         const startX = 540 - (pw + nw) / 2;
         context.textAlign = "left";
         context.fillText(prefix, startX, 1240);
-        context.fillStyle = primary;
+        context.fillStyle = "#d3b58f";
         context.fillText(num, startX + pw, 1240);
         context.fillStyle = foreground;
         context.textAlign = "center";
+      }
+      const logo = new Image();
+      logo.src = famusLogo;
+      try {
+        await logo.decode();
+        context.drawImage(logo, 462, 1340, 156, 156);
+      } catch {
+        // Keep the rest of the card shareable if the logo cannot load.
       }
       context.font = '38px "Work Sans", sans-serif';
       context.fillText("Reserve yours at famus.si/register", 540, 1660, 940);
@@ -430,12 +430,12 @@ function Index() {
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="absolute inset-x-0 top-[37.25cqw] flex justify-center"><img src={famusLogo} alt="" className="famus-pop w-[14.5cqw]" style={{ ["--pop" as string]: "18px" }} /></div>
                     <div className="famus-pop absolute inset-x-[8cqw] top-[69cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
-                      <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-[#d3b58f] ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
-                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-primary">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
+                      <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
+                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#d3b58f]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
+                      <div className="mt-[8cqw] flex justify-center"><img src={famusLogo} alt="" className="famus-pop w-[14.5cqw]" style={{ ["--pop" as string]: "18px" }} /></div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
                       <p className="text-[3.4cqw] text-foreground">Reserve yours at <span className="text-primary">famus.si/register</span></p>
