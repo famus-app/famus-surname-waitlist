@@ -242,7 +242,7 @@ function Index() {
       const logo = new Image();
       logo.src = famusLogo;
       const logoSize = 156;
-      const logoY = 1340;
+      const logoY = 1362;
       const wmGap = 46;
       try {
         await logo.decode();
@@ -456,7 +456,7 @@ function Index() {
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
                       <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#d3b58f]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <div className="mt-[8cqw] flex items-center justify-center gap-[2.5cqw]">
+                      <div className="mt-[10cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-secondary">fam</span><span className="text-primary">US</span></span>
