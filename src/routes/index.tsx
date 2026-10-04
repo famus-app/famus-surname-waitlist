@@ -186,6 +186,7 @@ function Index() {
     const tokens = getComputedStyle(document.documentElement);
     const foreground = tokens.getPropertyValue("--foreground").trim();
     const primary = tokens.getPropertyValue("--primary").trim();
+    const secondary = tokens.getPropertyValue("--secondary").trim();
     const background = tokens.getPropertyValue("--background").trim();
 
     const art = new Image();
@@ -214,8 +215,8 @@ function Index() {
     if (cardFlipped) {
       context.fillStyle = foreground;
       context.font = '38px "Work Sans", sans-serif';
-      context.fillText("RESERVED IN PERPETUITY", 540, 802);
-      context.fillText("FOR THE GENERATIONS", 540, 857);
+      context.fillText("RESERVED IN PERPETUITY", 540, 780);
+      context.fillText("FOR THE GENERATIONS", 540, 835);
       let handleSize = 142;
       context.font = `${handleSize}px "Instrument Serif", serif`;
       while (context.measureText(`@${handle}`).width > 900 && handleSize > 70) {
@@ -240,12 +241,32 @@ function Index() {
       }
       const logo = new Image();
       logo.src = famusLogo;
+      const logoSize = 156;
+      const logoY = 1362;
+      const wmGap = 46;
       try {
         await logo.decode();
-        context.drawImage(logo, 462, 1340, 156, 156);
       } catch {
         // Keep the rest of the card shareable if the logo cannot load.
       }
+      context.font = '150px "Canarina", sans-serif';
+      const wmFamWidth = context.measureText("fam").width;
+      const wmUsWidth = context.measureText("US").width;
+      const wmDivider = 3;
+      const wmGroupWidth = logoSize + wmGap * 2 + wmDivider + wmFamWidth + wmUsWidth;
+      const wmStartX = 540 - wmGroupWidth / 2;
+      if (logo.complete && logo.naturalWidth) context.drawImage(logo, wmStartX, logoY, logoSize, logoSize);
+      context.globalAlpha = 0.35;
+      context.fillRect(wmStartX + logoSize + wmGap - Math.floor(wmDivider / 2), logoY + (logoSize - 94) / 2, wmDivider, 94);
+      context.globalAlpha = 1;
+      const wmBaseline = logoY + logoSize * 0.72;
+      context.textAlign = "left";
+      context.fillStyle = secondary;
+      context.fillText("fam", wmStartX + logoSize + wmGap + wmDivider + wmGap, wmBaseline);
+      context.fillStyle = primary;
+      context.fillText("US", wmStartX + logoSize + wmGap + wmDivider + wmGap + wmFamWidth, wmBaseline);
+      context.fillStyle = foreground;
+      context.textAlign = "center";
       context.font = '38px "Work Sans", sans-serif';
       context.fillText("Reserve yours at famus.si/register", 540, 1660, 940);
       context.font = '30px "Work Sans", sans-serif';
@@ -430,12 +451,16 @@ function Index() {
                   <div className="famus-card-face famus-card-back absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <div className="famus-pop absolute inset-x-[8cqw] top-[67cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
+                    <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">Reserved in Perpetuity<br />for the generations</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-primary/60" />
                       <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#d3b58f]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <div className="mt-[8cqw] flex justify-center"><img src={famusLogo} alt="" className="famus-pop w-[14.5cqw]" style={{ ["--pop" as string]: "18px" }} /></div>
+                      <div className="mt-[10cqw] flex items-center justify-center gap-[2.5cqw]">
+                        <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
+                        <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
+                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-secondary">fam</span><span className="text-primary">US</span></span>
+                      </div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
                       <p className="text-[3.4cqw] text-foreground">Reserve yours at <span className="text-primary">famus.si/register</span></p>

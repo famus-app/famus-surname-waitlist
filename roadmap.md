@@ -18,3 +18,4 @@
 - [x] Show an "Already claimed · famus.app/{name} registered" marquee under the agent-name preview with 5 test surnames
 
 - [x] Move "Already claimed" line above the input fields (user clarified — not the agent-name preview, which was restored below the fields)
+- [x] 2-space gap between fam #0001 and logo wordmark on card back (live + canvas)
