@@ -594,7 +594,7 @@ function Index() {
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">NEXT DROP</span></div>
-                  <p className="mt-2 text-sm text-muted-foreground">Invite 2 of your other family members to unlock Family Founder badge and privileges.</p>
+                  <p className="mt-2 text-sm text-muted-foreground">Invite 2 of your other family members to unlock Family Founder badge and privileges</p>
                 </div>
                 <div className="mt-10">
                   <SocialFollow />
