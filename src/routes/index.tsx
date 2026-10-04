@@ -352,7 +352,7 @@ function Index() {
         <a href="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
           <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
-          <span className="whitespace-nowrap"><span className="text-secondary">fam</span><span className="text-primary">US</span></span>
+          <span className="whitespace-nowrap"><span className="text-[#d3b58f]">fam</span><span className="text-primary">US</span></span>
         </a>
       </header>
 
