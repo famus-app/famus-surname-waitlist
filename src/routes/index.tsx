@@ -575,7 +575,7 @@ function Index() {
                     <>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Share card"}</Button>
+                          <Button disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Pass the Torch"}</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start" className="w-48">
                           <DropdownMenuItem onClick={() => void downloadCard()} className="gap-2">
