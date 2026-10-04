@@ -367,9 +367,9 @@
   opacity:0.22; mix-blend-mode:overlay; pointer-events:none;
 }
 .famus-socials .logo {
-  position:absolute; left:14px; bottom:12px; transform:none;
-  transition:all 1s ease-in-out; font-size:0.72em; font-weight:600; letter-spacing:0.5px;
-  line-height:1.45; text-align:left; max-width:85%;
+  position:absolute; top:12px; right:14px; transform:none;
+  font-size:0.72em; font-weight:600; letter-spacing:0.5px;
+  line-height:1.45; text-align:right; max-width:85%;
   color:oklch(0.995 0.008 85); text-shadow:0 1px 6px oklch(0.07 0.007 58 / 0.6);
   white-space:nowrap;
 }
@@ -393,6 +393,5 @@
 .famus-socials .box4 { width:10%; height:10%; bottom:-10%; left:-10%; }
 .famus-socials .card:hover { transform:scale(1.1); }
 .famus-socials .card:hover .box { bottom:-1px; left:-1px; }
-.famus-socials .card:hover .logo { top:12px; bottom:auto; left:auto; right:14px; transform:none; letter-spacing:0.5px; font-size:0.72em; line-height:1; text-align:right; }
 .famus-socials .box .icon { position:relative; display:inline-block; width:20px; height:20px; }
 .famus-socials .box .icon .svg { width:100%; height:100%; fill:oklch(0.995 0.008 85); transition:fill 0.3s; }
