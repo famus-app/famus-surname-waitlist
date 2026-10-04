@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, Link2, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
@@ -46,14 +46,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [surname, setSurname] = useState("Pedapati");
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [claimed, setClaimed] = useState(true);
-  const [previewing, setPreviewing] = useState(true);
+  const [claimed, setClaimed] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
-  const [claimNumber, setClaimNumber] = useState<number | null>(1);
+  const [claimNumber, setClaimNumber] = useState<number | null>(null);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
@@ -443,11 +443,11 @@ function Index() {
       </div>
       <div className="relative min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-center px-6 py-5 sm:px-10">
-        <a href="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
+        <Link to="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
           <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
           <span className="whitespace-nowrap"><span className="text-[#d3b58f]">fam</span><span className="text-primary">US</span></span>
-        </a>
+        </Link>
       </header>
 
       <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "px-6 pb-16 pt-16 sm:pt-24"}`}>
