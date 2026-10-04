@@ -589,7 +589,6 @@ function Index() {
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                      <Button variant="outline" onClick={() => { setClaimed(false); setPreviewing(false); setSurname(""); setClaimNumber(null); setCardFlipped(false); }}>Claim your own</Button>
                     </>
                   ) : <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>}
                 </div>
