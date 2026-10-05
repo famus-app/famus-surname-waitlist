@@ -569,28 +569,24 @@ function Index() {
               <div className="min-w-0">
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon !</h2>
-                {previewing ? <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your agent is live</p> : <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Your family agent is warming up. We'll notify <span className="text-foreground">{email}</span> when it's ready to greet you.</p>}
+                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your agent is live</p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  {previewing ? (
-                    <>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Pass the Torch"}</Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start" className="w-48">
-                          <DropdownMenuItem onClick={() => void downloadCard()} className="gap-2">
-                            <Download className="size-4" />Download card
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => void shareCard()} className="gap-2">
-                            <Share2 className="size-4" />Post to socials
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => void copyCardLink()} className="gap-2">
-                            <Link2 className="size-4" />Share link
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </>
-                  ) : <Button onClick={() => void shareCard()} disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : `Share ${cardFlipped ? "details" : "welcome"}`}</Button>}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Pass the Torch"}</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48">
+                      <DropdownMenuItem onClick={() => void downloadCard()} className="gap-2">
+                        <Download className="size-4" />Download card
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => void shareCard()} className="gap-2">
+                        <Share2 className="size-4" />Post to socials
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => void copyCardLink()} className="gap-2">
+                        <Link2 className="size-4" />Share link
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">NEXT DROP</span></div>
