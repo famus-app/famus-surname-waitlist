@@ -535,7 +535,7 @@ function Index() {
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
                   <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
-                    <img src={cardFrontGlow.url} alt="" loading="lazy" className="famus-glow-layer famus-pop absolute inset-0 size-full object-cover" style={{ ["--pop" as string]: "10px" }} width={1024} height={1536} />
+                    <img src={cardFrontGlow} alt="" loading="lazy" className="famus-glow-layer famus-pop absolute inset-0 size-full object-cover" style={{ ["--pop" as string]: "10px" }} width={1024} height={1536} />
                     <div className="famus-card-shade absolute inset-0" />
                     <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(true)} className="famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
