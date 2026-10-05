@@ -26,7 +26,7 @@ import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogo from "@/assets/famus-logo-transparent.png";
 import cardFrontArt from "@/assets/famus-card-front-generations.png.asset.json";
-import cardFrontGlow from "@/assets/famus-card-front-glow.png.asset.json";
+import cardFrontGlow from "@/assets/famus-card-front-orb-glow.png";
 import cardBackArt from "@/assets/famus-card-back-open-arches.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -592,7 +592,7 @@ function Index() {
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">NEXT DROP</span></div>
                   <p className="mt-2 text-sm text-muted-foreground">Invite 2 of your other family members to unlock Family Founder badge and privileges</p>
                 </div>
-                <div className="mt-10">
+                <div className="mt-13">
                   <SocialFollow />
                 </div>
               </div>
