@@ -1,13 +1,10 @@
-# Scroll-controlled famUS video
+# Sync the final claim screen
 
 ## Build
-- Add the supplied video as the full-screen visual backdrop for the existing famUS page.
-- Pin the video while visitors move through a taller scroll scene.
-- Map page scroll position directly to video playback progress, without autoplay or audio.
-- Keep the counter, form, claim confirmation, and sharing flow readable above the footage.
-- Preserve reduced-motion support by showing a stable frame instead of scrubbing.
+- Use the updated “Coming home soon !” heading and two-line confirmation in both the sample card view and the real post-claim view.
+- Use the same “Pass the Torch” sharing menu after a real claim, including download, social posting, and link sharing.
+- Preserve the personalized “@familyname is yours” line and celebration shown only after a successful claim.
 
-## Technical details
-- Store the uploaded video through the project asset flow and reference its CDN pointer.
-- Use the video duration and scroll position to update `currentTime` efficiently.
-- Validate desktop and mobile framing, scroll behavior, and page health.
+## Validation
+- Complete a real claim and confirm the updated wording and sharing options appear on the resulting screen.
+- Confirm the app remains error-free.
