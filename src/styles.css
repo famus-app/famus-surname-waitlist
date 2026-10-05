@@ -383,14 +383,16 @@
 }
 .famus-socials .box::before {
   content:""; position:absolute; inset:0; border-radius:inherit; opacity:0; transition:all 0.5s ease-in-out;
-  background:linear-gradient(135deg, var(--primary), var(--secondary));
 }
+/* Platform-colored fill on hover: Instagram gradient, X black, LinkedIn blue */
+.famus-socials .box1::before { background: radial-gradient(circle at 30% 110%, oklch(0.8 0.22 85) 8%, oklch(0.62 0.26 30) 22%, oklch(0.55 0.24 350) 45%, oklch(0.5 0.24 300) 60%, oklch(0.45 0.2 280) 90%); }
+.famus-socials .box2::before { background: oklch(0.09 0 0); }
+.famus-socials .box3::before { background: oklch(0.52 0.14 245); }
 .famus-socials .box:hover::before { opacity:1; }
-.famus-socials .box:hover .svg { fill:oklch(0.07 0.007 58); }
+.famus-socials .box:hover .svg { fill:oklch(0.995 0.008 85); }
 .famus-socials .box1 { width:70%; height:70%; bottom:-70%; left:-70%; }
 .famus-socials .box2 { width:50%; height:50%; bottom:-50%; left:-50%; }
 .famus-socials .box3 { width:30%; height:30%; bottom:-30%; left:-30%; }
-.famus-socials .box4 { width:10%; height:10%; bottom:-10%; left:-10%; }
 .famus-socials .card:hover { transform:scale(1.1); }
 .famus-socials .card:hover .box { bottom:-1px; left:-1px; }
 .famus-socials .box .icon { position:relative; display:inline-block; width:20px; height:20px; }

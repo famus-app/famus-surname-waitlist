@@ -69,7 +69,6 @@ const SocialCard = ({
       <SocialBox key={index} {...link} />
     ))}
 
-    <div className="box box4" style={{ transitionDelay: "0.6s" }} />
   </div>
 );
 
