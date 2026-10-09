@@ -569,7 +569,7 @@ function Index() {
               <div className="min-w-0">
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon !</h2>
-                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your agent is live</p>
+                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your AI agent is live</p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
