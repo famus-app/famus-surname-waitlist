@@ -57,6 +57,26 @@ function Index() {
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
+  const [takenHandle, setTakenHandle] = useState("");
+  const [priority, setPriority] = useState(false);
+  const [joiningPriority, setJoiningPriority] = useState(false);
+
+  async function joinPriority() {
+    setJoiningPriority(true);
+    const { error: pErr } = await supabase.from("priority_waitlist").insert({
+      email: email.trim().toLowerCase(),
+      full_name: name.trim() || null,
+      requested_surname: cleanSurname,
+    });
+    setJoiningPriority(false);
+    if (pErr) {
+      toast.error("We couldn't add you right now. Please try again.");
+      return;
+    }
+    setCardFlipped(false);
+    setPriority(true);
+    setClaimed(true);
+  }
 
   const cardSceneRef = useRef<HTMLDivElement>(null);
   const cardTiltRaf = useRef(0);
@@ -411,9 +431,13 @@ function Index() {
       p_priority_interest: false,
     });
     if (claimError) {
-      setError(claimError.code === "23505" ? `@${handle} has already been claimed.` : "We couldn't hold that name. Please try again.");
+      if (claimError.code === "23505") {
+        setTakenHandle(handle);
+        setError("");
+      } else setError("We couldn't hold that name. Please try again.");
       return false;
     }
+    setTakenHandle("");
     const claim = data?.[0];
     if (!claim) {
       setError("We couldn't confirm that claim. Please try again.");
@@ -526,7 +550,14 @@ function Index() {
                   </motion.div>
                 ) : null}
               </AnimatePresence>
-              {error ? <p role="alert" className="mt-3 text-sm text-primary">{error}</p> : null}
+              {error ? <p role="alert" className="mt-3 text-center text-sm text-primary">{error}</p> : null}
+              {takenHandle && takenHandle === handle ? (
+                <div role="alert" className="mx-auto mt-6 flex max-w-md flex-col items-center gap-3 text-center">
+                  <p className="text-sm"><span className="font-bold text-primary">@{takenHandle}</span> is claimed</p>
+                  <p className="text-[13px] text-muted-foreground">Join the priority list and we'll notify you first when custom family agent names open.</p>
+                  <Button onClick={() => void joinPriority()} disabled={joiningPriority}>{joiningPriority ? "Adding…" : "Join priority list"}</Button>
+                </div>
+              ) : null}
 
             </>
           ) : (
@@ -537,7 +568,7 @@ function Index() {
                     <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
                     <img src={cardFrontGlow} alt="" loading="lazy" className="famus-glow-layer famus-pop absolute inset-0 size-full object-cover" style={{ ["--pop" as string]: "10px" }} width={1024} height={1536} />
                     <div className="famus-card-shade absolute inset-0" />
-                    <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(true)} className="famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
+                    <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(true)} className={`${priority ? "hidden " : ""}famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70`}>
                       <RotateCw className="size-[4.5cqw]" />
                     </button>
                   </div>
@@ -567,6 +598,11 @@ function Index() {
                 </div>
               </div>
               <div className="min-w-0">
+                {priority ? <>
+                <p className="text-[11px] uppercase tracking-[0.22em] text-primary">You're on the priority list</p>
+                <h2 className="mt-1 font-display text-4xl leading-none">Thank you !</h2>
+                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">The original family name @{takenHandle || handle} is already taken<br />When famUS goes live, you can create multiple custom family agent names — and you'll be the first to know</p>
+                </> : <>
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon !</h2>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your AI agent is live</p>
@@ -588,9 +624,10 @@ function Index() {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
+                </>}
                 <div className="mt-7 border-t border-border pt-5">
                   <div className="flex items-center gap-2 text-primary"><LockKeyhole className="size-4" /><span className="text-[10px] uppercase tracking-[0.22em]">NEXT DROP</span></div>
-                  <p className="mt-2 text-sm text-muted-foreground">Invite 2 of your other family members to unlock Family Founder badge and privileges</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{priority ? "Custom family agent names open to the priority list first — keep an eye on your inbox" : "Invite 2 of your other family members to unlock Family Founder badge and privileges"}</p>
                 </div>
                 <div className="mt-13">
                   <SocialFollow />
