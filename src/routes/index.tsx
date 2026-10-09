@@ -60,23 +60,21 @@ function Index() {
   const [onSurnameStep, setOnSurnameStep] = useState(false);
   const [takenHandle, setTakenHandle] = useState("");
   const [priority, setPriority] = useState(false);
-  const [joiningPriority, setJoiningPriority] = useState(false);
 
-  async function joinPriority() {
-    setJoiningPriority(true);
+  async function joinPriority(): Promise<boolean> {
+    if (!cleanSurname || !email.includes("@")) return false;
     const { error: pErr } = await supabase.from("priority_waitlist").insert({
       email: email.trim().toLowerCase(),
       full_name: name.trim() || null,
       requested_surname: cleanSurname,
     });
-    setJoiningPriority(false);
     if (pErr) {
       toast.error("We couldn't add you right now. Please try again.");
-      return;
+      return false;
     }
     setCardFlipped(false);
     setPriority(true);
-    setClaimed(true);
+    return true;
   }
 
   const cardSceneRef = useRef<HTMLDivElement>(null);
@@ -448,6 +446,7 @@ function Index() {
     setRemaining((value) => Math.max(0, value - 1));
     return true;
   }
+  const isTaken = takenHandle !== "" && takenHandle === handle;
 
   return (
     <div className="relative min-h-screen bg-background font-body text-foreground antialiased">
@@ -525,9 +524,10 @@ function Index() {
                 }}
                 submitControl={
                   <ClaimToggle
-                    idleText="Claim my agent"
+                    idleText={isTaken ? "Join priority list" : "Claim my agent"}
+                    idleWidth={isTaken ? 168 : 144}
                     disabled={!cleanSurname || !name.trim() || !email.includes("@")}
-                    onAction={submitClaim}
+                    onAction={isTaken ? () => joinPriority() : submitClaim}
                     onComplete={() => { setPreviewing(false); setClaimed(true); }}
                   />
                 }
@@ -552,11 +552,10 @@ function Index() {
                 ) : null}
               </AnimatePresence>
               {error ? <p role="alert" className="mt-3 text-center text-sm text-primary">{error}</p> : null}
-              {takenHandle && takenHandle === handle ? (
-                <div role="alert" className="mx-auto mt-6 flex max-w-md flex-col items-center gap-3 text-center">
+              {isTaken ? (
+                <div role="alert" className="mx-auto mt-6 flex max-w-md flex-col items-center gap-2 text-center">
                   <p className="text-sm"><span className="font-bold text-primary">@{takenHandle}</span> is already claimed</p>
                   <p className="text-[13px] text-muted-foreground">We'll notify you first when custom family agent names are live</p>
-                  <Button onClick={() => void joinPriority()} disabled={joiningPriority}>{joiningPriority ? "Adding…" : "Join priority list"}</Button>
                 </div>
               ) : null}
 
