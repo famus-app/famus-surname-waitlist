@@ -43,7 +43,13 @@ const LinkedInIcon = () => (
 
 // Components
 const SocialBox = ({ href, icon, className, delay, label }: SocialBoxProps) => (
-  <a href={href} aria-label={label} title={label}>
+  <a
+    href={href}
+    aria-label={label}
+    title={label}
+    target={href.startsWith("http") ? "_blank" : undefined}
+    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+  >
     <div className={`box ${className}`} style={{ transitionDelay: delay }}>
       <span className="icon">{icon}</span>
     </div>
@@ -55,7 +61,7 @@ const SocialCard = ({
   socialLinks = [
     { href: "#", icon: <InstagramIcon />, className: "box1", label: "Instagram" },
     { href: "##", icon: <XIcon />, className: "box2", delay: "0.2s", label: "X" },
-    { href: "###", icon: <LinkedInIcon />, className: "box3", delay: "0.4s", label: "LinkedIn" },
+    { href: "https://www.linkedin.com/company/famus-si", icon: <LinkedInIcon />, className: "box3", delay: "0.4s", label: "LinkedIn" },
 
   ],
 }: SocialCardProps) => (
