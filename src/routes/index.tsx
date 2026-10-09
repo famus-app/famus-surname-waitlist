@@ -554,8 +554,8 @@ function Index() {
               {error ? <p role="alert" className="mt-3 text-center text-sm text-primary">{error}</p> : null}
               {takenHandle && takenHandle === handle ? (
                 <div role="alert" className="mx-auto mt-6 flex max-w-md flex-col items-center gap-3 text-center">
-                  <p className="text-sm"><span className="font-bold text-primary">@{takenHandle}</span> is claimed</p>
-                  <p className="text-[13px] text-muted-foreground">Join the priority list and we'll notify you first when custom family agent names open.</p>
+                  <p className="text-sm"><span className="font-bold text-primary">@{takenHandle}</span> is already claimed</p>
+                  <p className="text-[13px] text-muted-foreground">We'll notify you first when custom family agent names are live</p>
                   <Button onClick={() => void joinPriority()} disabled={joiningPriority}>{joiningPriority ? "Adding…" : "Join priority list"}</Button>
                 </div>
               ) : null}
