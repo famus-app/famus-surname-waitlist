@@ -601,7 +601,7 @@ function Index() {
                 {priority ? <>
                 <p className="text-[11px] uppercase tracking-[0.22em] text-primary">You're on the priority list</p>
                 <h2 className="mt-1 font-display text-4xl leading-none">Thank you !</h2>
-                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">The original family name is already taken.<br />When famUS goes live, you can create custom family agent name and you'll be the first to know</p>
+                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{"\n"}</p>
                 </> : <>
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon !</h2>
