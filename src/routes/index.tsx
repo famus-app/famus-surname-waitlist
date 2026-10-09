@@ -296,7 +296,7 @@ function Index() {
       ctx.textAlign = "left";
       alphaColor(foreground, 1);
       ctx.fillText(prefix, startX, y + fSize * 0.8);
-      alphaColor("#d3b58f", 1);
+      alphaColor("#D8C4AB", 1);
       ctx.fillText(num, startX + pw, y + fSize * 0.8);
       y += fSize;
 
@@ -484,7 +484,7 @@ function Index() {
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.2rem,3vw,2.5rem)] leading-none text-foreground">
               <span>Built for your whole family: One&nbsp;</span>
               <GradientText
-                colors={["#F97316", "#d3b58f", "#f4f2f2"]}
+                colors={["#EB5F06", "#D8C4AB", "#f4f2f2"]}
                 animationSpeed={3}
                 className="text-primary"
               >
@@ -544,7 +544,7 @@ function Index() {
                     <div className="min-w-0 text-center">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
                       <div className="mt-2 flex items-center justify-center gap-3">
-                        <ThinkingOrb state={handle ? "weaving" : "breathing"} size={32} theme="dark" color="#F97316" className="shrink-0" aria-label="Your family agent" />
+                        <ThinkingOrb state={handle ? "weaving" : "breathing"} size={32} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
                         <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
                       </div>
                     </div>
@@ -580,7 +580,7 @@ function Index() {
                       <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">I JUST RESERVED MY<br />FAMILY NAME IN PERPETUITY<br /></p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
-                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#d3b58f]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
+                      <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
                       <div className="mt-[16cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
