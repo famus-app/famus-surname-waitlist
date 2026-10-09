@@ -43,7 +43,13 @@ const LinkedInIcon = () => (
 
 // Components
 const SocialBox = ({ href, icon, className, delay, label }: SocialBoxProps) => (
-  <a href={href} aria-label={label} title={label}>
+  <a
+    href={href}
+    aria-label={label}
+    title={label}
+    target={href.startsWith("http") ? "_blank" : undefined}
+    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+  >
     <div className={`box ${className}`} style={{ transitionDelay: delay }}>
       <span className="icon">{icon}</span>
     </div>
