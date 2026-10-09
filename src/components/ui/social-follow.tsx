@@ -59,8 +59,8 @@ const SocialBox = ({ href, icon, className, delay, label }: SocialBoxProps) => (
 const SocialCard = ({
   title = "Socials",
   socialLinks = [
-    { href: "#", icon: <InstagramIcon />, className: "box1", label: "Instagram" },
-    { href: "##", icon: <XIcon />, className: "box2", delay: "0.2s", label: "X" },
+    { href: "https://www.instagram.com/famus.si/", icon: <InstagramIcon />, className: "box1", label: "Instagram" },
+    { href: "https://x.com/famus_si", icon: <XIcon />, className: "box2", delay: "0.2s", label: "X" },
     { href: "https://www.linkedin.com/company/famus-si", icon: <LinkedInIcon />, className: "box3", delay: "0.4s", label: "LinkedIn" },
 
   ],
