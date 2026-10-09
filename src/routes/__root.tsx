@@ -111,7 +111,12 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        {/* React owns this container exclusively. The app hydrates `document`, so
+            keeping every rendered node inside one wrapper means externally
+            injected markup (previews, extensions) can never become a sibling
+            React has to remove — that collision throws
+            "removeChild: node is not a child of this node". */}
+        <div id="app-root">{children}</div>
         <Scripts />
       </body>
     </html>
