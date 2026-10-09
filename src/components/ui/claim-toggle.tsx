@@ -11,6 +11,7 @@ interface ClaimToggleProps {
   onAction: () => Promise<boolean>;
   onComplete: () => void;
   className?: string;
+  idleWidth?: number;
 }
 
 const HEIGHT = 42;
@@ -18,7 +19,7 @@ const CIRCLE = 42;
 const IDLE_WIDTH = 144;
 const IVORY = "#FFF1E6";
 
-export function ClaimToggle({ idleText, disabled, onAction, onComplete, className }: ClaimToggleProps) {
+export function ClaimToggle({ idleText, disabled, onAction, onComplete, className, idleWidth = IDLE_WIDTH }: ClaimToggleProps) {
   const [status, setStatus] = useState<ClaimStatus>("idle");
   const busyRef = useRef(false);
 
@@ -47,7 +48,7 @@ export function ClaimToggle({ idleText, disabled, onAction, onComplete, classNam
         disabled={disabled}
         initial={false}
         animate={{
-          width: isCircle ? CIRCLE : IDLE_WIDTH,
+          width: isCircle ? CIRCLE : idleWidth,
           height: HEIGHT,
           backgroundColor: "var(--primary)",
         }}
