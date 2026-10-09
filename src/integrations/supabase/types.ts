@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      priority_waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          requested_surname: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          requested_surname: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          requested_surname?: string
+        }
+        Relationships: []
+      }
       waitlist_claims: {
         Row: {
           claim_number: number
