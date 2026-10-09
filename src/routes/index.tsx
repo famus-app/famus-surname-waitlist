@@ -525,7 +525,7 @@ function Index() {
                 submitControl={
                   <ClaimToggle
                     idleText={isTaken ? "Join priority list" : "Claim my agent"}
-                    idleWidth={isTaken ? 168 : undefined}
+                    idleWidth={isTaken ? 168 : 144}
                     disabled={!cleanSurname || !name.trim() || !email.includes("@")}
                     onAction={isTaken ? () => joinPriority() : submitClaim}
                     onComplete={() => { setPreviewing(false); setClaimed(true); }}
