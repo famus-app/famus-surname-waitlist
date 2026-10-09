@@ -57,6 +57,26 @@ function Index() {
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
+  const [takenHandle, setTakenHandle] = useState("");
+  const [priority, setPriority] = useState(false);
+  const [joiningPriority, setJoiningPriority] = useState(false);
+
+  async function joinPriority() {
+    setJoiningPriority(true);
+    const { error: pErr } = await supabase.from("priority_waitlist").insert({
+      email: email.trim().toLowerCase(),
+      full_name: name.trim() || null,
+      requested_surname: cleanSurname,
+    });
+    setJoiningPriority(false);
+    if (pErr) {
+      toast.error("We couldn't add you right now. Please try again.");
+      return;
+    }
+    setCardFlipped(false);
+    setPriority(true);
+    setClaimed(true);
+  }
 
   const cardSceneRef = useRef<HTMLDivElement>(null);
   const cardTiltRaf = useRef(0);
@@ -411,9 +431,13 @@ function Index() {
       p_priority_interest: false,
     });
     if (claimError) {
-      setError(claimError.code === "23505" ? `@${handle} has already been claimed.` : "We couldn't hold that name. Please try again.");
+      if (claimError.code === "23505") {
+        setTakenHandle(handle);
+        setError("");
+      } else setError("We couldn't hold that name. Please try again.");
       return false;
     }
+    setTakenHandle("");
     const claim = data?.[0];
     if (!claim) {
       setError("We couldn't confirm that claim. Please try again.");
