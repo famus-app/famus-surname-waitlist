@@ -470,7 +470,7 @@ function Index() {
         <a href="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
           <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
-          <span className="whitespace-nowrap"><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
+          <span className="whitespace-nowrap"><span className="famus-metal-fam">fam</span><span className="famus-metal-us">US</span></span>
         </a>
       </header>
 
@@ -583,7 +583,7 @@ function Index() {
                       <div className="mt-[16cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
-                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
+                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="famus-metal-fam">fam</span><span className="famus-metal-us">US</span></span>
                       </div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
