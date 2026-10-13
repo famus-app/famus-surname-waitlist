@@ -382,6 +382,7 @@ function Index() {
           oc.fillRect(sx + wire, 0, wire, wmH);
         }
         oc.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
         ctx.drawImage(off, x - wmPad, y - wmPad, wmW, wmH);
       } else {
         alphaColor("#D8C4AB", 1);
