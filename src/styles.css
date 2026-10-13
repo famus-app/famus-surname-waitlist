@@ -295,7 +295,7 @@
 .famus-card-face:hover .famus-glow-layer { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text, .famus-metal-fam, .famus-metal-us { animation: none; }
   .famus-card-inner { transition: none; }
 }
 
