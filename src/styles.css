@@ -295,7 +295,7 @@
 .famus-card-face:hover .famus-glow-layer { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text { animation: none; }
+  .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text, .famus-metal-fam, .famus-metal-us { animation: none; }
   .famus-card-inner { transition: none; }
 }
 
@@ -318,6 +318,31 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: famus-gradient-move 8s linear infinite;
+}
+
+/* Metallic sheen for the famUS wordmark (header + card back):
+   base brand colors with a light/dark metal sweep and a soft glow. */
+.famus-metal-fam {
+  background-image: linear-gradient(100deg, #b99a74 0%, #D8C4AB 22%, #f7ecdd 38%, #D8C4AB 52%, #a98a63 68%, #D8C4AB 86%, #f0e2d2 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: famus-metal-sheen 7s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px oklch(0.86 0.04 81 / 0.35));
+}
+.famus-metal-us {
+  background-image: linear-gradient(100deg, #c14a05 0%, #EB5F06 22%, #ffb066 38%, #EB5F06 52%, #b84405 68%, #EB5F06 86%, #ff9a4d 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: famus-metal-sheen 7s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px oklch(0.656 0.19 43.7 / 0.4));
+}
+@keyframes famus-metal-sheen {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 @keyframes famus-gradient-move {

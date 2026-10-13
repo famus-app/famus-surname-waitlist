@@ -321,9 +321,25 @@ function Index() {
       ctx.fillRect(x, y + (rowH - 7.5 * q) / 2, 2, 7.5 * q);
       x += 2 + gap;
       const wBase = y + rowH / 2 + wSize * 0.35;
-      alphaColor("#D8C4AB", 1);
+      const famGrad = ctx.createLinearGradient(x, wBase - wSize, x + famW, wBase);
+      famGrad.addColorStop(0, "#b99a74");
+      famGrad.addColorStop(0.22, "#D8C4AB");
+      famGrad.addColorStop(0.38, "#f7ecdd");
+      famGrad.addColorStop(0.52, "#D8C4AB");
+      famGrad.addColorStop(0.68, "#a98a63");
+      famGrad.addColorStop(0.86, "#D8C4AB");
+      famGrad.addColorStop(1, "#f0e2d2");
+      ctx.fillStyle = famGrad;
       ctx.fillText("fam", x, wBase);
-      alphaColor("#EB5F06", 1);
+      const usGrad = ctx.createLinearGradient(x + famW, wBase - wSize, x + famW + usW, wBase);
+      usGrad.addColorStop(0, "#c14a05");
+      usGrad.addColorStop(0.22, "#EB5F06");
+      usGrad.addColorStop(0.38, "#ffb066");
+      usGrad.addColorStop(0.52, "#EB5F06");
+      usGrad.addColorStop(0.68, "#b84405");
+      usGrad.addColorStop(0.86, "#EB5F06");
+      usGrad.addColorStop(1, "#ff9a4d");
+      ctx.fillStyle = usGrad;
       ctx.fillText("US", x + famW, wBase);
       ctx.letterSpacing = "0px";
 
@@ -470,7 +486,7 @@ function Index() {
         <a href="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
           <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
-          <span className="whitespace-nowrap"><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
+          <span className="whitespace-nowrap"><span className="famus-metal-fam">fam</span><span className="famus-metal-us">US</span></span>
         </a>
       </header>
 
@@ -583,7 +599,7 @@ function Index() {
                       <div className="mt-[16cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
-                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
+                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="famus-metal-fam">fam</span><span className="famus-metal-us">US</span></span>
                       </div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
