@@ -321,9 +321,25 @@ function Index() {
       ctx.fillRect(x, y + (rowH - 7.5 * q) / 2, 2, 7.5 * q);
       x += 2 + gap;
       const wBase = y + rowH / 2 + wSize * 0.35;
-      alphaColor("#D8C4AB", 1);
+      const famGrad = ctx.createLinearGradient(x, wBase - wSize, x + famW, wBase);
+      famGrad.addColorStop(0, "#b99a74");
+      famGrad.addColorStop(0.22, "#D8C4AB");
+      famGrad.addColorStop(0.38, "#f7ecdd");
+      famGrad.addColorStop(0.52, "#D8C4AB");
+      famGrad.addColorStop(0.68, "#a98a63");
+      famGrad.addColorStop(0.86, "#D8C4AB");
+      famGrad.addColorStop(1, "#f0e2d2");
+      ctx.fillStyle = famGrad;
       ctx.fillText("fam", x, wBase);
-      alphaColor("#EB5F06", 1);
+      const usGrad = ctx.createLinearGradient(x + famW, wBase - wSize, x + famW + usW, wBase);
+      usGrad.addColorStop(0, "#c14a05");
+      usGrad.addColorStop(0.22, "#EB5F06");
+      usGrad.addColorStop(0.38, "#ffb066");
+      usGrad.addColorStop(0.52, "#EB5F06");
+      usGrad.addColorStop(0.68, "#b84405");
+      usGrad.addColorStop(0.86, "#EB5F06");
+      usGrad.addColorStop(1, "#ff9a4d");
+      ctx.fillStyle = usGrad;
       ctx.fillText("US", x + famW, wBase);
       ctx.letterSpacing = "0px";
 
