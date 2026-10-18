@@ -321,75 +321,26 @@ function Index() {
       ctx.fillRect(x, y + (rowH - 7.5 * q) / 2, 2, 7.5 * q);
       x += 2 + gap;
       const wBase = y + rowH / 2 + wSize * 0.35;
-
-      // Brushed-metal wordmark: colour bands + striations + bevel, composed
-      // offscreen so the texture clips to the glyphs only.
-      const wmPad = Math.ceil(wSize * 0.5);
-      const wmW = Math.ceil(famW + usW) + wmPad * 2;
-      const wmH = Math.ceil(rowH) + wmPad * 2;
-      const off = document.createElement("canvas");
-      off.width = wmW;
-      off.height = wmH;
-      const oc = off.getContext("2d");
-      const baseIn = wmPad + rowH / 2 + wSize * 0.35;
-      if (oc) {
-        oc.font = ctx.font;
-        oc.letterSpacing = ctx.letterSpacing;
-        oc.textAlign = "left";
-        const edge = Math.max(1, Math.round(wSize * 0.012));
-        oc.fillStyle = "rgba(0,0,0,0.55)";
-        oc.fillText("fam", wmPad, baseIn + edge);
-        oc.fillText("US", wmPad + famW, baseIn + edge);
-        const famGrad = oc.createLinearGradient(wmPad, 0, wmPad + famW, 0);
-        famGrad.addColorStop(0, "#b08e63");
-        famGrad.addColorStop(0.1, "#D8C4AB");
-        famGrad.addColorStop(0.18, "#fffaf2");
-        famGrad.addColorStop(0.28, "#d6c0a2");
-        famGrad.addColorStop(0.4, "#fff6ea");
-        famGrad.addColorStop(0.52, "#c3a883");
-        famGrad.addColorStop(0.64, "#f2e5d3");
-        famGrad.addColorStop(0.74, "#fffaf2");
-        famGrad.addColorStop(0.86, "#cbae8a");
-        famGrad.addColorStop(1, "#e2d2ba");
-        oc.fillStyle = famGrad;
-        oc.fillText("fam", wmPad, baseIn);
-        const usGrad = oc.createLinearGradient(wmPad + famW, 0, wmPad + famW + usW, 0);
-        usGrad.addColorStop(0, "#c14a05");
-        usGrad.addColorStop(0.1, "#EB5F06");
-        usGrad.addColorStop(0.18, "#ffdcae");
-        usGrad.addColorStop(0.28, "#f0730f");
-        usGrad.addColorStop(0.4, "#ff9a4d");
-        usGrad.addColorStop(0.52, "#d1520a");
-        usGrad.addColorStop(0.64, "#ff8f45");
-        usGrad.addColorStop(0.74, "#ffd0a0");
-        usGrad.addColorStop(0.86, "#EB5F06");
-        usGrad.addColorStop(1, "#ff9a4d");
-        oc.fillStyle = usGrad;
-        oc.fillText("US", wmPad + famW, baseIn);
-        oc.globalCompositeOperation = "source-atop";
-        const bev = oc.createLinearGradient(0, baseIn - wSize * 0.85, 0, baseIn + wSize * 0.2);
-        bev.addColorStop(0, "rgba(255,255,255,0.30)");
-        bev.addColorStop(0.45, "rgba(255,255,255,0)");
-        bev.addColorStop(1, "rgba(0,0,0,0.22)");
-        oc.fillStyle = bev;
-        oc.fillRect(0, 0, wmW, wmH);
-        const band = Math.max(2, Math.round(wSize * 0.075));
-        const wire = Math.max(1, Math.round(band * 0.33));
-        for (let sx = 0; sx < wmW; sx += band) {
-          oc.fillStyle = "rgba(255,255,255,0.16)";
-          oc.fillRect(sx, 0, wire, wmH);
-          oc.fillStyle = "rgba(0,0,0,0.10)";
-          oc.fillRect(sx + wire, 0, wire, wmH);
-        }
-        oc.globalCompositeOperation = "source-over";
-        ctx.globalAlpha = 1;
-        ctx.drawImage(off, x - wmPad, y - wmPad, wmW, wmH);
-      } else {
-        alphaColor("#D8C4AB", 1);
-        ctx.fillText("fam", x, wBase);
-        alphaColor(primary, 1);
-        ctx.fillText("US", x + famW, wBase);
-      }
+      const famGrad = ctx.createLinearGradient(x, wBase - wSize, x + famW, wBase);
+      famGrad.addColorStop(0, "#b99a74");
+      famGrad.addColorStop(0.22, "#D8C4AB");
+      famGrad.addColorStop(0.38, "#f7ecdd");
+      famGrad.addColorStop(0.52, "#D8C4AB");
+      famGrad.addColorStop(0.68, "#a98a63");
+      famGrad.addColorStop(0.86, "#D8C4AB");
+      famGrad.addColorStop(1, "#f0e2d2");
+      ctx.fillStyle = famGrad;
+      ctx.fillText("fam", x, wBase);
+      const usGrad = ctx.createLinearGradient(x + famW, wBase - wSize, x + famW + usW, wBase);
+      usGrad.addColorStop(0, "#c14a05");
+      usGrad.addColorStop(0.22, "#EB5F06");
+      usGrad.addColorStop(0.38, "#ffb066");
+      usGrad.addColorStop(0.52, "#EB5F06");
+      usGrad.addColorStop(0.68, "#b84405");
+      usGrad.addColorStop(0.86, "#EB5F06");
+      usGrad.addColorStop(1, "#ff9a4d");
+      ctx.fillStyle = usGrad;
+      ctx.fillText("US", x + famW, wBase);
       ctx.letterSpacing = "0px";
 
       // Bottom block, anchored 8cqw from bottom

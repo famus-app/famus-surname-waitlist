@@ -320,34 +320,32 @@
   animation: famus-gradient-move 8s linear infinite;
 }
 
-/* Brushed-metal finish for the famUS wordmark (header + card back):
-   fine striations, a top-lit bevel and travelling specular bands — no glow. */
-.famus-metal-fam,
-.famus-metal-us {
+/* Metallic sheen for the famUS wordmark (header + card back):
+   base brand colors with a light/dark metal sweep and a soft glow. */
+.famus-metal-fam {
+  background-image: linear-gradient(100deg, #a9865c 0%, #D8C4AB 16%, #fffaf2 27%, #D8C4AB 39%, #c0a17a 53%, #fff6ea 65%, #D8C4AB 79%, #b8946a 100%);
+  background-size: 220% 100%;
   background-repeat: no-repeat;
-  background-size: 100% 100%, 100% 100%, 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: famus-metal-sheen 5.5s ease-in-out infinite;
-  filter: drop-shadow(0 1px 0 oklch(0.22 0.01 60 / 0.6));
-}
-.famus-metal-fam {
-  background-image:
-    linear-gradient(to bottom, rgba(255,255,255,.34) 0%, rgba(255,255,255,0) 44%, rgba(0,0,0,.30) 100%),
-    repeating-linear-gradient(96deg, rgba(255,255,255,.16) 0 1px, rgba(0,0,0,.14) 1px 3px),
-    linear-gradient(100deg, #8d7153 0%, #D8C4AB 11%, #fffaf2 19%, #c3a883 28%, #f2e5d3 40%, #a9865c 52%, #e6d3b8 64%, #fffaf2 74%, #b8946a 86%, #D8C4AB 100%);
+  filter: drop-shadow(0 0 0.16em oklch(0.88 0.05 81 / 0.6)) drop-shadow(0 0 0.45em oklch(0.86 0.06 81 / 0.35));
 }
 .famus-metal-us {
-  background-image:
-    linear-gradient(to bottom, rgba(255,255,255,.30) 0%, rgba(255,255,255,0) 44%, rgba(0,0,0,.32) 100%),
-    repeating-linear-gradient(96deg, rgba(255,255,255,.15) 0 1px, rgba(0,0,0,.16) 1px 3px),
-    linear-gradient(100deg, #8f3604 0%, #EB5F06 11%, #ffd0a0 19%, #c14a05 28%, #ff8f45 40%, #a83d04 52%, #f97b1e 64%, #ffc48a 74%, #b84405 86%, #EB5F06 100%);
+  background-image: linear-gradient(100deg, #b84405 0%, #EB5F06 16%, #ffdcae 27%, #EB5F06 39%, #d1520a 53%, #ffc888 65%, #EB5F06 79%, #a83d04 100%);
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: famus-metal-sheen 5.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 0.16em oklch(0.68 0.2 43 / 0.65)) drop-shadow(0 0 0.45em oklch(0.656 0.19 43.7 / 0.4));
 }
 @keyframes famus-metal-sheen {
-  0% { background-position: 0 0, 0 0, 0% 50%; }
-  50% { background-position: 0 0, 0 0, 100% 50%; }
-  100% { background-position: 0 0, 0 0, 0% 50%; }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @keyframes famus-gradient-move {
