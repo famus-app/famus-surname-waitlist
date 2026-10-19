@@ -60,21 +60,21 @@ const buildBrush = (seed: number, n = 320) => {
   for (let i = 0; i <= n; i++) {
     const x = i / n;
     // paint sits heaviest mid-stroke and runs dry into split bristles at the ends
-    const env = Math.pow(Math.sin(Math.PI * x), 0.5);
-    const half = 0.29 * env * (0.85 + (thick(x) + 0.5) * 0.3);
-    const c = 0.5 + drift(x) * 0.12;
+    const env = Math.pow(Math.sin(Math.PI * x), 0.28);
+    const half = 0.44 * env * (0.85 + (thick(x) + 0.5) * 0.3);
+    const c = 0.5 + drift(x) * 0.05;
     top.push([x, c - half + tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009]);
     bot.push([x, c + half + bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009]);
   }
   // bristle streaks: [y centre, thickness, opacity, x start, x end] of the band box
   const streaks: [number, number, number, number, number][] = [];
-  for (let i = 0; i < 30; i++) {
-    const yc = 0.5 + (rnd() - 0.5) * 0.42;
-    const th = 0.012 + rnd() * 0.045;
-    const a = 0.12 + rnd() * 0.4;
-    const x0 = rnd() < 0.45 ? 0 : 0.08 + rnd() * 0.3;
-    const x1 = rnd() < 0.45 ? 1 : 0.6 + rnd() * 0.32;
-    streaks.push([yc, th, a, x0, Math.max(x1, x0 + 0.12)]);
+  for (let i = 0; i < 46; i++) {
+    const yc = 0.5 + (rnd() - 0.5) * 0.62;
+    const th = 0.01 + rnd() * 0.05;
+    const a = 0.1 + rnd() * 0.45;
+    const x0 = rnd() < 0.6 ? 0 : rnd() * 0.25;
+    const x1 = rnd() < 0.6 ? 1 : 0.75 + rnd() * 0.25;
+    streaks.push([yc, th, a, x0, Math.max(x1, x0 + 0.1)]);
   }
   // flecks the bristles throw off past either end of the swipe
   const flecks: [number, number, number][] = [];
@@ -343,11 +343,11 @@ function Index() {
       const nw = ctx.measureText(num).width;
       const startX = 540 - (pw + nw) / 2;
 
-      // same box the live card hands the SVG: text plus 5cqw at the sides, 1.6cqw top and bottom
-      const swX = startX - 5 * q;
-      const swW = pw + nw + 10 * q;
-      const swY = y - 1.6 * q;
-      const swH = fSize + 3.2 * q;
+      // same box the live card hands the SVG: text plus 6cqw at the sides, 2.4cqw top and bottom
+      const swX = startX - 6 * q;
+      const swW = pw + nw + 12 * q;
+      const swY = y - 2.4 * q;
+      const swH = fSize + 4.8 * q;
       const traceBrush = () => {
         const t = BRUSH.top.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
         const b = BRUSH.bot.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
@@ -693,7 +693,7 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
-                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" className="absolute -inset-x-[5cqw] -top-[1.6cqw] -bottom-[1.6cqw]" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
+                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" className="absolute -inset-x-[6cqw] -top-[2.4cqw] -bottom-[2.4cqw]" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
                           <defs>
                             <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="0" stopColor="#E7D8C2" />
