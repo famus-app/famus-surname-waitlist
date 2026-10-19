@@ -270,7 +270,7 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // fam #0001
+      // fam #0001 laid on a beige paint-brush swipe
       y += 6 * q;
       const fSize = 8 * q;
       ctx.font = `${fSize}px "Instrument Serif", serif`;
@@ -279,11 +279,58 @@ function Index() {
       const pw = ctx.measureText(prefix).width;
       const nw = ctx.measureText(num).width;
       const startX = 540 - (pw + nw) / 2;
+
+      // same box the live card hands the SVG: text plus 5cqw at the sides, 1.6cqw top and bottom
+      const bx = startX - 5 * q;
+      const bw = pw + nw + 10 * q;
+      const by = y - 1.6 * q;
+      const bh = fSize + 3.2 * q;
+      const traceBrush = () => {
+        const t = BRUSH.top.map(([px, py]) => [bx + px * bw, by + py * bh] as const);
+        const b = BRUSH.bot.map(([px, py]) => [bx + px * bw, by + py * bh] as const);
+        ctx.beginPath();
+        t.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+        for (let i = b.length - 1; i >= 0; i--) ctx.lineTo(b[i][0], b[i][1]);
+        ctx.closePath();
+      };
+      ctx.save();
+      ctx.translate(bx + bw / 2, by + bh / 2);
+      ctx.rotate((BRUSH_TILT * Math.PI) / 180);
+      ctx.translate(-(bx + bw / 2), -(by + bh / 2));
+      const paint = ctx.createLinearGradient(0, by, 0, by + bh);
+      paint.addColorStop(0, "#E7D8C2");
+      paint.addColorStop(0.42, "#D8C4AB");
+      paint.addColorStop(1, "#BEA385");
+      traceBrush();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = paint;
+      ctx.fill();
+      ctx.save();
+      traceBrush();
+      ctx.clip();
+      BRUSH.streaks.forEach(([yc, th, a, x0, x1], i) => {
+        ctx.globalAlpha = a;
+        ctx.fillStyle = i % 3 ? "#BEA385" : "#E7D8C2";
+        ctx.fillRect(bx + x0 * bw, by + (yc - th / 2) * bh, (x1 - x0) * bw, th * bh);
+      });
+      ctx.restore();
+      BRUSH.flecks.forEach(([fx, fy, fr]) => {
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = "#D8C4AB";
+        ctx.beginPath();
+        ctx.ellipse(bx + fx * bw, by + fy * bh, fr * (bw / BRUSH_W), fr * (bh / BRUSH_H), 0, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.restore();
+
+      ctx.shadowColor = "rgba(0,0,0,0)";
       ctx.textAlign = "left";
-      alphaColor(foreground, 1);
+      alphaColor(background, 1);
       ctx.fillText(prefix, startX, y + fSize * 0.8);
-      alphaColor("#D8C4AB", 1);
       ctx.fillText(num, startX + pw, y + fSize * 0.8);
+      ctx.shadowColor = "rgba(0,0,0,0.35)";
+      ctx.shadowBlur = 15;
+      ctx.shadowOffsetY = 10;
       y += fSize;
       ctx.textAlign = "center";
 
@@ -582,7 +629,28 @@ function Index() {
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
-                      <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
+                      <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
+                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" className="absolute -inset-x-[5cqw] -top-[1.6cqw] -bottom-[1.6cqw]" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
+                          <defs>
+                            <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stopColor="#E7D8C2" />
+                              <stop offset="0.42" stopColor="#D8C4AB" />
+                              <stop offset="1" stopColor="#BEA385" />
+                            </linearGradient>
+                            <clipPath id="famus-brush-clip"><polygon points={BRUSH_STRIP} /></clipPath>
+                          </defs>
+                          <polygon points={BRUSH_STRIP} fill="url(#famus-brush)" />
+                          <g clipPath="url(#famus-brush-clip)">
+                            {BRUSH.streaks.map(([yc, th, a, x0, x1], i) => (
+                              <rect key={i} x={x0 * BRUSH_W} y={(yc - th / 2) * BRUSH_H} width={(x1 - x0) * BRUSH_W} height={th * BRUSH_H} fill={i % 3 ? "#BEA385" : "#E7D8C2"} fillOpacity={a} />
+                            ))}
+                          </g>
+                          {BRUSH.flecks.map(([x, y, r], i) => (
+                            <circle key={i} cx={x * BRUSH_W} cy={y * BRUSH_H} r={r} fill="#D8C4AB" fillOpacity="0.55" />
+                          ))}
+                        </svg>
+                        <p className="relative font-display text-[8cqw] leading-none text-background">{"fam #"}{String(claimNumber ?? 0).padStart(4, "0")}</p>
+                      </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
