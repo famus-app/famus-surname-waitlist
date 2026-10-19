@@ -66,15 +66,27 @@ const buildBrush = (seed: number, n = 320) => {
     top.push([x, c - half + tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009]);
     bot.push([x, c + half + bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009]);
   }
-  // bristle streaks: [y centre, thickness, opacity, x start, x end] of the band box
-  const streaks: [number, number, number, number, number][] = [];
-  for (let i = 0; i < 46; i++) {
+  // bristle fibres: tapered paint threads, each a closed outline in band space
+  const streaks: { poly: [number, number][]; a: number; lit: boolean }[] = [];
+  for (let i = 0; i < 38; i++) {
     const yc = 0.5 + (rnd() - 0.5) * 0.62;
-    const th = 0.01 + rnd() * 0.05;
-    const a = 0.1 + rnd() * 0.45;
+    const th = 0.02 + rnd() * 0.09;
+    const a = 0.1 + rnd() * 0.4;
     const x0 = rnd() < 0.6 ? 0 : rnd() * 0.25;
     const x1 = rnd() < 0.6 ? 1 : 0.75 + rnd() * 0.25;
-    streaks.push([yc, th, a, x0, Math.max(x1, x0 + 0.1)]);
+    const bow = (rnd() - 0.5) * 0.06; // the fibre curves as it travels
+    const up: [number, number][] = [];
+    const dn: [number, number][] = [];
+    for (let j = 0; j <= 26; j++) {
+      const t = j / 26;
+      const x = x0 + (x1 - x0) * t;
+      // pinched at both ends so a fibre reads as a thread, never a bar
+      const w = (th / 2) * Math.pow(Math.sin(Math.PI * t), 0.6);
+      const y = yc + bow * Math.sin(Math.PI * t);
+      up.push([x, y - w]);
+      dn.push([x, y + w]);
+    }
+    streaks.push({ poly: [...up, ...dn.reverse()], a, lit: i % 3 === 0 });
   }
   // flecks the bristles throw off past either end of the swipe
   const flecks: [number, number, number][] = [];
@@ -371,10 +383,17 @@ function Index() {
       ctx.save();
       traceBrush();
       ctx.clip();
-      BRUSH.streaks.forEach(([yc, th, a, x0, x1], i) => {
-        ctx.globalAlpha = a;
-        ctx.fillStyle = i % 3 ? "#BEA385" : "#E7D8C2";
-        ctx.fillRect(swX + x0 * swW, swY + (yc - th / 2) * swH, (x1 - x0) * swW, th * swH);
+      BRUSH.streaks.forEach((s) => {
+        ctx.globalAlpha = s.a;
+        ctx.fillStyle = s.lit ? "#E7D8C2" : "#BEA385";
+        ctx.beginPath();
+        s.poly.forEach(([px, py], j) => {
+          const X = swX + px * swW;
+          const Y = swY + py * swH;
+          if (j) ctx.lineTo(X, Y); else ctx.moveTo(X, Y);
+        });
+        ctx.closePath();
+        ctx.fill();
       });
       ctx.restore();
       BRUSH.flecks.forEach(([fx, fy, fr]) => {
@@ -708,8 +727,8 @@ function Index() {
                           </defs>
                           <polygon points={BRUSH_STRIP} fill="url(#famus-brush)" />
                           <g clipPath="url(#famus-brush-clip)">
-                            {BRUSH.streaks.map(([yc, th, a, x0, x1], i) => (
-                              <rect key={i} x={x0 * BRUSH_W} y={(yc - th / 2) * BRUSH_H} width={(x1 - x0) * BRUSH_W} height={th * BRUSH_H} fill={i % 3 ? "#BEA385" : "#E7D8C2"} fillOpacity={a} />
+                            {BRUSH.streaks.map((s, i) => (
+                              <polygon key={i} points={brushPts(s.poly)} fill={s.lit ? "#E7D8C2" : "#BEA385"} fillOpacity={s.a} />
                             ))}
                           </g>
                           {BRUSH.flecks.map(([x, y, r], i) => (
