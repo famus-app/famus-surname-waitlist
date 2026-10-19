@@ -421,7 +421,7 @@ function Index() {
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
-      y += fSize;
+      y += fSize + (8 * q - fSize) / 2;
       ctx.textAlign = "center";
 
 
