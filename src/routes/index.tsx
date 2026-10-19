@@ -720,7 +720,7 @@ function Index() {
                         <p className="font-display text-[8cqw] leading-none">
                           <span className="text-foreground">{"fam "}</span>
                           <span className="relative inline-block">
-                            <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" overflow="visible" className="absolute -left-[3cqw] -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+6cqw)] overflow-visible" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
+                            <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" overflow="visible" className="absolute -left-[1cqw] -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+4cqw)] overflow-visible" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
                           <defs>
                             <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="0" stopColor="#E7D8C2" />
