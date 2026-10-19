@@ -108,6 +108,14 @@ const brushPts = (pts: readonly (readonly [number, number])[]) =>
 const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())}`;
 
 // The number is a single flat gold — no gradient or texture painted behind it.
+// Card back text slots are fixed-height; long values only shrink their font (cqw units).
+export function handleSize(handle: string) {
+  return Math.min(10, 84 / ((handle.length + 1) * 0.62));
+}
+export function numberSize(num: string) {
+  return Math.min(8, 84 / ((num.length + 4) * 0.5));
+}
+
 // Bronze-copper ramp for the family number, matched to the front artwork's lettering — keep in sync with .famus-gold in styles.css
 const GOLD_STOPS: [number, string][] = [
   [0, "#3A1B08"], [0.08, "#8A4E22"], [0.18, "#E3B98A"], [0.3, "#F2D9B8"],
@@ -343,9 +351,15 @@ function Index() {
       ctx.shadowOffsetY = 10;
 
       // Handle: top 65cqw
-      const hSize = (handle.length > 12 ? 8 : handle.length > 8 ? 9 : 10) * q;
+      // locked slot: line height stays 10q; long names only shrink the font to fit 84q width
+      let hSize = handleSize(handle) * q;
+      ctx.font = `${hSize}px "Canarina", sans-serif`;
+      {
+        const w0 = ctx.measureText("@" + handle).width;
+        if (w0 > 84 * q) hSize *= (84 * q) / w0;
+      }
       let y = 65 * q;
-      const hBase = y + hSize * 0.8;
+      const hBase = y + 10 * q * 0.5 + hSize * 0.35;
       alphaColor("#D8C4AB", 1);
       // "@" in the body font, the name in the wordmark font — measure both so the pair stays centred
       ctx.textAlign = "left";
@@ -359,7 +373,7 @@ function Index() {
       ctx.font = `${hSize}px "Canarina", sans-serif`;
       ctx.fillText(handle, hx + atW, hBase, 88 * q);
       ctx.textAlign = "center";
-      y += hSize;
+      y += 10 * q;
 
       // Divider
       y += 6 * q;
@@ -369,10 +383,15 @@ function Index() {
 
       // the word fam stays plain; the number alone is bold gold
       y += 6 * q;
-      const fSize = 8 * q;
-      ctx.font = `${fSize}px "Instrument Serif", serif`;
       const lead = "fam ";
       const num = "#" + String(claimNumber).padStart(4, "0");
+      let fSize = numberSize(num) * q;
+      ctx.font = `${fSize}px "Instrument Serif", serif`;
+      {
+        const w0 = ctx.measureText(lead + num).width;
+        if (w0 > 84 * q) { fSize *= (84 * q) / w0; ctx.font = `${fSize}px "Instrument Serif", serif`; }
+      }
+      y += (8 * q - fSize) / 2;
       const lw = ctx.measureText(lead).width;
       const nw = ctx.measureText(num).width;
       const startX = 540 - (lw + nw) / 2;
@@ -705,10 +724,10 @@ function Index() {
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
-                      <p className={`famus-pop max-w-full break-words font-wordmark leading-none ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[9cqw]" : "text-[10cqw]"}`} style={{ ["--pop" as string]: "30px", color: "#D8C4AB" }}><span className="font-body">@</span>{handle}</p>
+                      <p className="famus-pop flex h-[10cqw] max-w-full items-center justify-center whitespace-nowrap font-wordmark leading-none" style={{ ["--pop" as string]: "30px", color: "#D8C4AB", fontSize: `${handleSize(handle)}cqw` }}><span className="font-body">@</span>{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
-                      <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
-                        <p className="font-display text-[8cqw] leading-none">
+                      <div className="famus-pop relative mt-[6cqw] flex h-[8cqw] items-center" style={{ ["--pop" as string]: "24px" }}>
+                        <p className="whitespace-nowrap font-display leading-none" style={{ fontSize: `${numberSize("#" + String(claimNumber ?? 0).padStart(4, "0"))}cqw` }}>
                           <span className="text-foreground">{"fam "}</span>
                           <span className="famus-gold font-bold">{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
