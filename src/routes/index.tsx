@@ -29,6 +29,81 @@ const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-ascii.png.asset.json";
 import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 
+// Beige paint-brush swipe laid behind the family number. One seeded generator
+// feeds both the live card SVG and the share-card canvas, so both draw one stroke.
+const brushRand = (seed: number) => () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+const buildBrush = (seed: number, n = 320) => {
+  const rnd = brushRand(seed);
+  // value noise: random grid values joined by a smoothstep
+  const wave = (cells: number) => {
+    const g = Array.from({ length: cells + 1 }, () => rnd() - 0.5);
+    return (t: number) => {
+      const s = t * cells;
+      const i = Math.min(Math.floor(s), cells - 1);
+      const f = s - i;
+      const a = g[i] ?? 0;
+      const b = g[i + 1] ?? 0;
+      return a + (b - a) * (f * f * (3 - 2 * f));
+    };
+  };
+  const tBig = wave(6), tMid = wave(24), tFine = wave(130);
+  const bBig = wave(6), bMid = wave(24), bFine = wave(130);
+  const drift = wave(8);
+  const thick = wave(40);
+  const top: [number, number][] = [];
+  const bot: [number, number][] = [];
+  for (let i = 0; i <= n; i++) {
+    const x = i / n;
+    // paint sits heaviest mid-stroke and runs dry into split bristles at the ends
+    const env = Math.pow(Math.sin(Math.PI * x), 0.2);
+    const half = 0.46 * env * (0.85 + (thick(x) + 0.5) * 0.3);
+    const c = 0.5 + drift(x) * 0.05;
+    top.push([x, c - half + tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009]);
+    bot.push([x, c + half + bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009]);
+  }
+  // bristle fibres: tapered paint threads, each a closed outline in band space
+  const streaks: { poly: [number, number][]; a: number; lit: boolean }[] = [];
+  for (let i = 0; i < 38; i++) {
+    const yc = 0.5 + (rnd() - 0.5) * 0.62;
+    const th = 0.02 + rnd() * 0.09;
+    const a = 0.1 + rnd() * 0.4;
+    const x0 = rnd() < 0.6 ? 0 : rnd() * 0.25;
+    const x1 = rnd() < 0.6 ? 1 : 0.75 + rnd() * 0.25;
+    const bow = (rnd() - 0.5) * 0.06; // the fibre curves as it travels
+    const up: [number, number][] = [];
+    const dn: [number, number][] = [];
+    for (let j = 0; j <= 26; j++) {
+      const t = j / 26;
+      const x = x0 + (x1 - x0) * t;
+      // pinched at both ends so a fibre reads as a thread, never a bar
+      const w = (th / 2) * Math.pow(Math.sin(Math.PI * t), 0.6);
+      const y = yc + bow * Math.sin(Math.PI * t);
+      up.push([x, y - w]);
+      dn.push([x, y + w]);
+    }
+    streaks.push({ poly: [...up, ...dn.reverse()], a, lit: i % 3 === 0 });
+  }
+  // flecks the bristles throw off past either end of the swipe
+  const flecks: [number, number, number][] = [];
+  for (let i = 0; i < 26; i++) {
+    const nearLeft = rnd() < 0.5;
+    flecks.push([nearLeft ? rnd() * 0.09 : 0.91 + rnd() * 0.09, 0.5 + (rnd() - 0.5) * 0.5, 0.6 + rnd() * 2.4]);
+  }
+  return { top, bot, streaks, flecks };
+};
+const BRUSH = buildBrush(4471);
+const BRUSH_W = 900;
+const BRUSH_H = 130;
+const BRUSH_TILT = -1.1; // degrees, so the swipe reads as hand-laid
+const brushPts = (pts: readonly (readonly [number, number])[]) =>
+  pts.map(([x, y]) => `${(x * BRUSH_W).toFixed(1)},${(y * BRUSH_H).toFixed(1)}`).join(" ");
+const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())}`;
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -270,7 +345,7 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // fam #0001
+      // fam #0001 laid on a beige paint-brush swipe
       y += 6 * q;
       const fSize = 8 * q;
       ctx.font = `${fSize}px "Instrument Serif", serif`;
@@ -279,11 +354,69 @@ function Index() {
       const pw = ctx.measureText(prefix).width;
       const nw = ctx.measureText(num).width;
       const startX = 540 - (pw + nw) / 2;
+
+      // same box the live card hands the SVG: text plus 6cqw at the sides, 2.4cqw top and bottom
+      const swX = startX - 6 * q;
+      const swW = pw + nw + 12 * q;
+      const swY = y - 2.4 * q;
+      const swH = fSize + 4.8 * q;
+      const traceBrush = () => {
+        const t = BRUSH.top.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
+        const b = BRUSH.bot.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
+        ctx.beginPath();
+        t.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+        for (const [px, py] of b.slice().reverse()) ctx.lineTo(px, py);
+        ctx.closePath();
+      };
+      ctx.save();
+      ctx.translate(swX + swW / 2, swY + swH / 2);
+      ctx.rotate((BRUSH_TILT * Math.PI) / 180);
+      ctx.translate(-(swX + swW / 2), -(swY + swH / 2));
+      const paint = ctx.createLinearGradient(0, swY, 0, swY + swH);
+      paint.addColorStop(0, "#E7D8C2");
+      paint.addColorStop(0.42, "#D8C4AB");
+      paint.addColorStop(1, "#BEA385");
+      traceBrush();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = paint;
+      ctx.fill();
+      ctx.save();
+      traceBrush();
+      ctx.clip();
+      BRUSH.streaks.forEach((s) => {
+        ctx.globalAlpha = s.a;
+        ctx.fillStyle = s.lit ? "#E7D8C2" : "#BEA385";
+        ctx.beginPath();
+        s.poly.forEach(([px, py], j) => {
+          const X = swX + px * swW;
+          const Y = swY + py * swH;
+          if (j) ctx.lineTo(X, Y); else ctx.moveTo(X, Y);
+        });
+        ctx.closePath();
+        ctx.fill();
+      });
+      ctx.restore();
+      BRUSH.flecks.forEach(([fx, fy, fr]) => {
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = "#D8C4AB";
+        ctx.beginPath();
+        ctx.ellipse(swX + fx * swW, swY + fy * swH, fr * (swW / BRUSH_W), fr * (swH / BRUSH_H), 0, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.restore();
+
+      ctx.shadowColor = "rgba(0,0,0,0)";
       ctx.textAlign = "left";
-      alphaColor(foreground, 1);
-      ctx.fillText(prefix, startX, y + fSize * 0.8);
-      alphaColor("#D8C4AB", 1);
-      ctx.fillText(num, startX + pw, y + fSize * 0.8);
+      alphaColor(background, 1);
+      // place the baseline the way a line-height:1 box does, so the number sits in the
+      // paint at exactly the height the live card shows it
+      const fm = ctx.measureText(prefix + num);
+      const base = y + (fSize - (fm.fontBoundingBoxAscent + fm.fontBoundingBoxDescent)) / 2 + fm.fontBoundingBoxAscent;
+      ctx.fillText(prefix, startX, base);
+      ctx.fillText(num, startX + pw, base);
+      ctx.shadowColor = "rgba(0,0,0,0.35)";
+      ctx.shadowBlur = 15;
+      ctx.shadowOffsetY = 10;
       y += fSize;
       ctx.textAlign = "center";
 
@@ -582,7 +715,28 @@ function Index() {
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
-                      <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
+                      <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
+                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" overflow="visible" className="absolute -inset-x-[6cqw] -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+12cqw)] overflow-visible" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
+                          <defs>
+                            <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stopColor="#E7D8C2" />
+                              <stop offset="0.42" stopColor="#D8C4AB" />
+                              <stop offset="1" stopColor="#BEA385" />
+                            </linearGradient>
+                            <clipPath id="famus-brush-clip"><polygon points={BRUSH_STRIP} /></clipPath>
+                          </defs>
+                          <polygon points={BRUSH_STRIP} fill="url(#famus-brush)" />
+                          <g clipPath="url(#famus-brush-clip)">
+                            {BRUSH.streaks.map((s, i) => (
+                              <polygon key={i} points={brushPts(s.poly)} fill={s.lit ? "#E7D8C2" : "#BEA385"} fillOpacity={s.a} />
+                            ))}
+                          </g>
+                          {BRUSH.flecks.map(([x, y, r], i) => (
+                            <circle key={i} cx={x * BRUSH_W} cy={y * BRUSH_H} r={r} fill="#D8C4AB" fillOpacity="0.55" />
+                          ))}
+                        </svg>
+                        <p className="relative font-display text-[8cqw] leading-none text-background">{"fam #"}{String(claimNumber ?? 0).padStart(4, "0")}</p>
+                      </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
