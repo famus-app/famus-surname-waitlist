@@ -49,7 +49,9 @@ const buildTorn = (base: number, amp: number, seed: number, n = 420) => {
       const s = t * cells;
       const i = Math.min(Math.floor(s), cells - 1);
       const f = s - i;
-      return g[i] + (g[i + 1] - g[i]) * (f * f * (3 - 2 * f));
+      const a = g[i] ?? 0;
+      const b = g[i + 1] ?? 0;
+      return a + (b - a) * (f * f * (3 - 2 * f));
     };
   };
   const big = wave(6);
