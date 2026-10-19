@@ -35,4 +35,5 @@
 - [x] Set the card-back @handle in the famUS wordmark font (live card + downloaded card)
 - [x] Make the card-back @handle smaller and warm beige (live card + downloaded card)
 - [x] Show the "@" in the regular text font while the name stays in the famUS font (live card + downloaded card)
-- [ ] Make the card-back @handle a bit bigger again (live card + downloaded card)
+- [x] Make the card-back @handle a bit bigger again (live card + downloaded card)
+- [ ] Confirm the warm-beige handle colour and new size in the preview (source updated, build OK; last captures came from a cached copy)
