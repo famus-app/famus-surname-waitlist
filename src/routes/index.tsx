@@ -343,7 +343,7 @@ function Index() {
       ctx.shadowOffsetY = 10;
 
       // Handle: top 65cqw
-      const hSize = (handle.length > 12 ? 5.5 : handle.length > 8 ? 6.5 : 7.5) * q;
+      const hSize = (handle.length > 12 ? 6.5 : handle.length > 8 ? 7.5 : 8.5) * q;
       let y = 65 * q;
       const hBase = y + hSize * 0.8;
       alphaColor("#D8C4AB", 1);
@@ -705,7 +705,7 @@ function Index() {
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
-                      <p className={`famus-pop max-w-full break-words font-wordmark leading-none ${handle.length > 12 ? "text-[5.5cqw]" : handle.length > 8 ? "text-[6.5cqw]" : "text-[7.5cqw]"}`} style={{ ["--pop" as string]: "30px", color: "#D8C4AB" }}><span className="font-body">@</span>{handle}</p>
+                      <p className={`famus-pop max-w-full break-words font-wordmark leading-none ${handle.length > 12 ? "text-[6.5cqw]" : handle.length > 8 ? "text-[7.5cqw]" : "text-[8.5cqw]"}`} style={{ ["--pop" as string]: "30px", color: "#D8C4AB" }}><span className="font-body">@</span>{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
                         <p className="font-display text-[8cqw] leading-none">
