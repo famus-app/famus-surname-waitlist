@@ -32,27 +32,25 @@ import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 // Torn-paper strip drawn beneath the family number. The same normalized points
 // feed the live card SVG and the share-card canvas, so both render one rip.
 // Points are [x across the band, y down the band], each 0..1 of the band box.
-const TORN_TOP_EDGE: [number, number][] = [
-  [0.000, 0.16], [0.030, 0.10], [0.055, 0.20], [0.080, 0.08], [0.110, 0.14],
-  [0.135, 0.06], [0.160, 0.18], [0.190, 0.10], [0.215, 0.22], [0.240, 0.12],
-  [0.265, 0.06], [0.290, 0.16], [0.315, 0.09], [0.340, 0.20], [0.365, 0.11],
-  [0.390, 0.05], [0.415, 0.15], [0.440, 0.22], [0.465, 0.09], [0.490, 0.17],
-  [0.515, 0.07], [0.540, 0.19], [0.565, 0.12], [0.590, 0.05], [0.615, 0.16],
-  [0.640, 0.21], [0.665, 0.10], [0.690, 0.18], [0.715, 0.07], [0.740, 0.14],
-  [0.765, 0.22], [0.790, 0.11], [0.815, 0.06], [0.840, 0.17], [0.865, 0.13],
-  [0.890, 0.20], [0.915, 0.09], [0.940, 0.15], [0.965, 0.07], [1.000, 0.14],
-];
-const TORN_BOT_EDGE: [number, number][] = [
-  [0.000, 0.55], [0.028, 0.62], [0.052, 0.50], [0.078, 0.58], [0.105, 0.66],
-  [0.130, 0.52], [0.155, 0.60], [0.180, 0.68], [0.205, 0.54], [0.230, 0.63],
-  [0.255, 0.50], [0.280, 0.59], [0.305, 0.67], [0.330, 0.53], [0.355, 0.61],
-  [0.380, 0.69], [0.405, 0.55], [0.430, 0.64], [0.455, 0.51], [0.480, 0.60],
-  [0.505, 0.68], [0.530, 0.54], [0.555, 0.62], [0.580, 0.70], [0.605, 0.56],
-  [0.630, 0.65], [0.655, 0.52], [0.680, 0.61], [0.705, 0.69], [0.730, 0.55],
-  [0.755, 0.63], [0.780, 0.50], [0.805, 0.59], [0.830, 0.67], [0.855, 0.53],
-  [0.880, 0.62], [0.905, 0.70], [0.930, 0.56], [0.955, 0.64], [0.980, 0.52],
-  [1.000, 0.60],
-];
+// Seeded so the live card SVG and the share-card canvas draw one identical rip.
+// Two octaves of jitter: fine fibres plus occasional deep nicks.
+const tornRand = (seed: number) => () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+const buildTorn = (base: number, amp: number, seed: number, n = 190) => {
+  const rnd = tornRand(seed);
+  const pts: [number, number][] = [];
+  for (let i = 0; i <= n; i++) {
+    const nick = rnd() < 0.07 ? (rnd() - 0.5) * amp * 5 : 0;
+    pts.push([i / n, base + (rnd() - 0.5) * amp + nick]);
+  }
+  return pts;
+};
+const TORN_TOP_EDGE = buildTorn(0.14, 0.06, 1337);
+const TORN_BOT_EDGE = buildTorn(0.62, 0.07, 4242);
 // Fibre grain inside the strip: [x, y, radius in band units].
 const TORN_SPECKS: [number, number, number][] = [
   [0.040, 0.30, 1.8], [0.090, 0.42, 1.2], [0.140, 0.25, 2.2], [0.190, 0.48, 1.6],
@@ -331,8 +329,8 @@ function Index() {
       ctx.textAlign = "center";
 
       // Torn-paper strip beneath the family number (same points as the live card SVG)
-      const tearX = 8 * q;
-      const tearW = 84 * q;
+      const tearX = 0;
+      const tearW = 100 * q;
       const tearY = y + 2 * q;
       const tearH = 6 * q;
       const tearUnit = tearW / TORN_W;
@@ -679,7 +677,7 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[2cqw] h-[6cqw] w-full">
+                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[2cqw] h-[6cqw] -mx-[8cqw] w-[calc(100%+16cqw)]">
                         <defs>
                           <linearGradient id="famus-tear-shade" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0" style={{ stopColor: "var(--background)", stopOpacity: 0.9 }} />
