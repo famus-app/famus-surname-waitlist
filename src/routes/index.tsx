@@ -389,8 +389,12 @@ function Index() {
       ctx.shadowColor = "rgba(0,0,0,0)";
       ctx.textAlign = "left";
       alphaColor(background, 1);
-      ctx.fillText(prefix, startX, y + fSize * 0.8);
-      ctx.fillText(num, startX + pw, y + fSize * 0.8);
+      // place the baseline the way a line-height:1 box does, so the number sits in the
+      // paint at exactly the height the live card shows it
+      const fm = ctx.measureText(prefix + num);
+      const base = y + (fSize - (fm.fontBoundingBoxAscent + fm.fontBoundingBoxDescent)) / 2 + fm.fontBoundingBoxAscent;
+      ctx.fillText(prefix, startX, base);
+      ctx.fillText(num, startX + pw, base);
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
@@ -693,7 +697,7 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
-                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" className="absolute -inset-x-[6cqw] -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+12cqw)]" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
+                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" overflow="visible" className="absolute -inset-x-[6cqw] -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+12cqw)] overflow-visible" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
                           <defs>
                             <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="0" stopColor="#E7D8C2" />
