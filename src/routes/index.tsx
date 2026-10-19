@@ -408,7 +408,7 @@ function Index() {
 
       // Reserved text: 3.2cqw, line-height 1.5, tracking 0.18em
       y += 10 * q;
-      const tSize = 3.2 * q;
+      const tSize = 4.2 * q;
       const tLine = tSize * 1.5;
       ctx.font = `${tSize}px "Work Sans", sans-serif`;
       ctx.letterSpacing = `${tSize * 0.18}px`;
@@ -713,7 +713,7 @@ function Index() {
                           <span className="famus-gold font-bold">{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
                       </div>
-                      <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
+                      <p className="mt-[9cqw] text-[4.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[10cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
