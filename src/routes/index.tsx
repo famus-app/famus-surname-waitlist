@@ -407,13 +407,14 @@ function Index() {
 
       ctx.shadowColor = "rgba(0,0,0,0)";
       ctx.textAlign = "left";
-      alphaColor(background, 1);
       // place the baseline the way a line-height:1 box does, so the number sits in the
       // paint at exactly the height the live card shows it
-      const fm = ctx.measureText(prefix + num);
+      const fm = ctx.measureText(lead + num);
       const base = y + (fSize - (fm.fontBoundingBoxAscent + fm.fontBoundingBoxDescent)) / 2 + fm.fontBoundingBoxAscent;
-      ctx.fillText(prefix, startX, base);
-      ctx.fillText(num, startX + pw, base);
+      alphaColor(foreground, 1);
+      ctx.fillText(lead, startX, base);
+      alphaColor(background, 1);
+      ctx.fillText(num, startX + lw, base);
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
