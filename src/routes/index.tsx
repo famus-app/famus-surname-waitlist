@@ -60,11 +60,14 @@ const buildBrush = (seed: number, n = 320) => {
   for (let i = 0; i <= n; i++) {
     const x = i / n;
     // paint sits heaviest mid-stroke and runs dry into split bristles at the ends
-    const env = Math.pow(Math.sin(Math.PI * x), 0.2);
+    const ramp = Math.min(1, x / 0.1, (1 - x) / 0.1); // the outer tenth of the swipe runs out
+    const comb = Math.abs(Math.sin(x * 140)); // where the bristles separate
+    const pinch = (1 - ramp) * (1 - comb); // deep gaps only near the tips
+    const env = Math.max(0.1, Math.sqrt(ramp)) * (1 - 0.92 * pinch);
     const half = 0.46 * env * (0.85 + (thick(x) + 0.5) * 0.3);
     const c = 0.5 + drift(x) * 0.05;
-    top.push([x, c - half + tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009]);
-    bot.push([x, c + half + bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009]);
+    top.push([x, c - half + (tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009) * env]);
+    bot.push([x, c + half + (bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009) * env]);
   }
   // bristle fibres: tapered paint threads, each a closed outline in band space
   const streaks: { poly: [number, number][]; a: number; lit: boolean }[] = [];
