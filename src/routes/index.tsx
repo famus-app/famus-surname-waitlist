@@ -705,7 +705,7 @@ function Index() {
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
-                      <p className={`famus-pop max-w-full break-words font-wordmark leading-none text-[#D8C4AB] ${handle.length > 12 ? "text-[5.5cqw]" : handle.length > 8 ? "text-[6.5cqw]" : "text-[7.5cqw]"}`} style={{ ["--pop" as string]: "30px" }}><span className="font-body">@</span>{handle}</p>
+                      <p className={`famus-pop max-w-full break-words font-wordmark leading-none ${handle.length > 12 ? "text-[5.5cqw]" : handle.length > 8 ? "text-[6.5cqw]" : "text-[7.5cqw]"}`} style={{ ["--pop" as string]: "30px", color: "#D8C4AB" }}><span className="font-body">@</span>{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
                         <p className="font-display text-[8cqw] leading-none">
