@@ -109,10 +109,10 @@ const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())
 
 // The number is a single flat gold — no gradient or texture painted behind it.
 // Card back text slots are fixed-height; long values only shrink their font (cqw units).
-export function handleSize(handle: string) {
+function handleSize(handle: string) {
   return Math.min(10, 84 / ((handle.length + 1) * 0.62));
 }
-export function numberSize(num: string) {
+function numberSize(num: string) {
   return Math.min(8, 84 / ((num.length + 4) * 0.5));
 }
 
@@ -359,7 +359,7 @@ function Index() {
         if (w0 > 84 * q) hSize *= (84 * q) / w0;
       }
       let y = 65 * q;
-      const hBase = y + 10 * q * 0.5 + hSize * 0.35;
+      const hBase = y + 8 * q - (10 * q - hSize) * 0.45;
       alphaColor("#D8C4AB", 1);
       // "@" in the body font, the name in the wordmark font — measure both so the pair stays centred
       ctx.textAlign = "left";
