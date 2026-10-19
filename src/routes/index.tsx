@@ -362,7 +362,7 @@ function Index() {
       // Torn-paper strip beneath the family number (same points as the live card SVG)
       const tearX = 0;
       const tearW = 100 * q;
-      const tearY = y + 1.5 * q;
+      const tearY = y + 0.5 * q;
       const tearH = 7 * q;
       const tearUnit = tearW / TORN_W;
       const traceTear = (pts: readonly (readonly [number, number])[]) => {
@@ -719,7 +719,7 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[1.5cqw] h-[7cqw] -mx-[8cqw] w-[calc(100%+16cqw)]">
+                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[0.5cqw] h-[7cqw] -mx-[8cqw] w-[calc(100%+16cqw)]">
                         <defs>
                           <linearGradient id="famus-tear-shade" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0" style={{ stopColor: "var(--background)", stopOpacity: 0.9 }} />
