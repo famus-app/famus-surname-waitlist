@@ -60,8 +60,8 @@ const buildBrush = (seed: number, n = 320) => {
   for (let i = 0; i <= n; i++) {
     const x = i / n;
     // paint sits heaviest mid-stroke and runs dry into split bristles at the ends
-    const env = Math.pow(Math.sin(Math.PI * x), 0.28);
-    const half = 0.44 * env * (0.85 + (thick(x) + 0.5) * 0.3);
+    const env = Math.pow(Math.sin(Math.PI * x), 0.2);
+    const half = 0.46 * env * (0.85 + (thick(x) + 0.5) * 0.3);
     const c = 0.5 + drift(x) * 0.05;
     top.push([x, c - half + tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009]);
     bot.push([x, c + half + bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009]);
@@ -693,7 +693,7 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
-                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" className="absolute -inset-x-[6cqw] -top-[2.4cqw] -bottom-[2.4cqw]" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
+                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" className="absolute -inset-x-[6cqw] -top-[2.4cqw] h-[12.8cqw]" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
                           <defs>
                             <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="0" stopColor="#E7D8C2" />
