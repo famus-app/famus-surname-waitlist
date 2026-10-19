@@ -344,7 +344,7 @@ function Index() {
       tearCore.addColorStop(0, TORN_CORE_TOP);
       tearCore.addColorStop(1, TORN_CORE_BOTTOM);
       traceTear(tearTop);
-      for (let i = tearBot.length - 1; i >= 0; i--) ctx.lineTo(tearBot[i][0], tearBot[i][1]);
+      for (const [px, py] of [...tearBot].reverse()) ctx.lineTo(px, py);
       ctx.closePath();
       ctx.fillStyle = tearCore;
       ctx.fill();
