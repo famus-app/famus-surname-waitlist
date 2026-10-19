@@ -33,24 +33,40 @@ import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 // feed the live card SVG and the share-card canvas, so both render one rip.
 // Points are [x across the band, y down the band], each 0..1 of the band box.
 // Seeded so the live card SVG and the share-card canvas draw one identical rip.
-// Two octaves of jitter: fine fibres plus occasional deep nicks.
+// Three octaves of smooth noise: broad waves, mid undulation, fine fibres.
 const tornRand = (seed: number) => () => {
   seed = (seed + 0x6d2b79f5) | 0;
   let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
   t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 };
-const buildTorn = (base: number, amp: number, seed: number, n = 190) => {
+const buildTorn = (base: number, amp: number, seed: number, n = 420) => {
   const rnd = tornRand(seed);
+  // value noise: random grid values interpolated with a smoothstep
+  const wave = (cells: number) => {
+    const g = Array.from({ length: cells + 1 }, () => rnd() - 0.5);
+    return (t: number) => {
+      const s = t * cells;
+      const i = Math.min(Math.floor(s), cells - 1);
+      const f = s - i;
+      return g[i] + (g[i + 1] - g[i]) * (f * f * (3 - 2 * f));
+    };
+  };
+  const big = wave(6);
+  const mid = wave(26);
+  const fine = wave(120);
   const pts: [number, number][] = [];
+  let walk = 0;
   for (let i = 0; i <= n; i++) {
-    const nick = rnd() < 0.07 ? (rnd() - 0.5) * amp * 5 : 0;
-    pts.push([i / n, base + (rnd() - 0.5) * amp + nick]);
+    const x = i / n;
+    walk = walk * 0.86 + (rnd() - 0.5) * 0.012; // fibre drift
+    const nick = rnd() < 0.03 ? (rnd() - 0.5) * amp * 1.6 : 0; // torn nicks
+    pts.push([x, base + big(x) * amp * 0.55 + mid(x) * amp * 0.35 + fine(x) * amp * 0.18 + walk + nick]);
   }
   return pts;
 };
-const TORN_TOP_EDGE = buildTorn(0.14, 0.06, 1337);
-const TORN_BOT_EDGE = buildTorn(0.62, 0.07, 4242);
+const TORN_TOP_EDGE = buildTorn(0.14, 0.1, 1337);
+const TORN_BOT_EDGE = buildTorn(0.62, 0.11, 4242);
 // Fibre grain inside the strip: [x, y, radius in band units].
 const TORN_SPECKS: [number, number, number][] = [
   [0.040, 0.30, 1.8], [0.090, 0.42, 1.2], [0.140, 0.25, 2.2], [0.190, 0.48, 1.6],
@@ -331,8 +347,8 @@ function Index() {
       // Torn-paper strip beneath the family number (same points as the live card SVG)
       const tearX = 0;
       const tearW = 100 * q;
-      const tearY = y + 2 * q;
-      const tearH = 6 * q;
+      const tearY = y + 1.5 * q;
+      const tearH = 7 * q;
       const tearUnit = tearW / TORN_W;
       const traceTear = (pts: readonly (readonly [number, number])[]) => {
         ctx.beginPath();
@@ -688,7 +704,7 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[2cqw] h-[6cqw] -mx-[8cqw] w-[calc(100%+16cqw)]">
+                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[1.5cqw] h-[7cqw] -mx-[8cqw] w-[calc(100%+16cqw)]">
                         <defs>
                           <linearGradient id="famus-tear-shade" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0" style={{ stopColor: "var(--background)", stopOpacity: 0.9 }} />
