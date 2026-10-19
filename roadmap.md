@@ -26,3 +26,4 @@
 - [x] Add a torn-paper strip beneath fam #0001 on the card back (live + canvas), spanning the full card width with organic ragged edges and thickness variation
 - [x] Remove the torn-paper strip from the card back (live + canvas), keeping the gap between fam #0001 and the reserved statement
 - [x] Lay a beige paint-brush swipe behind fam #0001 and print the number in black on it (live + canvas), with tapered bristle fibres and the stroke sized to cover the glyphs
+- [x] Shrink the beige swipe to sit only under #0001 and leave the word fam plain white with a clear gap (live + canvas)
