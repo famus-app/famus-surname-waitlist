@@ -26,7 +26,7 @@ import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
-import cardFrontArt from "@/assets/famus-card-front-ascii.png.asset.json";
+import cardFrontArt from "@/assets/famus-card-front-garden.png.asset.json";
 import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 
 // Beige paint-brush swipe laid behind the family number. One seeded generator
