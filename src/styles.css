@@ -305,6 +305,18 @@
   mix-blend-mode: plus-lighter;
   pointer-events: none;
 }
+.famus-orb-glow.famus-glow-layer {
+  opacity: 0.75;
+  animation: famus-orb-pulse 3.2s ease-in-out infinite;
+}
+.famus-card-face:hover .famus-orb-glow.famus-glow-layer { animation: none; opacity: 1; }
+@keyframes famus-orb-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .famus-orb-glow.famus-glow-layer { animation: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text { animation: none; }
