@@ -291,7 +291,7 @@ function Index() {
       const tSize = 3.05 * q;
       const tLine = tSize * 1.6;
       ctx.font = `${tSize}px "Work Sans", sans-serif`;
-      ctx.letterSpacing = `${tSize * 0.18}px`;
+      ctx.letterSpacing = `${tSize * 0.16}px`;
       alphaColor(foreground, 0.9);
       ctx.fillText("JUST RESERVED OUR", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35, 92 * q);
       ctx.fillText("LEGACY IN PERPETUITY,", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35, 92 * q);
@@ -300,7 +300,7 @@ function Index() {
       ctx.letterSpacing = "0px";
 
       // Logo + divider + wordmark
-      y += 16 * q;
+      y += 13 * q;
       const logo = new Image();
       logo.src = famusLogo;
       try { await logo.decode(); } catch { /* keep card shareable */ }
