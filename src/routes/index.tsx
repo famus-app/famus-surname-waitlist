@@ -29,6 +29,69 @@ const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-ascii.png.asset.json";
 import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 
+// Beige paint-brush swipe laid behind the family number. One seeded generator
+// feeds both the live card SVG and the share-card canvas, so both draw one stroke.
+const brushRand = (seed: number) => () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+const buildBrush = (seed: number, n = 320) => {
+  const rnd = brushRand(seed);
+  // value noise: random grid values joined by a smoothstep
+  const wave = (cells: number) => {
+    const g = Array.from({ length: cells + 1 }, () => rnd() - 0.5);
+    return (t: number) => {
+      const s = t * cells;
+      const i = Math.min(Math.floor(s), cells - 1);
+      const f = s - i;
+      const a = g[i] ?? 0;
+      const b = g[i + 1] ?? 0;
+      return a + (b - a) * (f * f * (3 - 2 * f));
+    };
+  };
+  const tBig = wave(6), tMid = wave(24), tFine = wave(130);
+  const bBig = wave(6), bMid = wave(24), bFine = wave(130);
+  const drift = wave(8);
+  const thick = wave(40);
+  const top: [number, number][] = [];
+  const bot: [number, number][] = [];
+  for (let i = 0; i <= n; i++) {
+    const x = i / n;
+    // paint sits heaviest mid-stroke and runs dry into split bristles at the ends
+    const env = Math.pow(Math.sin(Math.PI * x), 0.5);
+    const half = 0.29 * env * (0.85 + (thick(x) + 0.5) * 0.3);
+    const c = 0.5 + drift(x) * 0.12;
+    top.push([x, c - half + tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009]);
+    bot.push([x, c + half + bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009]);
+  }
+  // bristle streaks: [y centre, thickness, opacity, x start, x end] of the band box
+  const streaks: [number, number, number, number, number][] = [];
+  for (let i = 0; i < 30; i++) {
+    const yc = 0.5 + (rnd() - 0.5) * 0.42;
+    const th = 0.012 + rnd() * 0.045;
+    const a = 0.12 + rnd() * 0.4;
+    const x0 = rnd() < 0.45 ? 0 : 0.08 + rnd() * 0.3;
+    const x1 = rnd() < 0.45 ? 1 : 0.6 + rnd() * 0.32;
+    streaks.push([yc, th, a, x0, Math.max(x1, x0 + 0.12)]);
+  }
+  // flecks the bristles throw off past either end of the swipe
+  const flecks: [number, number, number][] = [];
+  for (let i = 0; i < 26; i++) {
+    const nearLeft = rnd() < 0.5;
+    flecks.push([nearLeft ? rnd() * 0.09 : 0.91 + rnd() * 0.09, 0.5 + (rnd() - 0.5) * 0.5, 0.6 + rnd() * 2.4]);
+  }
+  return { top, bot, streaks, flecks };
+};
+const BRUSH = buildBrush(4471);
+const BRUSH_W = 900;
+const BRUSH_H = 130;
+const BRUSH_TILT = -1.1; // degrees, so the swipe reads as hand-laid
+const brushPts = (pts: readonly (readonly [number, number])[]) =>
+  pts.map(([x, y]) => `${(x * BRUSH_W).toFixed(1)},${(y * BRUSH_H).toFixed(1)}`).join(" ");
+const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())}`;
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
