@@ -590,7 +590,7 @@ function Index() {
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
                       <p className="text-[3.4cqw] text-foreground">Reserve yours at <span className="text-primary">famus.si/register</span></p>
                       <span aria-hidden className="my-[4cqw] h-px w-full bg-foreground/15" />
-                      <p className="text-[2.7cqw] uppercase leading-[1.6] tracking-[0.08em] text-foreground/80">One Family Name. One Agent. For your Family 🫶🏻</p>
+                      <p className="text-[2.7cqw] uppercase leading-[1.6] tracking-[0.08em] text-foreground/80">ONE FAMILY NAME. ONE SI. FOR YOUR FAMILY 🫶🏻</p>
                     </div>
                     <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(false)} className="famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70">
                       <RotateCw className="size-[4.5cqw]" />
