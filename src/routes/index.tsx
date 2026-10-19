@@ -344,23 +344,23 @@ function Index() {
       const startX = 540 - (pw + nw) / 2;
 
       // same box the live card hands the SVG: text plus 5cqw at the sides, 1.6cqw top and bottom
-      const bx = startX - 5 * q;
-      const bw = pw + nw + 10 * q;
-      const by = y - 1.6 * q;
-      const bh = fSize + 3.2 * q;
+      const swX = startX - 5 * q;
+      const swW = pw + nw + 10 * q;
+      const swY = y - 1.6 * q;
+      const swH = fSize + 3.2 * q;
       const traceBrush = () => {
-        const t = BRUSH.top.map(([px, py]) => [bx + px * bw, by + py * bh] as const);
-        const b = BRUSH.bot.map(([px, py]) => [bx + px * bw, by + py * bh] as const);
+        const t = BRUSH.top.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
+        const b = BRUSH.bot.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
         ctx.beginPath();
         t.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
-        for (let i = b.length - 1; i >= 0; i--) ctx.lineTo(b[i][0], b[i][1]);
+        for (const [px, py] of b.slice().reverse()) ctx.lineTo(px, py);
         ctx.closePath();
       };
       ctx.save();
-      ctx.translate(bx + bw / 2, by + bh / 2);
+      ctx.translate(swX + swW / 2, swY + swH / 2);
       ctx.rotate((BRUSH_TILT * Math.PI) / 180);
-      ctx.translate(-(bx + bw / 2), -(by + bh / 2));
-      const paint = ctx.createLinearGradient(0, by, 0, by + bh);
+      ctx.translate(-(swX + swW / 2), -(swY + swH / 2));
+      const paint = ctx.createLinearGradient(0, swY, 0, swY + swH);
       paint.addColorStop(0, "#E7D8C2");
       paint.addColorStop(0.42, "#D8C4AB");
       paint.addColorStop(1, "#BEA385");
@@ -374,14 +374,14 @@ function Index() {
       BRUSH.streaks.forEach(([yc, th, a, x0, x1], i) => {
         ctx.globalAlpha = a;
         ctx.fillStyle = i % 3 ? "#BEA385" : "#E7D8C2";
-        ctx.fillRect(bx + x0 * bw, by + (yc - th / 2) * bh, (x1 - x0) * bw, th * bh);
+        ctx.fillRect(swX + x0 * swW, swY + (yc - th / 2) * swH, (x1 - x0) * swW, th * swH);
       });
       ctx.restore();
       BRUSH.flecks.forEach(([fx, fy, fr]) => {
         ctx.globalAlpha = 0.55;
         ctx.fillStyle = "#D8C4AB";
         ctx.beginPath();
-        ctx.ellipse(bx + fx * bw, by + fy * bh, fr * (bw / BRUSH_W), fr * (bh / BRUSH_H), 0, 0, Math.PI * 2);
+        ctx.ellipse(swX + fx * swW, swY + fy * swH, fr * (swW / BRUSH_W), fr * (swH / BRUSH_H), 0, 0, Math.PI * 2);
         ctx.fill();
       });
       ctx.restore();
