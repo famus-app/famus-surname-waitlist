@@ -294,6 +294,18 @@
 }
 .famus-card-face:hover .famus-glow-layer { opacity: 1; }
 
+/* Hover bloom that lights only the orb in the man's hand on the card front. */
+.famus-orb-glow {
+  background: radial-gradient(circle at 51% 41.2%,
+    color-mix(in oklab, var(--primary) 55%, white) 0%,
+    color-mix(in oklab, var(--primary) 70%, transparent) 3.1%,
+    color-mix(in oklab, var(--primary) 26%, transparent) 8%,
+    color-mix(in oklab, var(--primary) 9%, transparent) 16%,
+    transparent 30%);
+  mix-blend-mode: plus-lighter;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .famus-float, .famus-breathe, .famus-arrive, .famus-aurora, .famus-count, .famus-gradient-text { animation: none; }
   .famus-card-inner { transition: none; }

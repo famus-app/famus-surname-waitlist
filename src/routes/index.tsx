@@ -569,6 +569,7 @@ function Index() {
                   <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
                     <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={768} height={1365} />
                     <div className="famus-card-shade absolute inset-0" />
+                    <div aria-hidden className="famus-orb-glow famus-glow-layer absolute inset-0" />
                     <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(true)} className={`${priority ? "hidden " : ""}famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70`}>
                       <RotateCw className="size-[4.5cqw]" />
                     </button>
