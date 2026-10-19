@@ -738,8 +738,10 @@ function Index() {
                           {BRUSH.flecks.map(([x, y, r], i) => (
                             <circle key={i} cx={x * BRUSH_W} cy={y * BRUSH_H} r={r} fill="#D8C4AB" fillOpacity="0.55" />
                           ))}
-                        </svg>
-                        <p className="relative font-display text-[8cqw] leading-none text-background">{"fam #"}{String(claimNumber ?? 0).padStart(4, "0")}</p>
+                            </svg>
+                            <span className="relative text-background">{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
+                          </span>
+                        </p>
                       </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
