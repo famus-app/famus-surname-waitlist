@@ -151,7 +151,8 @@ function drawGoldNumber(ctx: CanvasRenderingContext2D, num: string, x: number, b
     const d = mctx.getImageData(0, 0, w, h).data;
     for (let py = 0; py < h; py++) {
       for (let px = 0; px < w; px++) {
-        if (d[(py * w + px) * 4 + 3] > 8) {
+        const alpha = d[(py * w + px) * 4 + 3] ?? 0;
+        if (alpha > 8) {
           if (py < top) top = py;
           if (py > bot) bot = py;
           break;
