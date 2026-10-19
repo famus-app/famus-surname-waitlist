@@ -27,3 +27,5 @@
 - [x] Remove the torn-paper strip from the card back (live + canvas), keeping the gap between fam #0001 and the reserved statement
 - [x] Lay a beige paint-brush swipe behind fam #0001 and print the number in black on it (live + canvas), with tapered bristle fibres and the stroke sized to cover the glyphs
 - [x] Shrink the beige swipe to sit only under #0001 and leave the word fam plain white with a clear gap (live + canvas)
+- [x] Drop the gold gradient/texture behind fam #0001 so the number is one flat gold (live + canvas)
+- [x] Close the gap between the logo row and "Reserve yours" and shrink the logo, divider and wordmark by one point (live + canvas)

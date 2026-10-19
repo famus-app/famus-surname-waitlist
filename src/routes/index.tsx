@@ -107,109 +107,8 @@ const brushPts = (pts: readonly (readonly [number, number])[]) =>
   pts.map(([x, y]) => `${(x * BRUSH_W).toFixed(1)},${(y * BRUSH_H).toFixed(1)}`).join(" ");
 const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())}`;
 
-// Polished-gold number: a banded metallic gradient with brushed-fibre texture,
-// grain and a glint sweep, masked to the glyphs. The live card mirrors this
-// with the same stops layered as CSS backgrounds clipped to the text.
-const GOLD_STOPS: [number, string][] = [
-  [0, "#7A5214"],
-  [0.13, "#E7C56B"],
-  [0.29, "#FFF6D8"],
-  [0.42, "#D8A83A"],
-  [0.56, "#F3D98C"],
-  [0.71, "#9C6C1C"],
-  [0.86, "#E0BA5E"],
-  [1, "#6E4A15"],
-];
-
-function drawGoldNumber(ctx: CanvasRenderingContext2D, num: string, x: number, base: number, fSize: number) {
-  const pad = fSize * 0.2;
-  const fm = ctx.measureText(num);
-  const asc = fm.fontBoundingBoxAscent || fSize * 0.75;
-  const desc = fm.fontBoundingBoxDescent || fSize * 0.25;
-  const w = Math.max(1, Math.ceil(fm.width + pad * 2));
-  const h = Math.max(1, Math.ceil(asc + desc + pad * 2));
-  const tx = pad;
-  const ty = pad + asc;
-  const mask = document.createElement("canvas");
-  mask.width = w;
-  mask.height = h;
-  const mctx = mask.getContext("2d");
-  const fill = document.createElement("canvas");
-  fill.width = w;
-  fill.height = h;
-  const fctx = fill.getContext("2d");
-  if (!mctx || !fctx) return false;
-  mctx.font = ctx.font;
-  mctx.textBaseline = "alphabetic";
-  mctx.textAlign = "left";
-  mctx.fillStyle = "#fff";
-  mctx.fillText(num, tx, ty);
-  // exact ink box, so the metal bands land on the digits and not on empty space
-  let top = h;
-  let bot = 0;
-  try {
-    const d = mctx.getImageData(0, 0, w, h).data;
-    for (let py = 0; py < h; py++) {
-      for (let px = 0; px < w; px++) {
-        const alpha = d[(py * w + px) * 4 + 3] ?? 0;
-        if (alpha > 8) {
-          if (py < top) top = py;
-          if (py > bot) bot = py;
-          break;
-        }
-      }
-    }
-  } catch {
-    top = ty - asc * 0.7;
-    bot = ty + desc;
-  }
-  if (bot <= top) {
-    top = ty - asc * 0.7;
-    bot = ty + desc;
-  }
-  const metal = fctx.createLinearGradient(0, top, 0, bot);
-  for (const [stop, color] of GOLD_STOPS) metal.addColorStop(stop, color);
-  fctx.fillStyle = metal;
-  fctx.fillRect(0, 0, w, h);
-  const rnd = brushRand(90210);
-  fctx.lineCap = "round";
-  // brushed fibres: hairlines running almost level with the baseline
-  for (let i = 0; i < 90; i++) {
-    const ly = rnd() * h;
-    fctx.strokeStyle =
-      rnd() > 0.45
-        ? `rgba(255,250,225,${(0.05 + rnd() * 0.16).toFixed(3)})`
-        : `rgba(58,34,6,${(0.05 + rnd() * 0.14).toFixed(3)})`;
-    fctx.lineWidth = 0.4 + rnd() * fSize * 0.02;
-    fctx.beginPath();
-    fctx.moveTo(-2, ly);
-    fctx.lineTo(w + 2, ly + (rnd() - 0.5) * h * 0.1);
-    fctx.stroke();
-  }
-  // grain speckle
-  for (let i = 0; i < 260; i++) {
-    fctx.fillStyle =
-      rnd() > 0.5
-        ? `rgba(255,255,240,${(0.1 + rnd() * 0.22).toFixed(3)})`
-        : `rgba(46,26,4,${(0.08 + rnd() * 0.18).toFixed(3)})`;
-    fctx.beginPath();
-    fctx.arc(rnd() * w, rnd() * h, 0.3 + rnd() * fSize * 0.012, 0, Math.PI * 2);
-    fctx.fill();
-  }
-  // glint sweep across the upper third
-  const glint = fctx.createLinearGradient(0, top, 0, bot);
-  glint.addColorStop(0.2, "rgba(255,255,255,0)");
-  glint.addColorStop(0.3, "rgba(255,255,255,0.45)");
-  glint.addColorStop(0.42, "rgba(255,255,255,0)");
-  fctx.globalCompositeOperation = "lighter";
-  fctx.fillStyle = glint;
-  fctx.fillRect(0, 0, w, h);
-  fctx.globalCompositeOperation = "destination-in";
-  fctx.drawImage(mask, 0, 0);
-  fctx.globalCompositeOperation = "source-over";
-  ctx.drawImage(fill, x - pad, base - ty);
-  return true;
-}
+// The number is a single flat gold — no gradient or texture painted behind it.
+const GOLD_FLAT = "#E7C56B";
 
 
 export const Route = createFileRoute("/")({
@@ -468,16 +367,8 @@ function Index() {
       alphaColor(foreground, 1);
       ctx.fillText(lead, startX, base);
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = "#D6AA58";
-      ctx.lineWidth = fSize * 0.02;
-      ctx.lineJoin = "round";
-      ctx.strokeText(num, startX + lw, base);
-      if (!drawGoldNumber(ctx, num, startX + lw, base, fSize)) {
-        const gold = ctx.createLinearGradient(0, base - fSize * 0.8, 0, base);
-        for (const [stop, color] of GOLD_STOPS) gold.addColorStop(stop, color);
-        ctx.fillStyle = gold;
-        ctx.fillText(num, startX + lw, base);
-      }
+      ctx.fillStyle = GOLD_FLAT;
+      ctx.fillText(num, startX + lw, base);
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
@@ -500,13 +391,13 @@ function Index() {
       ctx.letterSpacing = "0px";
 
       // Logo + divider + wordmark
-      y += 6 * q;
+      y += 9 * q;
       const logo = new Image();
       logo.src = famusLogo;
       try { await logo.decode(); } catch { /* keep card shareable */ }
-      const logoW = 12.5 * q;
+      const logoW = 11.5 * q;
       const logoH = logo.naturalWidth ? logoW * (logo.naturalHeight / logo.naturalWidth) : logoW;
-      const wSize = 12.5 * q;
+      const wSize = 11.5 * q;
       const gap = 2.5 * q;
       ctx.font = `${wSize}px "Canarina", sans-serif`;
       ctx.letterSpacing = `${-0.056 * wSize}px`;
@@ -519,7 +410,7 @@ function Index() {
       if (logo.naturalWidth) ctx.drawImage(logo, x, y + (rowH - logoH) / 2, logoW, logoH);
       x += logoW + gap;
       alphaColor(foreground, 0.35);
-      ctx.fillRect(x, y + (rowH - 7.5 * q) / 2, 2, 7.5 * q);
+      ctx.fillRect(x, y + (rowH - 6.5 * q) / 2, 2, 6.5 * q);
       x += 2 + gap;
       const wBase = y + rowH / 2 + wSize * 0.35;
       alphaColor("#D8C4AB", 1);
@@ -782,14 +673,14 @@ function Index() {
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
                         <p className="font-display text-[8cqw] leading-none">
                           <span className="text-foreground">{"fam "}</span>
-                          <span className="font-bold" style={{ backgroundImage: "repeating-linear-gradient(97deg, rgba(255,250,225,0.18) 0 1px, rgba(60,36,8,0.14) 1px 2px, rgba(255,255,255,0) 2px 3.6px), radial-gradient(120% 60% at 30% 26%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 58%), linear-gradient(180deg, #7A5214 0%, #E7C56B 13%, #FFF6D8 29%, #D8A83A 42%, #F3D98C 56%, #9C6C1C 71%, #E0BA5E 86%, #6E4A15 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", WebkitTextStroke: "0.012em rgba(214,170,88,0.7)" }}>{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
+                          <span className="font-bold" style={{ color: GOLD_FLAT }}>{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
                       </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
-                      <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
-                        <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
-                        <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
-                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
+                      <div className="mt-[9cqw] flex items-center justify-center gap-[2.5cqw]">
+                        <img src={famusLogo} alt="" className="famus-pop w-[11.5cqw]" style={{ ["--pop" as string]: "18px" }} />
+                        <span aria-hidden className="famus-pop h-[6.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
+                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[11.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
                       </div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
