@@ -255,17 +255,13 @@ function Index() {
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
 
-      // Reserved text: top 65cqw, 3.2cqw, line-height 1.6, tracking 0.18em
-      const tSize = 3.2 * q;
-      const tLine = tSize * 1.6;
+      // Handle: top 65cqw
+      const hSize = (handle.length > 12 ? 8 : handle.length > 8 ? 10 : 13) * q;
       let y = 65 * q;
-      ctx.font = `${tSize}px "Work Sans", sans-serif`;
-      ctx.letterSpacing = `${tSize * 0.18}px`;
-      alphaColor(foreground, 0.9);
-      ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
-      ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
-      y += tLine * 2;
-      ctx.letterSpacing = "0px";
+      ctx.font = `${hSize}px "Instrument Serif", serif`;
+      alphaColor(primary, 1);
+      ctx.fillText(`@${handle}`, 540, y + hSize * 0.8, 88 * q);
+      y += hSize;
 
       // Divider
       y += 6 * q;
@@ -273,13 +269,17 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // Handle
+      // Reserved text: 3.2cqw, line-height 1.6, tracking 0.18em
       y += 6 * q;
-      const hSize = (handle.length > 12 ? 8 : handle.length > 8 ? 10 : 13) * q;
-      ctx.font = `${hSize}px "Instrument Serif", serif`;
-      alphaColor(primary, 1);
-      ctx.fillText(`@${handle}`, 540, y + hSize * 0.8, 88 * q);
-      y += hSize;
+      const tSize = 3.2 * q;
+      const tLine = tSize * 1.6;
+      ctx.font = `${tSize}px "Work Sans", sans-serif`;
+      ctx.letterSpacing = `${tSize * 0.18}px`;
+      alphaColor(foreground, 0.9);
+      ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
+      ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
+      y += tLine * 2;
+      ctx.letterSpacing = "0px";
 
       // fam #0001
       y += 9 * q;
@@ -574,9 +574,9 @@ function Index() {
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
-                      <p className="text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">I JUST RESERVED MY<br />FAMILY NAME IN PERPETUITY<br /></p>
+                      <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
-                      <p className={`famus-pop mt-[6cqw] max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
+                      <p className="mt-[6cqw] text-[3.2cqw] uppercase leading-[1.6] tracking-[0.18em] text-foreground/90">I JUST RESERVED MY<br />FAMILY NAME IN PERPETUITY<br /></p>
                       <p className="famus-pop mt-[9cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
                       <div className="mt-[16cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
