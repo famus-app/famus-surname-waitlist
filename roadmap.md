@@ -19,3 +19,4 @@
 
 - [x] Move "Already claimed" line above the input fields (user clarified — not the agent-name preview, which was restored below the fields)
 - [x] 2-space gap between fam #0001 and logo wordmark on card back (live + canvas)
+- [x] Use the uploaded ASCII generations and arches artwork for the card and open the final preview without creating a registration

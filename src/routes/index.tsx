@@ -26,9 +26,8 @@ import { supabase } from "@/integrations/supabase/client";
 import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
-import cardFrontArt from "@/assets/famus-card-front-generations.png.asset.json";
-import cardFrontGlow from "@/assets/famus-card-front-orb-glow.png";
-import cardBackArt from "@/assets/famus-card-back-open-arches.png.asset.json";
+import cardFrontArt from "@/assets/famus-card-front-ascii.png.asset.json";
+import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,14 +46,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [surname, setSurname] = useState("");
+  const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [claimed, setClaimed] = useState(false);
-  const [previewing, setPreviewing] = useState(false);
+  const [claimed, setClaimed] = useState(true);
+  const [previewing, setPreviewing] = useState(true);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
-  const [claimNumber, setClaimNumber] = useState<number | null>(null);
+  const [claimNumber, setClaimNumber] = useState<number | null>(1);
   const [sharing, setSharing] = useState(false);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
@@ -565,8 +564,7 @@ function Index() {
               <div ref={cardSceneRef} onMouseMove={tiltCards} onMouseEnter={tiltCards} onMouseLeave={untiltCards} className="famus-card-scene w-full max-w-[360px] justify-self-center">
                 <div className={`famus-card-inner relative aspect-[9/16] w-full ${cardFlipped ? "is-flipped" : ""}`}>
                   <div className="famus-card-face famus-metal-card absolute inset-0 overflow-hidden rounded-md border border-border">
-                    <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={1024} height={1536} />
-                    <img src={cardFrontGlow} alt="" loading="lazy" className="famus-glow-layer famus-pop absolute inset-0 size-full object-cover" style={{ ["--pop" as string]: "10px" }} width={1024} height={1536} />
+                    <img src={cardFrontArt.url} alt="" className="absolute inset-0 size-full object-cover" width={768} height={1365} />
                     <div className="famus-card-shade absolute inset-0" />
                     <button type="button" aria-label="Flip card" style={{ ["--pop" as string]: "34px" }} onClick={() => setCardFlipped(true)} className={`${priority ? "hidden " : ""}famus-pop absolute top-[3.5cqw] right-[3.5cqw] z-10 grid size-[9cqw] place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-sm transition-colors hover:bg-background/70`}>
                       <RotateCw className="size-[4.5cqw]" />
