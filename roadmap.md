@@ -40,4 +40,3 @@
 - [x] Make the card-back username bigger again (live card + downloaded card)
 - [x] Increase the card-back username once more to 10cqw (live card + downloaded card)
 - [x] Increase the card-back logo row (emblem, divider, famUS lettering) by one point (live card + downloaded card)
-- [x] Increase the card-back statement text by one point and tighten the gaps it created (live card + downloaded card)
