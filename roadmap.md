@@ -38,3 +38,4 @@
 - [x] Make the card-back @handle a bit bigger again (live card + downloaded card)
 - [x] Confirm the warm-beige handle colour and new size in the preview (verified: live computed rgb(216,196,171), download same)
 - [x] Make the card-back username bigger again (live card + downloaded card)
+- [x] Increase the card-back username once more to 10cqw (live card + downloaded card)
