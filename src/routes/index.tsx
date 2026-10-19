@@ -355,9 +355,9 @@ function Index() {
       const nw = ctx.measureText(num).width;
       const startX = 540 - (lw + nw) / 2;
 
-      // same box the live card hands the SVG: the number plus 3cqw at the sides, 2.4cqw top and bottom
-      const swX = startX + lw - 3 * q;
-      const swW = nw + 6 * q;
+      // same box the live card hands the SVG: the number plus 1cqw left, 3cqw right, 2.4cqw top and bottom
+      const swX = startX + lw - 1 * q;
+      const swW = nw + 4 * q;
       const swY = y - 2.4 * q;
       const swH = fSize + 4.8 * q;
       const traceBrush = () => {
