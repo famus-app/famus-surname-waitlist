@@ -255,17 +255,13 @@ function Index() {
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
 
-      // Reserved text: top 65cqw, 3.2cqw, line-height 1.6, tracking 0.18em
-      const tSize = 3.2 * q;
-      const tLine = tSize * 1.6;
+      // Handle: top 65cqw
+      const hSize = (handle.length > 12 ? 8 : handle.length > 8 ? 10 : 13) * q;
       let y = 65 * q;
-      ctx.font = `${tSize}px "Work Sans", sans-serif`;
-      ctx.letterSpacing = `${tSize * 0.18}px`;
-      alphaColor(foreground, 0.9);
-      ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
-      ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
-      y += tLine * 2;
-      ctx.letterSpacing = "0px";
+      ctx.font = `${hSize}px "Instrument Serif", serif`;
+      alphaColor(primary, 1);
+      ctx.fillText(`@${handle}`, 540, y + hSize * 0.8, 88 * q);
+      y += hSize;
 
       // Divider
       y += 6 * q;
@@ -273,13 +269,17 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // Handle
+      // Reserved text: 3.2cqw, line-height 1.6, tracking 0.18em
       y += 6 * q;
-      const hSize = (handle.length > 12 ? 8 : handle.length > 8 ? 10 : 13) * q;
-      ctx.font = `${hSize}px "Instrument Serif", serif`;
-      alphaColor(primary, 1);
-      ctx.fillText(`@${handle}`, 540, y + hSize * 0.8, 88 * q);
-      y += hSize;
+      const tSize = 3.2 * q;
+      const tLine = tSize * 1.6;
+      ctx.font = `${tSize}px "Work Sans", sans-serif`;
+      ctx.letterSpacing = `${tSize * 0.18}px`;
+      alphaColor(foreground, 0.9);
+      ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
+      ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
+      y += tLine * 2;
+      ctx.letterSpacing = "0px";
 
       // fam #0001
       y += 9 * q;
