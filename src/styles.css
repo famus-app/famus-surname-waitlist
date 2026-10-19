@@ -279,6 +279,29 @@
 .famus-card-back { transform: rotateY(180deg); }
 .famus-card-shade { background: linear-gradient(to bottom, color-mix(in oklab, var(--background) 55%, transparent), transparent 30%, transparent 72%, color-mix(in oklab, var(--background) 72%, transparent)); }
 
+/* Polished-gold number: one ramp, kept as a plain paint clip so the glyphs
+   stay crisp inside the card's 3D layer. Keep these stops in sync with
+   GOLD_STOPS in src/routes/index.tsx. */
+.famus-gold {
+  background-image: linear-gradient(
+    180deg,
+    #4a2a0a 0%,
+    #b67316 8%,
+    #fce9a0 18%,
+    #fff8d6 30%,
+    #e5b245 42%,
+    #c98822 55%,
+    #5c360a 68%,
+    #381f05 78%,
+    #c98822 88%,
+    #f0ce72 96%,
+    #8a5a18 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* Metal card finish: brushed-steel bevel edges; on hover the glowing
    artwork layer (title + orb) fades in. */
 .famus-metal-card {

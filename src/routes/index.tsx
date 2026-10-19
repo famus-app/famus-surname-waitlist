@@ -108,7 +108,12 @@ const brushPts = (pts: readonly (readonly [number, number])[]) =>
 const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())}`;
 
 // The number is a single flat gold — no gradient or texture painted behind it.
-const GOLD_FLAT = "#E7C56B";
+// Polished-gold ramp for the family number — keep in sync with .famus-gold in styles.css
+const GOLD_STOPS: [number, string][] = [
+  [0, "#4A2A0A"], [0.08, "#B67316"], [0.18, "#FCE9A0"], [0.3, "#FFF8D6"],
+  [0.42, "#E5B245"], [0.55, "#C98822"], [0.68, "#5C360A"], [0.78, "#381F05"],
+  [0.88, "#C98822"], [0.96, "#F0CE72"], [1, "#8A5A18"],
+];
 
 
 export const Route = createFileRoute("/")({
@@ -338,11 +343,22 @@ function Index() {
       ctx.shadowOffsetY = 10;
 
       // Handle: top 65cqw
-      const hSize = (handle.length > 12 ? 8 : handle.length > 8 ? 10 : 13) * q;
+      const hSize = (handle.length > 12 ? 5.5 : handle.length > 8 ? 6.5 : 7.5) * q;
       let y = 65 * q;
-      ctx.font = `${hSize}px "Instrument Serif", serif`;
-      alphaColor(primary, 1);
-      ctx.fillText(`@${handle}`, 540, y + hSize * 0.8, 88 * q);
+      const hBase = y + hSize * 0.8;
+      alphaColor("#D8C4AB", 1);
+      // "@" in the body font, the name in the wordmark font — measure both so the pair stays centred
+      ctx.textAlign = "left";
+      ctx.font = `${hSize}px "Work Sans", sans-serif`;
+      const atW = ctx.measureText("@").width;
+      ctx.font = `${hSize}px "Canarina", sans-serif`;
+      const nameW = ctx.measureText(handle).width;
+      const hx = 540 - (atW + nameW) / 2;
+      ctx.font = `${hSize}px "Work Sans", sans-serif`;
+      ctx.fillText("@", hx, hBase);
+      ctx.font = `${hSize}px "Canarina", sans-serif`;
+      ctx.fillText(handle, hx + atW, hBase, 88 * q);
+      ctx.textAlign = "center";
       y += hSize;
 
       // Divider
@@ -367,8 +383,22 @@ function Index() {
       alphaColor(foreground, 1);
       ctx.fillText(lead, startX, base);
       ctx.globalAlpha = 1;
-      ctx.fillStyle = GOLD_FLAT;
+      const gold = ctx.createLinearGradient(0, base - fm.fontBoundingBoxAscent, 0, base + fm.fontBoundingBoxDescent);
+      for (const [p, c] of GOLD_STOPS) gold.addColorStop(p, c);
+      ctx.shadowColor = "rgba(0,0,0,0.55)";
+      ctx.shadowBlur = fSize * 0.09;
+      ctx.shadowOffsetY = fSize * 0.045;
+      ctx.lineJoin = "round";
+      // the live card renders this number bold, so fatten the same ramp to match its weight
+      ctx.lineWidth = fSize * 0.014;
+      ctx.strokeStyle = gold;
+      ctx.strokeText(num, startX + lw, base);
+      ctx.fillStyle = gold;
       ctx.fillText(num, startX + lw, base);
+      ctx.lineWidth = 1;
+      ctx.shadowColor = "rgba(0,0,0,0)";
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
@@ -391,7 +421,7 @@ function Index() {
       ctx.letterSpacing = "0px";
 
       // Logo + divider + wordmark
-      y += 9 * q;
+      y += 10 * q;
       const logo = new Image();
       logo.src = famusLogo;
       try { await logo.decode(); } catch { /* keep card shareable */ }
@@ -400,24 +430,31 @@ function Index() {
       const wSize = 11.5 * q;
       const gap = 2.5 * q;
       ctx.font = `${wSize}px "Canarina", sans-serif`;
-      ctx.letterSpacing = `${-0.056 * wSize}px`;
-      const famW = ctx.measureText("fam").width;
-      const usW = ctx.measureText("US").width;
+      const track = -0.056 * wSize;
+      ctx.letterSpacing = "0px";
+      const famAdv = ctx.measureText("fam").width;
+      const usAdv = ctx.measureText("US").width;
+      // tracking lands after every glyph, so each drawn run is one step wider per letter
+      const famW = famAdv + 3 * track;
+      const usW = usAdv + 2 * track;
       const rowH = Math.max(logoH, wSize);
       const groupW = logoW + gap + 2 + gap + famW + usW;
       let x = 540 - groupW / 2;
       ctx.globalAlpha = 1;
+      ctx.textAlign = "left";
       if (logo.naturalWidth) ctx.drawImage(logo, x, y + (rowH - logoH) / 2, logoW, logoH);
       x += logoW + gap;
       alphaColor(foreground, 0.35);
       ctx.fillRect(x, y + (rowH - 6.5 * q) / 2, 2, 6.5 * q);
       x += 2 + gap;
       const wBase = y + rowH / 2 + wSize * 0.35;
+      ctx.letterSpacing = `${track}px`;
       alphaColor("#D8C4AB", 1);
       ctx.fillText("fam", x, wBase);
       alphaColor("#EB5F06", 1);
       ctx.fillText("US", x + famW, wBase);
       ctx.letterSpacing = "0px";
+      ctx.textAlign = "center";
 
       // Bottom block, anchored 8cqw from bottom
       let by = 1920 - 8 * q;
@@ -668,16 +705,16 @@ function Index() {
                     <img src={cardBackArt.url} alt="" className="absolute inset-0 size-full object-cover" width={941} height={1672} />
                     <div className="famus-card-shade absolute inset-0" />
                     <div className="famus-pop absolute inset-x-[8cqw] top-[65cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "14px" }}>
-                      <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
+                      <p className={`famus-pop max-w-full break-words font-wordmark leading-none ${handle.length > 12 ? "text-[5.5cqw]" : handle.length > 8 ? "text-[6.5cqw]" : "text-[7.5cqw]"}`} style={{ ["--pop" as string]: "30px", color: "#D8C4AB" }}><span className="font-body">@</span>{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
                         <p className="font-display text-[8cqw] leading-none">
                           <span className="text-foreground">{"fam "}</span>
-                          <span className="font-bold" style={{ color: GOLD_FLAT }}>{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
+                          <span className="famus-gold font-bold">{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
                       </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
-                      <div className="mt-[9cqw] flex items-center justify-center gap-[2.5cqw]">
+                      <div className="mt-[10cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[11.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[6.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[11.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
