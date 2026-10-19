@@ -407,7 +407,7 @@ function Index() {
 
 
       // Reserved text: 3.2cqw, line-height 1.5, tracking 0.18em
-      y += 10 * q;
+      y += 8 * q;
       const tSize = 4.2 * q;
       const tLine = tSize * 1.5;
       ctx.font = `${tSize}px "Work Sans", sans-serif`;
@@ -421,7 +421,7 @@ function Index() {
       ctx.letterSpacing = "0px";
 
       // Logo + divider + wordmark
-      y += 10 * q;
+      y += 8.5 * q;
       const logo = new Image();
       logo.src = famusLogo;
       try { await logo.decode(); } catch { /* keep card shareable */ }
@@ -713,8 +713,8 @@ function Index() {
                           <span className="famus-gold font-bold">{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
                       </div>
-                      <p className="mt-[9cqw] text-[4.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
-                      <div className="mt-[10cqw] flex items-center justify-center gap-[2.5cqw]">
+                      <p className="mt-[7cqw] text-[4.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
+                      <div className="mt-[8.5cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
