@@ -8,6 +8,13 @@
       "when": 1791559489434,
       "tag": "0000_priority_waitlist",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792383325194,
+      "tag": "0001_restart_family_claim_numbers",
+      "breakpoints": true
     }
   ]
 }

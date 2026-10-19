@@ -1,0 +1,1 @@
+ALTER SEQUENCE public.waitlist_claims_claim_number_seq RESTART WITH 1;
