@@ -108,11 +108,11 @@ const brushPts = (pts: readonly (readonly [number, number])[]) =>
 const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())}`;
 
 // The number is a single flat gold — no gradient or texture painted behind it.
-// Polished-gold ramp for the family number — keep in sync with .famus-gold in styles.css
+// Bronze-copper ramp for the family number, matched to the front artwork's lettering — keep in sync with .famus-gold in styles.css
 const GOLD_STOPS: [number, string][] = [
-  [0, "#4A2A0A"], [0.08, "#B67316"], [0.18, "#FCE9A0"], [0.3, "#FFF8D6"],
-  [0.42, "#E5B245"], [0.55, "#C98822"], [0.68, "#5C360A"], [0.78, "#381F05"],
-  [0.88, "#C98822"], [0.96, "#F0CE72"], [1, "#8A5A18"],
+  [0, "#3A1B08"], [0.08, "#8A4E22"], [0.18, "#E3B98A"], [0.3, "#F2D9B8"],
+  [0.42, "#C58C54"], [0.55, "#B37640"], [0.68, "#6E3A1A"], [0.78, "#4A2410"],
+  [0.88, "#A9683A"], [0.96, "#D9A870"], [1, "#7A4520"],
 ];
 
 
