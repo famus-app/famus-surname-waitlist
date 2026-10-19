@@ -36,4 +36,5 @@
 - [x] Make the card-back @handle smaller and warm beige (live card + downloaded card)
 - [x] Show the "@" in the regular text font while the name stays in the famUS font (live card + downloaded card)
 - [x] Make the card-back @handle a bit bigger again (live card + downloaded card)
-- [ ] Confirm the warm-beige handle colour and new size in the preview (source updated, build OK; last captures came from a cached copy)
+- [x] Confirm the warm-beige handle colour and new size in the preview (verified: live computed rgb(216,196,171), download same)
+- [x] Make the card-back username bigger again (live card + downloaded card)
