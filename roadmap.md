@@ -23,3 +23,4 @@
 - [x] Replace the card-back statement with "Just reserved our legacy in perpetuity, powered by family intelligence." across four lines (live card and downloaded card)
 - [x] Add a gap between fam #0001 and the reserved statement on the card back (live + canvas), logo and footer left in place
 - [x] Make the orb in the man's hand glow when the card front is hovered (live card only)
+- [x] Add a torn-paper strip beneath fam #0001 on the card back (live + canvas), spanning the full card width with organic ragged edges and thickness variation

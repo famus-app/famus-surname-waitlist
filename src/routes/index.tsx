@@ -29,6 +29,79 @@ const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-ascii.png.asset.json";
 import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 
+// Torn-paper strip drawn beneath the family number. The same normalized points
+// feed the live card SVG and the share-card canvas, so both render one rip.
+// Points are [x across the band, y down the band], each 0..1 of the band box.
+// Seeded so the live card SVG and the share-card canvas draw one identical rip.
+// Three octaves of smooth noise: broad waves, mid undulation, fine fibres.
+const tornRand = (seed: number) => () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+// Builds both torn edges together so they can share one thickness envelope: the
+// strip narrows and swells along its length instead of running at one height.
+const buildTornPair = (seed: number, n = 420) => {
+  const rnd = tornRand(seed);
+  // value noise: random grid values interpolated with a smoothstep
+  const wave = (cells: number) => {
+    const g = Array.from({ length: cells + 1 }, () => rnd() - 0.5);
+    return (t: number) => {
+      const s = t * cells;
+      const i = Math.min(Math.floor(s), cells - 1);
+      const f = s - i;
+      const a = g[i] ?? 0;
+      const b = g[i + 1] ?? 0;
+      return a + (b - a) * (f * f * (3 - 2 * f));
+    };
+  };
+  const cBig = wave(5), cMid = wave(22), cFine = wave(110);
+  const tBig = wave(7), tMid = wave(30), tFine = wave(140);
+  const bBig = wave(7), bMid = wave(30), bFine = wave(140);
+  const thin = wave(4);
+  const center = 0.36;
+  const half = 0.2;
+  const top: [number, number][] = [];
+  const bot: [number, number][] = [];
+  let walkT = 0;
+  let walkB = 0;
+  for (let i = 0; i <= n; i++) {
+    const x = i / n;
+    const g = half * (1 + thin(x) * 0.85); // thickness envelope
+    const c = center + cBig(x) * 0.05 + cMid(x) * 0.03 + cFine(x) * 0.012;
+    walkT = walkT * 0.86 + (rnd() - 0.5) * 0.01;
+    walkB = walkB * 0.86 + (rnd() - 0.5) * 0.01;
+    const nickT = rnd() < 0.03 ? (rnd() - 0.5) * 0.06 : 0;
+    const nickB = rnd() < 0.03 ? (rnd() - 0.5) * 0.06 : 0;
+    top.push([x, c - g + tBig(x) * 0.035 + tMid(x) * 0.02 + tFine(x) * 0.012 + walkT + nickT]);
+    bot.push([x, c + g + bBig(x) * 0.035 + bMid(x) * 0.02 + bFine(x) * 0.012 + walkB + nickB]);
+  }
+  return { top, bot };
+};
+const TORN = buildTornPair(1337);
+const TORN_TOP_EDGE = TORN.top;
+const TORN_BOT_EDGE = TORN.bot;
+// Fibre grain inside the strip: [x, y, radius in band units].
+const TORN_SPECKS: [number, number, number][] = [
+  [0.040, 0.30, 1.8], [0.090, 0.42, 1.2], [0.140, 0.25, 2.2], [0.190, 0.48, 1.6],
+  [0.250, 0.33, 1.2], [0.300, 0.45, 2.0], [0.360, 0.28, 1.6], [0.410, 0.50, 1.2],
+  [0.470, 0.35, 2.4], [0.520, 0.44, 1.6], [0.580, 0.30, 1.2], [0.630, 0.47, 2.0],
+  [0.690, 0.33, 1.6], [0.740, 0.42, 1.2], [0.800, 0.28, 2.2], [0.850, 0.46, 1.6],
+  [0.910, 0.34, 1.2], [0.960, 0.44, 2.0], [0.070, 0.38, 1.0], [0.220, 0.40, 1.0],
+  [0.390, 0.38, 1.0], [0.560, 0.38, 1.0], [0.720, 0.40, 1.0], [0.880, 0.38, 1.0],
+];
+const TORN_W = 840;
+const TORN_H = 50;
+const TORN_PAPER_TOP = "#F6EBDA";
+const TORN_PAPER_MID = "#E8D6BE";
+const TORN_PAPER_BOTTOM = "#D8C4AB";
+const tornPts = (pts: readonly (readonly [number, number])[]) =>
+  pts.map(([x, y]) => `${(x * TORN_W).toFixed(1)},${(y * TORN_H).toFixed(1)}`).join(" ");
+const TORN_TOP = tornPts(TORN_TOP_EDGE);
+const TORN_STRIP = `${TORN_TOP} ${tornPts([...TORN_BOT_EDGE].reverse())}`;
+const TORN_SHADOW = `${tornPts(TORN_BOT_EDGE)} ${TORN_W},${TORN_H} 0,${TORN_H}`;
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -285,6 +358,71 @@ function Index() {
       ctx.fillText(num, startX + pw, y + fSize * 0.8);
       y += fSize;
       ctx.textAlign = "center";
+
+      // Torn-paper strip beneath the family number (same points as the live card SVG)
+      const tearX = 0;
+      const tearW = 100 * q;
+      const tearY = y + 1.5 * q;
+      const tearH = 7 * q;
+      const tearUnit = tearW / TORN_W;
+      const traceTear = (pts: readonly (readonly [number, number])[]) => {
+        ctx.beginPath();
+        pts.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+      };
+      const toCanvas = (edge: readonly (readonly [number, number])[]) =>
+        edge.map(([x, yy]) => [tearX + x * tearW, tearY + yy * tearH] as const);
+      const topPts = toCanvas(TORN_TOP_EDGE);
+      const botPts = toCanvas(TORN_BOT_EDGE);
+      const traceStrip = () => {
+        traceTear(topPts);
+        for (const [px, py] of [...botPts].reverse()) ctx.lineTo(px, py);
+        ctx.closePath();
+      };
+      // shadow the lifted strip casts onto the artwork below
+      const tearShade = ctx.createLinearGradient(0, tearY, 0, tearY + tearH);
+      tearShade.addColorStop(0, "oklch(0.07 0.007 58 / 0.9)");
+      tearShade.addColorStop(1, "oklch(0.07 0.007 58 / 0)");
+      traceTear(botPts);
+      ctx.lineTo(tearX + tearW, tearY + tearH);
+      ctx.lineTo(tearX, tearY + tearH);
+      ctx.closePath();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = tearShade;
+      ctx.fill();
+      // the torn paper itself
+      const paperTop = Math.min(...TORN_TOP_EDGE.map(([, yy]) => yy)) * tearH;
+      const paperBot = Math.max(...TORN_BOT_EDGE.map(([, yy]) => yy)) * tearH;
+      const tearPaper = ctx.createLinearGradient(0, tearY + paperTop, 0, tearY + paperBot);
+      tearPaper.addColorStop(0, TORN_PAPER_MID);
+      tearPaper.addColorStop(0.35, TORN_PAPER_TOP);
+      tearPaper.addColorStop(1, TORN_PAPER_BOTTOM);
+      traceStrip();
+      ctx.fillStyle = tearPaper;
+      ctx.fill();
+      // fibre grain, contact shadow and the lit torn edge
+      ctx.save();
+      traceStrip();
+      ctx.clip();
+      const curl = ctx.createLinearGradient(0, tearY + 0.35 * tearH, 0, tearY + tearH);
+      curl.addColorStop(0, "#8A6B4A00");
+      curl.addColorStop(1, "#8A6B4A99");
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = curl;
+      ctx.fillRect(tearX, tearY, tearW, tearH);
+      ctx.fillStyle = TORN_PAPER_BOTTOM;
+      ctx.globalAlpha = 0.5;
+      for (const [x, yy, r] of TORN_SPECKS) {
+        ctx.beginPath();
+        ctx.ellipse(tearX + x * tearW, tearY + yy * tearH, r * tearUnit, r * (tearH / TORN_H), 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+      ctx.globalAlpha = 0.5;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#FFF6E8";
+      traceTear(topPts);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
 
       // Reserved text: 3.2cqw, line-height 1.5, tracking 0.18em
       y += 10 * q;
@@ -581,7 +719,34 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <p className="mt-[10cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
+                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[1.5cqw] h-[7cqw] -mx-[8cqw] w-[calc(100%+16cqw)]">
+                        <defs>
+                          <linearGradient id="famus-tear-shade" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" style={{ stopColor: "var(--background)", stopOpacity: 0.9 }} />
+                            <stop offset="1" style={{ stopColor: "var(--background)", stopOpacity: 0 }} />
+                          </linearGradient>
+                          <linearGradient id="famus-tear-paper" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stopColor={TORN_PAPER_MID} />
+                            <stop offset="0.35" stopColor={TORN_PAPER_TOP} />
+                            <stop offset="1" stopColor={TORN_PAPER_BOTTOM} />
+                          </linearGradient>
+                          <linearGradient id="famus-tear-curl" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0.35" stopColor="#8A6B4A" stopOpacity="0" />
+                            <stop offset="1" stopColor="#8A6B4A" stopOpacity="0.6" />
+                          </linearGradient>
+                          <clipPath id="famus-tear-clip"><polygon points={TORN_STRIP} /></clipPath>
+                        </defs>
+                        <polygon points={TORN_SHADOW} fill="url(#famus-tear-shade)" />
+                        <polygon points={TORN_STRIP} fill="url(#famus-tear-paper)" />
+                        <g clipPath="url(#famus-tear-clip)">
+                          <rect x="0" y="0" width={TORN_W} height={TORN_H} fill="url(#famus-tear-curl)" />
+                          {TORN_SPECKS.map(([x, y, r], i) => (
+                            <circle key={i} cx={x * TORN_W} cy={y * TORN_H} r={r} fill={TORN_PAPER_BOTTOM} fillOpacity="0.5" />
+                          ))}
+                          <polyline points={TORN_TOP} fill="none" strokeWidth="1.4" stroke="#FFF6E8" strokeOpacity="0.5" />
+                        </g>
+                      </svg>
+                      <p className="mt-[1.5cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
