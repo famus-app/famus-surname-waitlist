@@ -368,10 +368,16 @@ function Index() {
       traceStrip();
       ctx.fillStyle = tearPaper;
       ctx.fill();
-      // fibre grain
+      // fibre grain, contact shadow and the lit torn edge
       ctx.save();
       traceStrip();
       ctx.clip();
+      const curl = ctx.createLinearGradient(0, tearY + 0.35 * tearH, 0, tearY + tearH);
+      curl.addColorStop(0, "#8A6B4A00");
+      curl.addColorStop(1, "#8A6B4A99");
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = curl;
+      ctx.fillRect(tearX, tearY, tearW, tearH);
       ctx.fillStyle = TORN_PAPER_BOTTOM;
       ctx.globalAlpha = 0.5;
       for (const [x, yy, r] of TORN_SPECKS) {
@@ -380,6 +386,11 @@ function Index() {
         ctx.fill();
       }
       ctx.restore();
+      ctx.globalAlpha = 0.5;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#FFF6E8";
+      traceTear(topPts);
+      ctx.stroke();
       ctx.globalAlpha = 1;
 
       // Reserved text: 3.2cqw, line-height 1.5, tracking 0.18em
@@ -688,14 +699,20 @@ function Index() {
                             <stop offset="0.35" stopColor={TORN_PAPER_TOP} />
                             <stop offset="1" stopColor={TORN_PAPER_BOTTOM} />
                           </linearGradient>
+                          <linearGradient id="famus-tear-curl" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0.35" stopColor="#8A6B4A" stopOpacity="0" />
+                            <stop offset="1" stopColor="#8A6B4A" stopOpacity="0.6" />
+                          </linearGradient>
                           <clipPath id="famus-tear-clip"><polygon points={TORN_STRIP} /></clipPath>
                         </defs>
                         <polygon points={TORN_SHADOW} fill="url(#famus-tear-shade)" />
                         <polygon points={TORN_STRIP} fill="url(#famus-tear-paper)" />
                         <g clipPath="url(#famus-tear-clip)">
+                          <rect x="0" y="0" width={TORN_W} height={TORN_H} fill="url(#famus-tear-curl)" />
                           {TORN_SPECKS.map(([x, y, r], i) => (
                             <circle key={i} cx={x * TORN_W} cy={y * TORN_H} r={r} fill={TORN_PAPER_BOTTOM} fillOpacity="0.5" />
                           ))}
+                          <polyline points={TORN_TOP} fill="none" strokeWidth="1.4" stroke="#FFF6E8" strokeOpacity="0.5" />
                         </g>
                       </svg>
                       <p className="mt-[2cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
