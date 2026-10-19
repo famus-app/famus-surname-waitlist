@@ -22,3 +22,4 @@
 - [x] Use the uploaded ASCII generations and arches artwork for the card and open the final preview without creating a registration
 - [x] Replace the card-back statement with "Just reserved our legacy in perpetuity, powered by family intelligence." across four lines (live card and downloaded card)
 - [x] Add a gap between fam #0001 and the reserved statement on the card back (live + canvas), logo and footer left in place
+- [x] Make the orb in the man's hand glow when the card front is hovered (live card only)
