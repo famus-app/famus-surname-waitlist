@@ -287,13 +287,13 @@ function Index() {
       ctx.textAlign = "center";
 
       // Reserved text: 3.2cqw, line-height 1.5, tracking 0.18em
-      y += 6 * q;
+      y += 10 * q;
       const tSize = 3.2 * q;
       const tLine = tSize * 1.5;
       ctx.font = `${tSize}px "Work Sans", sans-serif`;
       ctx.letterSpacing = `${tSize * 0.18}px`;
       alphaColor(foreground, 0.9);
-      ctx.fillText("JUST RESERVED OUR", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35, 92 * q);
+      ctx.fillText("I JUST RESERVED OUR", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35, 92 * q);
       ctx.fillText("LEGACY IN PERPETUITY,", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35, 92 * q);
       ctx.fillText("POWERED BY", 540 + tSize * 0.09, y + tLine * 2.5 + tSize * 0.35, 92 * q);
       ctx.fillText("FAMILY INTELLIGENCE.", 540 + tSize * 0.09, y + tLine * 3.5 + tSize * 0.35, 92 * q);
@@ -301,7 +301,7 @@ function Index() {
       ctx.letterSpacing = "0px";
 
       // Logo + divider + wordmark
-      y += 10 * q;
+      y += 6 * q;
       const logo = new Image();
       logo.src = famusLogo;
       try { await logo.decode(); } catch { /* keep card shareable */ }
@@ -336,7 +336,7 @@ function Index() {
       ctx.letterSpacing = `${tagSize * 0.08}px`;
       ctx.textAlign = "center";
       alphaColor(foreground, 0.8);
-      ctx.fillText("ONE FAMILY NAME. ONE AGENT. FOR YOUR FAMILY 🫶🏻", 540, by - tagSize * 1.6 / 2 + tagSize * 0.35, 88 * q);
+      ctx.fillText("ONE FAMILY NAME. ONE SI. FOR YOUR FAMILY 🫶🏻", 540, by - tagSize * 1.6 / 2 + tagSize * 0.35, 88 * q);
       ctx.letterSpacing = "0px";
       by -= tagSize * 1.6 + 4 * q;
       alphaColor(foreground, 0.15);
@@ -580,8 +580,8 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <p className="mt-[6cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
-                      <div className="mt-[10cqw] flex items-center justify-center gap-[2.5cqw]">
+                      <p className="mt-[10cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
+                      <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
