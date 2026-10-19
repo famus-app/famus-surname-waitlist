@@ -60,11 +60,14 @@ const buildBrush = (seed: number, n = 320) => {
   for (let i = 0; i <= n; i++) {
     const x = i / n;
     // paint sits heaviest mid-stroke and runs dry into split bristles at the ends
-    const env = Math.pow(Math.sin(Math.PI * x), 0.2);
+    const ramp = Math.min(1, x / 0.1, (1 - x) / 0.1); // the outer tenth of the swipe runs out
+    const comb = Math.abs(Math.sin(x * 140)); // where the bristles separate
+    const pinch = (1 - ramp) * (1 - comb); // deep gaps only near the tips
+    const env = Math.max(0.1, Math.sqrt(ramp)) * (1 - 0.92 * pinch);
     const half = 0.46 * env * (0.85 + (thick(x) + 0.5) * 0.3);
     const c = 0.5 + drift(x) * 0.05;
-    top.push([x, c - half + tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009]);
-    bot.push([x, c + half + bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009]);
+    top.push([x, c - half + (tBig(x) * 0.03 + tMid(x) * 0.016 + tFine(x) * 0.009) * env]);
+    bot.push([x, c + half + (bBig(x) * 0.03 + bMid(x) * 0.016 + bFine(x) * 0.009) * env]);
   }
   // bristle fibres: tapered paint threads, each a closed outline in band space
   const streaks: { poly: [number, number][]; a: number; lit: boolean }[] = [];
@@ -345,19 +348,19 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // fam #0001 laid on a beige paint-brush swipe
+      // the number alone laid on a beige paint-brush swipe; the word fam stays plain
       y += 6 * q;
       const fSize = 8 * q;
       ctx.font = `${fSize}px "Instrument Serif", serif`;
-      const prefix = "fam #";
-      const num = String(claimNumber).padStart(4, "0");
-      const pw = ctx.measureText(prefix).width;
+      const lead = "fam ";
+      const num = "#" + String(claimNumber).padStart(4, "0");
+      const lw = ctx.measureText(lead).width;
       const nw = ctx.measureText(num).width;
-      const startX = 540 - (pw + nw) / 2;
+      const startX = 540 - (lw + nw) / 2;
 
-      // same box the live card hands the SVG: text plus 6cqw at the sides, 2.4cqw top and bottom
-      const swX = startX - 6 * q;
-      const swW = pw + nw + 12 * q;
+      // same box the live card hands the SVG: the number plus 3cqw to the right, 2.4cqw top and bottom
+      const swX = startX + lw;
+      const swW = nw + 3 * q;
       const swY = y - 2.4 * q;
       const swH = fSize + 4.8 * q;
       const traceBrush = () => {
@@ -407,13 +410,14 @@ function Index() {
 
       ctx.shadowColor = "rgba(0,0,0,0)";
       ctx.textAlign = "left";
-      alphaColor(background, 1);
       // place the baseline the way a line-height:1 box does, so the number sits in the
       // paint at exactly the height the live card shows it
-      const fm = ctx.measureText(prefix + num);
+      const fm = ctx.measureText(lead + num);
       const base = y + (fSize - (fm.fontBoundingBoxAscent + fm.fontBoundingBoxDescent)) / 2 + fm.fontBoundingBoxAscent;
-      ctx.fillText(prefix, startX, base);
-      ctx.fillText(num, startX + pw, base);
+      alphaColor(foreground, 1);
+      ctx.fillText(lead, startX, base);
+      alphaColor(background, 1);
+      ctx.fillText(num, startX + lw, base);
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
@@ -716,7 +720,10 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
-                        <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" overflow="visible" className="absolute -inset-x-[6cqw] -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+12cqw)] overflow-visible" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
+                        <p className="font-display text-[8cqw] leading-none">
+                          <span className="text-foreground">{"fam "}</span>
+                          <span className="relative inline-block">
+                            <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" overflow="visible" className="absolute left-0 -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+3cqw)] overflow-visible" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
                           <defs>
                             <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="0" stopColor="#E7D8C2" />
@@ -734,8 +741,10 @@ function Index() {
                           {BRUSH.flecks.map(([x, y, r], i) => (
                             <circle key={i} cx={x * BRUSH_W} cy={y * BRUSH_H} r={r} fill="#D8C4AB" fillOpacity="0.55" />
                           ))}
-                        </svg>
-                        <p className="relative font-display text-[8cqw] leading-none text-background">{"fam #"}{String(claimNumber ?? 0).padStart(4, "0")}</p>
+                            </svg>
+                            <span className="relative text-background">{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
+                          </span>
+                        </p>
                       </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
