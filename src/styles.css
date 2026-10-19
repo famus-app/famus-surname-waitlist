@@ -285,17 +285,17 @@
 .famus-gold {
   background-image: linear-gradient(
     180deg,
-    #4a2a0a 0%,
-    #b67316 8%,
-    #fce9a0 18%,
-    #fff8d6 30%,
-    #e5b245 42%,
-    #c98822 55%,
-    #5c360a 68%,
-    #381f05 78%,
-    #c98822 88%,
-    #f0ce72 96%,
-    #8a5a18 100%
+    #3a1b08 0%,
+    #8a4e22 8%,
+    #e3b98a 18%,
+    #f2d9b8 30%,
+    #c58c54 42%,
+    #b37640 55%,
+    #6e3a1a 68%,
+    #4a2410 78%,
+    #a9683a 88%,
+    #d9a870 96%,
+    #7a4520 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
