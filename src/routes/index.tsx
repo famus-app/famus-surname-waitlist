@@ -269,20 +269,8 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // Reserved text: 3.2cqw, line-height 1.6, tracking 0.18em
-      y += 6 * q;
-      const tSize = 3.2 * q;
-      const tLine = tSize * 1.6;
-      ctx.font = `${tSize}px "Work Sans", sans-serif`;
-      ctx.letterSpacing = `${tSize * 0.18}px`;
-      alphaColor(foreground, 0.9);
-      ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
-      ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
-      y += tLine * 2;
-      ctx.letterSpacing = "0px";
-
       // fam #0001
-      y += 9 * q;
+      y += 6 * q;
       const fSize = 8 * q;
       ctx.font = `${fSize}px "Instrument Serif", serif`;
       const prefix = "fam #";
@@ -296,6 +284,19 @@ function Index() {
       alphaColor("#D8C4AB", 1);
       ctx.fillText(num, startX + pw, y + fSize * 0.8);
       y += fSize;
+      ctx.textAlign = "center";
+
+      // Reserved text: 3.2cqw, line-height 1.6, tracking 0.18em
+      y += 9 * q;
+      const tSize = 3.2 * q;
+      const tLine = tSize * 1.6;
+      ctx.font = `${tSize}px "Work Sans", sans-serif`;
+      ctx.letterSpacing = `${tSize * 0.18}px`;
+      alphaColor(foreground, 0.9);
+      ctx.fillText("I JUST RESERVED MY", 540 + tSize * 0.09, y + tLine / 2 + tSize * 0.35);
+      ctx.fillText("FAMILY NAME IN PERPETUITY", 540 + tSize * 0.09, y + tLine * 1.5 + tSize * 0.35);
+      y += tLine * 2;
+      ctx.letterSpacing = "0px";
 
       // Logo + divider + wordmark
       y += 16 * q;
