@@ -29,6 +29,24 @@ const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-ascii.png.asset.json";
 import cardBackArt from "@/assets/famus-card-back-ascii.png.asset.json";
 
+// Torn-paper edge drawn beneath the family number. The same normalized points
+// feed the live card SVG and the share-card canvas, so both render one rip.
+const TORN_EDGE: [number, number][] = [
+  [0.000, 0.52], [0.022, 0.34], [0.041, 0.61], [0.063, 0.22], [0.084, 0.47],
+  [0.105, 0.70], [0.128, 0.30], [0.149, 0.56], [0.171, 0.12], [0.193, 0.41],
+  [0.214, 0.66], [0.236, 0.25], [0.258, 0.50], [0.279, 0.74], [0.301, 0.33],
+  [0.323, 0.15], [0.344, 0.58], [0.366, 0.40], [0.388, 0.68], [0.409, 0.23],
+  [0.431, 0.49], [0.452, 0.63], [0.474, 0.11], [0.496, 0.45], [0.517, 0.67],
+  [0.539, 0.29], [0.560, 0.53], [0.582, 0.76], [0.603, 0.19], [0.625, 0.46],
+  [0.647, 0.60], [0.668, 0.32], [0.690, 0.70], [0.711, 0.14], [0.733, 0.51],
+  [0.755, 0.37], [0.776, 0.65], [0.798, 0.21], [0.819, 0.48], [0.841, 0.72],
+  [0.862, 0.28], [0.884, 0.55], [0.906, 0.17], [0.927, 0.43], [0.949, 0.62],
+  [0.970, 0.31], [1.000, 0.50],
+];
+const TORN_W = 840;
+const TORN_H = 50;
+const TORN_POINTS = TORN_EDGE.map(([x, y]) => `${(x * TORN_W).toFixed(1)},${(y * TORN_H).toFixed(1)}`).join(" ");
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -285,6 +303,40 @@ function Index() {
       ctx.fillText(num, startX + pw, y + fSize * 0.8);
       y += fSize;
       ctx.textAlign = "center";
+
+      // Torn-paper edge beneath the family number (same points as the live card SVG)
+      const tearX = 8 * q;
+      const tearW = 84 * q;
+      const tearY = y + 3 * q;
+      const tearH = 5 * q;
+      const tearUnit = tearW / TORN_W;
+      const tearPts = TORN_EDGE.map(([px, py]) => [tearX + px * tearW, tearY + py * tearH] as const);
+      const traceTear = () => {
+        ctx.beginPath();
+        tearPts.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+      };
+      const tearShade = ctx.createLinearGradient(0, tearY, 0, tearY + tearH);
+      tearShade.addColorStop(0, "oklch(0.07 0.007 58 / 0.9)");
+      tearShade.addColorStop(1, "oklch(0.07 0.007 58 / 0)");
+      traceTear();
+      ctx.lineTo(tearX + tearW, tearY + tearH);
+      ctx.lineTo(tearX, tearY + tearH);
+      ctx.closePath();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = tearShade;
+      ctx.fill();
+      ctx.lineJoin = "round";
+      ctx.lineWidth = 7 * tearUnit;
+      ctx.strokeStyle = primary;
+      ctx.globalAlpha = 0.4;
+      traceTear();
+      ctx.stroke();
+      ctx.lineWidth = 2.2 * tearUnit;
+      ctx.strokeStyle = "#D8C4AB";
+      ctx.globalAlpha = 0.92;
+      traceTear();
+      ctx.stroke();
+      ctx.globalAlpha = 1;
 
       // Reserved text: 3.2cqw, line-height 1.5, tracking 0.18em
       y += 10 * q;
@@ -581,7 +633,18 @@ function Index() {
                       <p className={`famus-pop max-w-full break-words font-display leading-none text-primary ${handle.length > 12 ? "text-[8cqw]" : handle.length > 8 ? "text-[10cqw]" : "text-[13cqw]"}`} style={{ ["--pop" as string]: "30px" }}>@{handle}</p>
                       <span aria-hidden className="mt-[6cqw] h-px w-[14cqw] bg-foreground/25" />
                       <p className="famus-pop mt-[6cqw] font-display text-[8cqw] leading-none text-foreground" style={{ ["--pop" as string]: "24px" }}>{"fam #"}<span className="text-[#D8C4AB]">{String(claimNumber ?? 0).padStart(4, "0")}</span></p>
-                      <p className="mt-[10cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
+                      <svg aria-hidden viewBox={`0 0 ${TORN_W} ${TORN_H}`} preserveAspectRatio="none" className="mt-[3cqw] h-[5cqw] w-full">
+                        <defs>
+                          <linearGradient id="famus-tear-shade" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" style={{ stopColor: "var(--background)", stopOpacity: 0.9 }} />
+                            <stop offset="1" style={{ stopColor: "var(--background)", stopOpacity: 0 }} />
+                          </linearGradient>
+                        </defs>
+                        <polygon points={`${TORN_POINTS} ${TORN_W},${TORN_H} 0,${TORN_H}`} fill="url(#famus-tear-shade)" />
+                        <polyline points={TORN_POINTS} fill="none" strokeLinejoin="round" strokeWidth="7" strokeOpacity="0.4" style={{ stroke: "var(--primary)" }} />
+                        <polyline points={TORN_POINTS} fill="none" strokeLinejoin="round" strokeWidth="2.2" stroke="#D8C4AB" strokeOpacity="0.92" />
+                      </svg>
+                      <p className="mt-[2cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
