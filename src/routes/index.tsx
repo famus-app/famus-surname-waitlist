@@ -681,7 +681,7 @@ function Index() {
                           <span className="font-bold" style={{ background: "linear-gradient(180deg, #F6E3A1 0%, #D9A93F 48%, #A8761E 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", WebkitTextStroke: "0.04em #D9A93F" }}>{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
                       </div>
-                      <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
+                      <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
                       <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
                         <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
                         <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
