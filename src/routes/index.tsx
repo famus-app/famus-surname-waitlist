@@ -345,19 +345,19 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // fam #0001 laid on a beige paint-brush swipe
+      // the number alone laid on a beige paint-brush swipe; the word fam stays plain
       y += 6 * q;
       const fSize = 8 * q;
       ctx.font = `${fSize}px "Instrument Serif", serif`;
-      const prefix = "fam #";
-      const num = String(claimNumber).padStart(4, "0");
-      const pw = ctx.measureText(prefix).width;
+      const lead = "fam ";
+      const num = "#" + String(claimNumber).padStart(4, "0");
+      const lw = ctx.measureText(lead).width;
       const nw = ctx.measureText(num).width;
-      const startX = 540 - (pw + nw) / 2;
+      const startX = 540 - (lw + nw) / 2;
 
-      // same box the live card hands the SVG: text plus 6cqw at the sides, 2.4cqw top and bottom
-      const swX = startX - 6 * q;
-      const swW = pw + nw + 12 * q;
+      // same box the live card hands the SVG: the number plus 3cqw at the sides, 2.4cqw top and bottom
+      const swX = startX + lw - 3 * q;
+      const swW = nw + 6 * q;
       const swY = y - 2.4 * q;
       const swH = fSize + 4.8 * q;
       const traceBrush = () => {
