@@ -391,13 +391,13 @@ function Index() {
       ctx.letterSpacing = "0px";
 
       // Logo + divider + wordmark
-      y += 6 * q;
+      y += 9 * q;
       const logo = new Image();
       logo.src = famusLogo;
       try { await logo.decode(); } catch { /* keep card shareable */ }
-      const logoW = 12.5 * q;
+      const logoW = 11.5 * q;
       const logoH = logo.naturalWidth ? logoW * (logo.naturalHeight / logo.naturalWidth) : logoW;
-      const wSize = 12.5 * q;
+      const wSize = 11.5 * q;
       const gap = 2.5 * q;
       ctx.font = `${wSize}px "Canarina", sans-serif`;
       ctx.letterSpacing = `${-0.056 * wSize}px`;
@@ -410,7 +410,7 @@ function Index() {
       if (logo.naturalWidth) ctx.drawImage(logo, x, y + (rowH - logoH) / 2, logoW, logoH);
       x += logoW + gap;
       alphaColor(foreground, 0.35);
-      ctx.fillRect(x, y + (rowH - 7.5 * q) / 2, 2, 7.5 * q);
+      ctx.fillRect(x, y + (rowH - 6.5 * q) / 2, 2, 6.5 * q);
       x += 2 + gap;
       const wBase = y + rowH / 2 + wSize * 0.35;
       alphaColor("#D8C4AB", 1);
@@ -677,10 +677,10 @@ function Index() {
                         </p>
                       </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
-                      <div className="mt-[6cqw] flex items-center justify-center gap-[2.5cqw]">
-                        <img src={famusLogo} alt="" className="famus-pop w-[12.5cqw]" style={{ ["--pop" as string]: "18px" }} />
-                        <span aria-hidden className="famus-pop h-[7.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
-                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[12.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
+                      <div className="mt-[9cqw] flex items-center justify-center gap-[2.5cqw]">
+                        <img src={famusLogo} alt="" className="famus-pop w-[11.5cqw]" style={{ ["--pop" as string]: "18px" }} />
+                        <span aria-hidden className="famus-pop h-[6.5cqw] w-px bg-foreground/35" style={{ ["--pop" as string]: "18px" }} />
+                        <span aria-hidden="true" className="famus-pop whitespace-nowrap font-wordmark text-[11.5cqw] leading-none tracking-[-0.056em]" style={{ ["--pop" as string]: "18px" }}><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
                       </div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
