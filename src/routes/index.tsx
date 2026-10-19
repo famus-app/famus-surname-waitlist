@@ -468,16 +468,8 @@ function Index() {
       alphaColor(foreground, 1);
       ctx.fillText(lead, startX, base);
       ctx.globalAlpha = 1;
-      ctx.strokeStyle = "#D6AA58";
-      ctx.lineWidth = fSize * 0.02;
-      ctx.lineJoin = "round";
-      ctx.strokeText(num, startX + lw, base);
-      if (!drawGoldNumber(ctx, num, startX + lw, base, fSize)) {
-        const gold = ctx.createLinearGradient(0, base - fSize * 0.8, 0, base);
-        for (const [stop, color] of GOLD_STOPS) gold.addColorStop(stop, color);
-        ctx.fillStyle = gold;
-        ctx.fillText(num, startX + lw, base);
-      }
+      ctx.fillStyle = GOLD_FLAT;
+      ctx.fillText(num, startX + lw, base);
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetY = 10;
@@ -782,7 +774,7 @@ function Index() {
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
                         <p className="font-display text-[8cqw] leading-none">
                           <span className="text-foreground">{"fam "}</span>
-                          <span className="font-bold" style={{ backgroundImage: "repeating-linear-gradient(97deg, rgba(255,250,225,0.18) 0 1px, rgba(60,36,8,0.14) 1px 2px, rgba(255,255,255,0) 2px 3.6px), radial-gradient(120% 60% at 30% 26%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 58%), linear-gradient(180deg, #7A5214 0%, #E7C56B 13%, #FFF6D8 29%, #D8A83A 42%, #F3D98C 56%, #9C6C1C 71%, #E0BA5E 86%, #6E4A15 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", WebkitTextStroke: "0.012em rgba(214,170,88,0.7)" }}>{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
+                          <span className="font-bold" style={{ color: GOLD_FLAT }}>{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
                       </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />READY FOR THE ERA OF<br />FAMILY INTELLIGENCE.</p>
