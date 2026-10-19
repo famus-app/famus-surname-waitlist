@@ -40,7 +40,9 @@ const tornRand = (seed: number) => () => {
   t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 };
-const buildTorn = (base: number, amp: number, seed: number, n = 420) => {
+// Builds both torn edges together so they can share one thickness envelope: the
+// strip narrows and swells along its length instead of running at one height.
+const buildTornPair = (seed: number, n = 420) => {
   const rnd = tornRand(seed);
   // value noise: random grid values interpolated with a smoothstep
   const wave = (cells: number) => {
@@ -54,21 +56,32 @@ const buildTorn = (base: number, amp: number, seed: number, n = 420) => {
       return a + (b - a) * (f * f * (3 - 2 * f));
     };
   };
-  const big = wave(6);
-  const mid = wave(26);
-  const fine = wave(120);
-  const pts: [number, number][] = [];
-  let walk = 0;
+  const cBig = wave(5), cMid = wave(22), cFine = wave(110);
+  const tBig = wave(7), tMid = wave(30), tFine = wave(140);
+  const bBig = wave(7), bMid = wave(30), bFine = wave(140);
+  const thin = wave(4);
+  const center = 0.36;
+  const half = 0.2;
+  const top: [number, number][] = [];
+  const bot: [number, number][] = [];
+  let walkT = 0;
+  let walkB = 0;
   for (let i = 0; i <= n; i++) {
     const x = i / n;
-    walk = walk * 0.86 + (rnd() - 0.5) * 0.012; // fibre drift
-    const nick = rnd() < 0.03 ? (rnd() - 0.5) * amp * 1.6 : 0; // torn nicks
-    pts.push([x, base + big(x) * amp * 0.55 + mid(x) * amp * 0.35 + fine(x) * amp * 0.18 + walk + nick]);
+    const g = half * (1 + thin(x) * 0.85); // thickness envelope
+    const c = center + cBig(x) * 0.05 + cMid(x) * 0.03 + cFine(x) * 0.012;
+    walkT = walkT * 0.86 + (rnd() - 0.5) * 0.01;
+    walkB = walkB * 0.86 + (rnd() - 0.5) * 0.01;
+    const nickT = rnd() < 0.03 ? (rnd() - 0.5) * 0.06 : 0;
+    const nickB = rnd() < 0.03 ? (rnd() - 0.5) * 0.06 : 0;
+    top.push([x, c - g + tBig(x) * 0.035 + tMid(x) * 0.02 + tFine(x) * 0.012 + walkT + nickT]);
+    bot.push([x, c + g + bBig(x) * 0.035 + bMid(x) * 0.02 + bFine(x) * 0.012 + walkB + nickB]);
   }
-  return pts;
+  return { top, bot };
 };
-const TORN_TOP_EDGE = buildTorn(0.14, 0.1, 1337);
-const TORN_BOT_EDGE = buildTorn(0.62, 0.11, 4242);
+const TORN = buildTornPair(1337);
+const TORN_TOP_EDGE = TORN.top;
+const TORN_BOT_EDGE = TORN.bot;
 // Fibre grain inside the strip: [x, y, radius in band units].
 const TORN_SPECKS: [number, number, number][] = [
   [0.040, 0.30, 1.8], [0.090, 0.42, 1.2], [0.140, 0.25, 2.2], [0.190, 0.48, 1.6],
