@@ -348,7 +348,7 @@ function Index() {
       ctx.fillRect(540 - 7 * q, y, 14 * q, 2);
       y += 1;
 
-      // the number alone laid on a beige paint-brush swipe; the word fam stays plain
+      // the word fam stays plain; the number alone is bold gold
       y += 6 * q;
       const fSize = 8 * q;
       ctx.font = `${fSize}px "Instrument Serif", serif`;
@@ -357,66 +357,22 @@ function Index() {
       const lw = ctx.measureText(lead).width;
       const nw = ctx.measureText(num).width;
       const startX = 540 - (lw + nw) / 2;
-
-      // same box the live card hands the SVG: the number plus 3cqw to the right, 2.4cqw top and bottom
-      const swX = startX + lw;
-      const swW = nw + 3 * q;
-      const swY = y - 2.4 * q;
-      const swH = fSize + 4.8 * q;
-      const traceBrush = () => {
-        const t = BRUSH.top.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
-        const b = BRUSH.bot.map(([px, py]) => [swX + px * swW, swY + py * swH] as const);
-        ctx.beginPath();
-        t.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
-        for (const [px, py] of b.slice().reverse()) ctx.lineTo(px, py);
-        ctx.closePath();
-      };
-      ctx.save();
-      ctx.translate(swX + swW / 2, swY + swH / 2);
-      ctx.rotate((BRUSH_TILT * Math.PI) / 180);
-      ctx.translate(-(swX + swW / 2), -(swY + swH / 2));
-      const paint = ctx.createLinearGradient(0, swY, 0, swY + swH);
-      paint.addColorStop(0, "#E7D8C2");
-      paint.addColorStop(0.42, "#D8C4AB");
-      paint.addColorStop(1, "#BEA385");
-      traceBrush();
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = paint;
-      ctx.fill();
-      ctx.save();
-      traceBrush();
-      ctx.clip();
-      BRUSH.streaks.forEach((s) => {
-        ctx.globalAlpha = s.a;
-        ctx.fillStyle = s.lit ? "#E7D8C2" : "#BEA385";
-        ctx.beginPath();
-        s.poly.forEach(([px, py], j) => {
-          const X = swX + px * swW;
-          const Y = swY + py * swH;
-          if (j) ctx.lineTo(X, Y); else ctx.moveTo(X, Y);
-        });
-        ctx.closePath();
-        ctx.fill();
-      });
-      ctx.restore();
-      BRUSH.flecks.forEach(([fx, fy, fr]) => {
-        ctx.globalAlpha = 0.55;
-        ctx.fillStyle = "#D8C4AB";
-        ctx.beginPath();
-        ctx.ellipse(swX + fx * swW, swY + fy * swH, fr * (swW / BRUSH_W), fr * (swH / BRUSH_H), 0, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      ctx.restore();
-
       ctx.shadowColor = "rgba(0,0,0,0)";
       ctx.textAlign = "left";
-      // place the baseline the way a line-height:1 box does, so the number sits in the
-      // paint at exactly the height the live card shows it
       const fm = ctx.measureText(lead + num);
       const base = y + (fSize - (fm.fontBoundingBoxAscent + fm.fontBoundingBoxDescent)) / 2 + fm.fontBoundingBoxAscent;
       alphaColor(foreground, 1);
       ctx.fillText(lead, startX, base);
-      alphaColor(background, 1);
+      const gold = ctx.createLinearGradient(0, y, 0, y + fSize);
+      gold.addColorStop(0, "#F6E3A1");
+      gold.addColorStop(0.48, "#D9A93F");
+      gold.addColorStop(1, "#A8761E");
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = gold;
+      ctx.strokeStyle = "#D9A93F";
+      ctx.lineWidth = fSize * 0.08;
+      ctx.lineJoin = "round";
+      ctx.strokeText(num, startX + lw, base);
       ctx.fillText(num, startX + lw, base);
       ctx.shadowColor = "rgba(0,0,0,0.35)";
       ctx.shadowBlur = 15;
@@ -722,28 +678,7 @@ function Index() {
                       <div className="famus-pop relative mt-[6cqw]" style={{ ["--pop" as string]: "24px" }}>
                         <p className="font-display text-[8cqw] leading-none">
                           <span className="text-foreground">{"fam "}</span>
-                          <span className="relative inline-block">
-                            <svg aria-hidden viewBox={`0 0 ${BRUSH_W} ${BRUSH_H}`} preserveAspectRatio="none" overflow="visible" className="absolute left-0 -top-[2.4cqw] h-[12.8cqw] w-[calc(100%+3cqw)] overflow-visible" style={{ transform: `rotate(${BRUSH_TILT}deg)` }}>
-                          <defs>
-                            <linearGradient id="famus-brush" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0" stopColor="#E7D8C2" />
-                              <stop offset="0.42" stopColor="#D8C4AB" />
-                              <stop offset="1" stopColor="#BEA385" />
-                            </linearGradient>
-                            <clipPath id="famus-brush-clip"><polygon points={BRUSH_STRIP} /></clipPath>
-                          </defs>
-                          <polygon points={BRUSH_STRIP} fill="url(#famus-brush)" />
-                          <g clipPath="url(#famus-brush-clip)">
-                            {BRUSH.streaks.map((s, i) => (
-                              <polygon key={i} points={brushPts(s.poly)} fill={s.lit ? "#E7D8C2" : "#BEA385"} fillOpacity={s.a} />
-                            ))}
-                          </g>
-                          {BRUSH.flecks.map(([x, y, r], i) => (
-                            <circle key={i} cx={x * BRUSH_W} cy={y * BRUSH_H} r={r} fill="#D8C4AB" fillOpacity="0.55" />
-                          ))}
-                            </svg>
-                            <span className="relative text-background">{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
-                          </span>
+                          <span className="font-bold" style={{ background: "linear-gradient(180deg, #F6E3A1 0%, #D9A93F 48%, #A8761E 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", WebkitTextStroke: "0.04em #D9A93F" }}>{"#"}{String(claimNumber ?? 0).padStart(4, "0")}</span>
                         </p>
                       </div>
                       <p className="mt-[9cqw] text-[3.2cqw] uppercase leading-[1.5] tracking-[0.18em] text-foreground/90">I JUST RESERVED OUR<br />LEGACY IN PERPETUITY,<br />POWERED BY<br />FAMILY INTELLIGENCE.</p>
