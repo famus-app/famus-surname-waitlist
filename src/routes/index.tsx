@@ -145,13 +145,13 @@ function Index() {
   const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [claimed, setClaimed] = useState(false);
-  const [previewing, setPreviewing] = useState(true);
+  const [claimed, setClaimed] = useState(true);
+  const [previewing, setPreviewing] = useState(false);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(1);
   const [sharing, setSharing] = useState(false);
-  const [cardFlipped, setCardFlipped] = useState(false);
+  const [cardFlipped, setCardFlipped] = useState(true);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
   const [takenHandle, setTakenHandle] = useState("");
   const [priority, setPriority] = useState(false);
