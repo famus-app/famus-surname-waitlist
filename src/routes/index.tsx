@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, Link2, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
+import { AtSignIcon, type AtSignIconHandle } from "@/components/icons/at-sign-icon";
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
@@ -200,6 +201,26 @@ function Index() {
 
   const cleanSurname = surname.trim().replace(/[^a-zA-ZÀ-ž' -]/g, "");
   const handle = cleanSurname.toLowerCase().replace(/[\s']/g, "-");
+
+  const previewAtRef = useRef<AtSignIconHandle>(null);
+  const drawnFor = useRef("");
+
+  // Draw the @ in when the preview appears and when a name first lands in it;
+  // after that it rests fully drawn and redraws on hover.
+  useEffect(() => {
+    if (!onSurnameStep) {
+      drawnFor.current = "";
+      return;
+    }
+    const icon = previewAtRef.current;
+    if (!icon) return;
+    const key = handle === "" ? "empty" : "named";
+    if (drawnFor.current === key) return;
+    drawnFor.current = key;
+    icon.startAnimation();
+    const timer = window.setTimeout(() => icon.stopAnimation(), 900);
+    return () => window.clearTimeout(timer);
+  }, [onSurnameStep, handle]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -716,7 +737,17 @@ function Index() {
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
                       <div className="mt-2 flex items-center justify-center gap-3">
                         <ThinkingOrb state={handle ? "weaving" : "breathing"} size={32} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
-                        <p className="truncate text-lg"><span className="text-primary">@</span>{handle || "yourname"}</p>
+                        <div className="flex min-w-0 items-center gap-1 text-lg">
+                          <AtSignIcon
+                            ref={previewAtRef}
+                            size={22}
+                            aria-hidden="true"
+                            className="shrink-0 text-primary"
+                            onMouseEnter={() => previewAtRef.current?.startAnimation()}
+                            onMouseLeave={() => previewAtRef.current?.stopAnimation()}
+                          />
+                          <span className="truncate">{handle || "yourname"}</span>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
