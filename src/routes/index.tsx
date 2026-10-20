@@ -740,7 +740,7 @@ function Index() {
                       </div>
                     </div>
                     <div className="famus-pop absolute inset-x-[6cqw] bottom-[8cqw] flex flex-col items-center text-center drop-shadow-lg" style={{ ["--pop" as string]: "12px" }}>
-                      <p className="text-[3.4cqw] text-foreground">Reserve yours at <span className="text-primary">famus.si/register</span></p>
+                      <p className="text-[3.4cqw] text-foreground">Reserve yours at <span className="text-primary">www.famus.si</span></p>
                       <span aria-hidden className="my-[4cqw] h-px w-full bg-foreground/15" />
                       <p className="text-[2.7cqw] uppercase leading-[1.6] tracking-[0.08em] text-foreground/80">ONE FAMILY NAME. ONE SI. FOR YOUR FAMILY 🫶🏻</p>
                     </div>
