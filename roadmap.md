@@ -44,3 +44,4 @@
 - [x] Put the uploaded icy-blue rooftop signal artwork on the social blocks card
 - [x] Swap the social blocks card artwork for the newer lower-glow icy-blue version (live card verified)
 - [x] Open the site on the home screen by default, and make the famUS logo return to it from the confirmation screen
+- [x] Replace the static @ in the agent-name preview with the animated at-sign icon (draws in when the preview appears and on hover)
