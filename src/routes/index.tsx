@@ -144,7 +144,7 @@ function Index() {
   const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [claimed, setClaimed] = useState(true);
+  const [claimed, setClaimed] = useState(false);
   const [previewing, setPreviewing] = useState(true);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
