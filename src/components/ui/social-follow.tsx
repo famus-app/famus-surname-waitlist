@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import signalArt from "@/assets/famus-signal.png.asset.json";
+import signalArt from "@/assets/famus-social-icy-blue.png.asset.json";
 
 // Types
 interface SocialBoxProps {
