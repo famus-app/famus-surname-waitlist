@@ -320,17 +320,21 @@ function Index() {
   async function createShareCard(side: "front" | "back" = cardFlipped ? "back" : "front"): Promise<Blob | null> {
     if (claimNumber === null) return null;
     const back = side === "back";
+    // Render at 4K portrait resolution using the same locked 1080 × 1920 layout.
+    const exportScale = 2;
     const canvas = document.createElement("canvas");
-    canvas.width = 1080;
-    canvas.height = 1920;
+    canvas.width = 1080 * exportScale;
+    canvas.height = 1920 * exportScale;
     const context = canvas.getContext("2d");
     if (!context) return null;
     const ctx = context as CanvasRenderingContext2D & { letterSpacing: string };
+    ctx.scale(exportScale, exportScale);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
     const tokens = getComputedStyle(document.documentElement);
     const foreground = tokens.getPropertyValue("--foreground").trim();
     const primary = tokens.getPropertyValue("--primary").trim();
-    const background = tokens.getPropertyValue("--background").trim();
     const withAlpha = (c: string, a: number) => `color-mix(in oklab, ${c} ${a * 100}%, transparent)`;
     const alphaColor = (c: string, a: number) => {
       // Canvas may not parse color-mix; fall back to globalAlpha.
@@ -342,16 +346,17 @@ function Index() {
     const art = new Image();
     art.crossOrigin = "anonymous";
     art.src = back ? cardBackArt.url : cardFrontArt.url;
-    try {
-      await Promise.all([art.decode(), document.fonts.ready]);
-      const ratio = Math.max(canvas.width / art.width, canvas.height / art.height);
-      const width = art.width * ratio;
-      const height = art.height * ratio;
-      ctx.drawImage(art, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
-    } catch {
-      ctx.fillStyle = background;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
+    await Promise.all([
+      art.decode(),
+      document.fonts.load('108px "Canarina"', handle + "famUS"),
+      document.fonts.load('36px "Work Sans"', "@ Reserve yours at www.famus.si"),
+      document.fonts.load('86px "Instrument Serif"', "fam #0123456789"),
+      document.fonts.ready,
+    ]);
+    const ratio = Math.max(1080 / art.naturalWidth, 1920 / art.naturalHeight);
+    const width = art.naturalWidth * ratio;
+    const height = art.naturalHeight * ratio;
+    ctx.drawImage(art, (1080 - width) / 2, (1920 - height) / 2, width, height);
 
     // Same shade as .famus-card-shade
     const shade = ctx.createLinearGradient(0, 0, 0, 1920);
@@ -368,8 +373,8 @@ function Index() {
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "center";
       ctx.shadowColor = "rgba(0,0,0,0.35)";
-      ctx.shadowBlur = 15;
-      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 15 * exportScale;
+      ctx.shadowOffsetY = 10 * exportScale;
 
       // Handle: top 65cqw
       // locked slot: line height stays 10q; long names only shrink the font to fit 84q width
@@ -426,8 +431,8 @@ function Index() {
       const gold = ctx.createLinearGradient(0, base - fm.fontBoundingBoxAscent, 0, base + fm.fontBoundingBoxDescent);
       for (const [p, c] of GOLD_STOPS) gold.addColorStop(p, c);
       ctx.shadowColor = "rgba(0,0,0,0.55)";
-      ctx.shadowBlur = fSize * 0.09;
-      ctx.shadowOffsetY = fSize * 0.045;
+      ctx.shadowBlur = fSize * 0.09 * exportScale;
+      ctx.shadowOffsetY = fSize * 0.045 * exportScale;
       ctx.lineJoin = "round";
       // the live card renders this number bold, so fatten the same ramp to match its weight
       ctx.lineWidth = fSize * 0.014;
@@ -440,14 +445,14 @@ function Index() {
       ctx.shadowBlur = 0;
       ctx.shadowOffsetY = 0;
       ctx.shadowColor = "rgba(0,0,0,0.35)";
-      ctx.shadowBlur = 15;
-      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 15 * exportScale;
+      ctx.shadowOffsetY = 10 * exportScale;
       y += fSize + (8 * q - fSize) / 2;
       ctx.textAlign = "center";
 
 
       // Reserved text: 3.2cqw, line-height 1.5, tracking 0.18em
-      y += 10 * q;
+      y += 9 * q;
       const tSize = 3.2 * q;
       const tLine = tSize * 1.5;
       ctx.font = `${tSize}px "Work Sans", sans-serif`;
@@ -463,8 +468,9 @@ function Index() {
       // Logo + divider + wordmark
       y += 10 * q;
       const logo = new Image();
+      logo.crossOrigin = "anonymous";
       logo.src = famusLogo;
-      try { await logo.decode(); } catch { /* keep card shareable */ }
+      await logo.decode();
       const logoW = 12.5 * q;
       const logoH = logo.naturalWidth ? logoW * (logo.naturalHeight / logo.naturalWidth) : logoW;
       const wSize = 12.5 * q;
@@ -512,7 +518,7 @@ function Index() {
       const rSize = 3.4 * q;
       ctx.font = `${rSize}px "Work Sans", sans-serif`;
       const a = "Reserve yours at ";
-      const b = "famus.si/register";
+      const b = "www.famus.si";
       const aw = ctx.measureText(a).width;
       const bw = ctx.measureText(b).width;
       const rx = 540 - (aw + bw) / 2;
@@ -530,20 +536,21 @@ function Index() {
 
   async function shareCard() {
     setSharing(true);
-    const blob = await createShareCard();
-    if (!blob) {
-      setSharing(false);
-      return;
-    }
-    const file = new File([blob], `famus-${handle}-${cardFlipped ? "details" : "welcome"}.png`, { type: "image/png" });
     try {
+      const blob = await createShareCard();
+      if (!blob) throw new Error("Card image could not be prepared");
+      const file = new File([blob], `famus-${handle}-${cardFlipped ? "details" : "welcome"}.png`, { type: "image/png" });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: `The ${cleanSurname}s are on famUS` });
+        try {
+          await navigator.share({ files: [file], title: `The ${cleanSurname}s are on famUS` });
+        } catch (shareError) {
+          if (!(shareError instanceof DOMException && shareError.name === "AbortError")) downloadBlob(blob, cardFlipped ? "back" : "front");
+        }
       } else {
         downloadBlob(blob, cardFlipped ? "back" : "front");
       }
-    } catch (shareError) {
-      if (!(shareError instanceof DOMException && shareError.name === "AbortError")) downloadBlob(blob, cardFlipped ? "back" : "front");
+    } catch {
+      toast.error("Your card couldn't be prepared. Please try again.");
     } finally {
       setSharing(false);
     }
@@ -554,15 +561,23 @@ function Index() {
     const link = document.createElement("a");
     link.href = url;
     link.download = `famus-${handle}-${side === "back" ? "details" : "welcome"}.png`;
+    document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(url);
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 30_000);
   }
 
-  async function downloadCard() {
+  async function downloadCard(side: "front" | "back") {
     setSharing(true);
-    const blob = await createShareCard("back");
-    if (blob) downloadBlob(blob, "back");
-    setSharing(false);
+    try {
+      const blob = await createShareCard(side);
+      if (!blob) throw new Error("Card image could not be prepared");
+      downloadBlob(blob, side);
+    } catch {
+      toast.error("Your card couldn't be prepared. Please try again.");
+    } finally {
+      setSharing(false);
+    }
   }
 
   async function downloadClickableCard() {
@@ -583,6 +598,8 @@ function Index() {
       pdf.addImage(dataUrl, "PNG", 0, 0, w, h);
       pdf.link(0, 0, w, h, { url: "https://www.famus.si" });
       pdf.save(`famus-${handle}-details.pdf`);
+    } catch {
+      toast.error("Your card couldn't be prepared. Please try again.");
     } finally {
       setSharing(false);
     }
@@ -818,9 +835,12 @@ function Index() {
                     <DropdownMenuTrigger asChild>
                       <Button disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Pass the Torch"}</Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-48">
-                      <DropdownMenuItem onClick={() => void downloadCard()} className="gap-2">
-                        <Download className="size-4" />Download card
+                    <DropdownMenuContent align="start" className="w-56">
+                      <DropdownMenuItem onClick={() => void downloadCard("front")} className="gap-2">
+                        <Download className="size-4" />Download front · HD
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => void downloadCard("back")} className="gap-2">
+                        <Download className="size-4" />Download back · HD
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => void downloadClickableCard()} className="gap-2">
                         <Link2 className="size-4" />Download clickable card

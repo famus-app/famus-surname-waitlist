@@ -11,5 +11,6 @@
 
 - Use the same transparent logo asset for the page header and generated claim-card canvas, so both representations stay visually consistent.
 - Keep the share-card image export aligned with the visible front/back card artwork, so either side can be shared as seen.
+- Render card PNG exports at 2160 × 3840 from the fixed logical card layout, explicitly loading fonts and original assets before drawing; this preserves sharp text and layout parity on both sides.
 - Keep the waitlist claim behind the validated database function, with optional preferences saved on the claim row; this avoids exposing private registrations directly.
 - Social icons are intentionally removed from the header until the user supplies real accounts; if they return, restore them as a dedicated header component with sample-ID previews.
