@@ -144,7 +144,7 @@ function Index() {
   const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [claimed, setClaimed] = useState(true);
+  const [claimed, setClaimed] = useState(false);
   const [previewing, setPreviewing] = useState(true);
   const [remaining, setRemaining] = useState(31_000_000);
   const [error, setError] = useState("");
@@ -638,7 +638,7 @@ function Index() {
       </div>
       <div className="relative min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-center px-6 py-5 sm:px-10">
-        <a href="/" aria-label="famUS home" className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
+        <a href="/" aria-label="famUS home" onClick={(e) => { e.preventDefault(); setClaimed(false); setPreviewing(true); setPriority(false); setCardFlipped(false); setSharing(false); setError(""); }} className="flex items-center gap-3 font-wordmark leading-none text-foreground text-[clamp(1.75rem,7vw,2.5rem)] tracking-[-0.056em]">
           <img src={famusLogo} alt="" className="inline-block size-10 align-middle" />
           <span aria-hidden="true" className="h-6 w-px bg-foreground/35" />
           <span className="whitespace-nowrap"><span className="text-[#D8C4AB]">fam</span><span className="text-[#EB5F06]">US</span></span>
