@@ -544,6 +544,29 @@ function Index() {
     setSharing(false);
   }
 
+  async function downloadClickableCard() {
+    setSharing(true);
+    try {
+      const blob = await createShareCard("back");
+      if (!blob) return;
+      const dataUrl: string = await new Promise((resolve) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result as string);
+        r.readAsDataURL(blob);
+      });
+      const img = new Image();
+      await new Promise((res) => { img.onload = res; img.src = dataUrl; });
+      const { jsPDF } = await import("jspdf");
+      const w = img.width, h = img.height;
+      const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit: "px", format: [w, h], hotfixes: ["px_scaling"] });
+      pdf.addImage(dataUrl, "PNG", 0, 0, w, h);
+      pdf.link(0, 0, w, h, { url: "https://www.famus.si" });
+      pdf.save(`famus-${handle}-details.pdf`);
+    } finally {
+      setSharing(false);
+    }
+  }
+
   async function copyCardLink() {
     const link = "https://famus.si/register";
     try {
@@ -767,6 +790,9 @@ function Index() {
                     <DropdownMenuContent align="start" className="w-48">
                       <DropdownMenuItem onClick={() => void downloadCard()} className="gap-2">
                         <Download className="size-4" />Download card
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => void downloadClickableCard()} className="gap-2">
+                        <Link2 className="size-4" />Download clickable card
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => void shareCard()} className="gap-2">
                         <Share2 className="size-4" />Post to socials
