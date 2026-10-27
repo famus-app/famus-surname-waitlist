@@ -100,7 +100,7 @@ export const ProgressiveInputStack: React.FC<ProgressiveInputStackProps> = ({
                 exit={{ opacity: 0, scale: 1.15, y: 14 }}
                 transition={springTransition}
                 className={cn(
-                   "famus-glass absolute inset-x-0 bottom-[-6px] flex h-[54px] items-center gap-2 rounded-full py-1 pl-5 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
+                   "famus-glass absolute inset-x-0 bottom-[-74px] flex h-[54px] items-center gap-2 rounded-full py-1 pl-5 pr-1.5 transition focus-within:ring-2 focus-within:ring-primary/60",
                    !isTop && "pointer-events-none",
                 )}
               >
