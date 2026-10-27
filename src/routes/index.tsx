@@ -24,9 +24,12 @@ import { Button } from "@/components/ui/button";
 import { SocialFollow } from "@/components/ui/social-follow";
 import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
-import bgFamilyStars from "@/assets/famus-bg-clean.jpg.asset.json";
-import bgFamilyStarsLoop from "@/assets/famus-bg-loop-v4.mp4.asset.json";
-import bgFamilyStarsLoopWebm from "@/assets/famus-bg-loop-v4.webm.asset.json";
+import bgFamilyStars from "@/assets/famus-bg-v5.jpg.asset.json";
+import bgFamilyStarsLoop from "@/assets/famus-bg-loop-v5.mp4.asset.json";
+import bgFamilyStarsLoopWebm from "@/assets/famus-bg-loop-v5.webm.asset.json";
+import bgStarsOnly from "@/assets/famus-bg-stars-only.jpg.asset.json";
+import bgStarsLoop from "@/assets/famus-bg-stars-loop.mp4.asset.json";
+import bgStarsLoopWebm from "@/assets/famus-bg-stars-loop.webm.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-garden.png.asset.json";
@@ -665,9 +668,10 @@ function Index() {
     <div className="relative min-h-screen bg-background font-body text-foreground antialiased">
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden bg-background">
         <video
+          key={claimed && !previewing ? "stars" : "family"}
           ref={videoRef}
           className="size-full object-cover object-bottom"
-          poster={bgFamilyStars.url}
+          poster={claimed && !previewing ? bgStarsOnly.url : bgFamilyStars.url}
           autoPlay
           loop
           muted
@@ -675,8 +679,8 @@ function Index() {
           preload="auto"
           tabIndex={-1}
         >
-          <source src={bgFamilyStarsLoopWebm.url} type="video/webm" />
-          <source src={bgFamilyStarsLoop.url} type="video/mp4" />
+          <source src={claimed && !previewing ? bgStarsLoopWebm.url : bgFamilyStarsLoopWebm.url} type="video/webm" />
+          <source src={claimed && !previewing ? bgStarsLoop.url : bgFamilyStarsLoop.url} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-background/45" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/45 to-background/85" />
