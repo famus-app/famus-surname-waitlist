@@ -118,6 +118,11 @@ const BRUSH_STRIP = `${brushPts(BRUSH.top)} ${brushPts([...BRUSH.bot].reverse())
 function handleSize(handle: string) {
   return Math.min(10, 84 / ((handle.length + 1) * 0.62));
 }
+// Preview handle: stays on one line and only shrinks, so the chip never jumps.
+function previewHandlePx(handle: string) {
+  const len = (handle || "yourname").length;
+  return Math.round(Math.max(15, Math.min(22, 320 / (len + 4))));
+}
 function numberSize(num: string) {
   return Math.min(8, 84 / ((num.length + 4) * 0.5));
 }
@@ -697,7 +702,7 @@ function Index() {
 
       <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "min-h-[calc(100dvh-6rem)] px-6 pb-16 pt-16 sm:pt-24"}`}>
         {!claimed ? (
-          <>
+          <div className="-translate-y-9">
             <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
               <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}<span className="align-super text-[0.55em] text-primary">*</span></span><span className="ml-2 whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
             </p>
@@ -714,7 +719,7 @@ function Index() {
                 />
               </GradientText>
             </h1>
-          </>
+          </div>
         ) : null}
 
         <section className={claimed ? "w-full" : "mt-12 py-8 sm:mt-16 sm:py-10"}>
@@ -750,16 +755,16 @@ function Index() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="mt-10 flex flex-col items-center"
+                    className="mt-11 flex flex-col items-center"
                   >
-                    <div className="min-w-0 text-center">
+                    <div className="min-w-0 max-w-full text-center">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
-                      <div className="mt-2 flex items-center justify-center gap-3">
-                        <ThinkingOrb state={handle ? "weaving" : "breathing"} size={32} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
-                        <div className="flex min-w-0 items-center gap-1 text-lg">
+                      <div className="mx-auto mt-3 flex w-fit max-w-[min(92vw,26rem)] items-center justify-center gap-2.5 rounded-full border border-border/70 bg-background/40 px-5 py-2 backdrop-blur-sm">
+                        <ThinkingOrb state={handle ? "weaving" : "breathing"} size={26} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
+                        <div className="flex min-w-0 items-center gap-1 leading-none" style={{ fontSize: `${previewHandlePx(handle)}px` }}>
                           <AtSignIcon
                             ref={previewAtRef}
-                            size={22}
+                            size={20}
                             aria-hidden="true"
                             className="shrink-0 text-primary"
                             onMouseEnter={() => previewAtRef.current?.startAnimation()}
@@ -768,7 +773,6 @@ function Index() {
                           <span className="truncate">{handle || "yourname"}</span>
                         </div>
                       </div>
-                    </div>
                   </motion.div>
                 ) : null}
               </AnimatePresence>
