@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import { SocialFollow } from "@/components/ui/social-follow";
 import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
-import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
+import bgFamilyStars from "@/assets/famus-bg-family-stars.jpg.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-garden.png.asset.json";
@@ -141,7 +141,6 @@ export const Route = createFileRoute("/")({
 
 
 function Index() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -222,25 +221,6 @@ function Index() {
     return () => window.clearTimeout(timer);
   }, [onSurnameStep, handle]);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // Ambient loop: autoplay everywhere, but stay paused for reduced motion.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.pause();
-      return;
-    }
-    void video.play().catch(() => {});
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handleMotionChange = () => {
-      if (reducedMotion.matches) video.pause();
-      else void video.play().catch(() => {});
-    };
-    reducedMotion.addEventListener("change", handleMotionChange);
-    return () => reducedMotion.removeEventListener("change", handleMotionChange);
-  }, []);
 
   useEffect(() => {
     let active = true;
@@ -660,18 +640,12 @@ function Index() {
   return (
     <div className="relative min-h-screen bg-background font-body text-foreground antialiased">
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden bg-background">
-        <video
-          ref={videoRef}
-          className="size-full object-cover"
-          src={scrollVideoAsset.url}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          tabIndex={-1}
+        <img
+          src={bgFamilyStars.url}
+          alt=""
+          className="size-full object-cover object-bottom"
         />
-        <div className="absolute inset-0 bg-background/55" />
+        <div className="absolute inset-0 bg-background/35" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/25 via-background/35 to-background/80" />
       </div>
       <div className="relative min-h-screen overflow-hidden">
