@@ -700,7 +700,7 @@ function Index() {
         </a>
       </header>
 
-      <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "min-h-[calc(100dvh-6rem)] px-6 pb-16 pt-16 sm:pt-24"}`}>
+      <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "min-h-[calc(100dvh-6rem)] px-6 pb-6 pt-16 sm:pt-24"}`}>
         {!claimed ? (
           <div className="-translate-y-9">
             <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
@@ -722,7 +722,7 @@ function Index() {
           </div>
         ) : null}
 
-        <section className={claimed ? "w-full" : "mt-12 py-8 sm:mt-16 sm:py-10"}>
+        <section className={claimed ? "w-full" : "mt-12 py-8 sm:mt-16 sm:pb-4 sm:pt-10"}>
           {!claimed ? (
             <>
               <ProgressiveInputStack
@@ -755,11 +755,11 @@ function Index() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="mt-11 flex flex-col items-center"
+                    className="mt-[90px] flex flex-col items-center"
                   >
                     <div className="min-w-0 max-w-full text-center">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
-                      <div className="mx-auto mt-3 flex w-fit max-w-[min(92vw,26rem)] items-center justify-center gap-2.5 rounded-full border border-border/70 bg-background/40 px-5 py-2 backdrop-blur-sm">
+                      <div className="mx-auto mt-2 flex w-fit max-w-[min(92vw,26rem)] items-center justify-center gap-2.5 rounded-full border border-border/70 bg-background/40 px-5 py-1.5 backdrop-blur-sm">
                         <ThinkingOrb state={handle ? "weaving" : "breathing"} size={20} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
                         <div className="flex min-w-0 items-center gap-1 leading-none" style={{ fontSize: `${previewHandlePx(handle)}px` }}>
                           <AtSignIcon
@@ -875,7 +875,7 @@ function Index() {
         </section>
 
         {!claimed ? (
-          <div className="mt-auto border-t border-border pt-8">
+          <div className="mt-auto border-t border-border pt-5">
             <div className="flex items-center justify-center gap-1 whitespace-nowrap text-[11px] tracking-[0.1em] text-muted-foreground sm:text-[13px] sm:tracking-[0.18em]">
               <span className="font-bold uppercase">ALREADY RESERVED</span>
               <span className="mx-2 text-primary/70">&middot;</span>
