@@ -26,8 +26,10 @@ import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
 import bgFamilyStars from "@/assets/famus-bg-family-locked-v8.jpg.asset.json";
 import bgFamilyStarsLoop from "@/assets/famus-bg-family-locked-v8.mp4.asset.json";
+import bgFamilyStarsLoopWebm from "@/assets/famus-bg-family-locked-v8.webm.asset.json";
 import bgStarsOnly from "@/assets/famus-bg-stars-locked-v8.jpg.asset.json";
 import bgStarsLoop from "@/assets/famus-bg-stars-locked-v8.mp4.asset.json";
+import bgStarsLoopWebm from "@/assets/famus-bg-stars-locked-v8.webm.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-garden.png.asset.json";
@@ -682,6 +684,7 @@ function Index() {
           preload="auto"
           tabIndex={-1}
         >
+          <source src={claimed && !previewing ? bgStarsLoopWebm.url : bgFamilyStarsLoopWebm.url} type="video/webm" />
           <source src={claimed && !previewing ? bgStarsLoop.url : bgFamilyStarsLoop.url} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-background/45" />
