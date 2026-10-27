@@ -760,7 +760,7 @@ function Index() {
                     <div className="min-w-0 max-w-full text-center">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
                       <div className="mx-auto mt-3 flex w-fit max-w-[min(92vw,26rem)] items-center justify-center gap-2.5 rounded-full border border-border/70 bg-background/40 px-5 py-2 backdrop-blur-sm">
-                        <ThinkingOrb state={handle ? "weaving" : "breathing"} size={26} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
+                        <ThinkingOrb state={handle ? "weaving" : "breathing"} size={20} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
                         <div className="flex min-w-0 items-center gap-1 leading-none" style={{ fontSize: `${previewHandlePx(handle)}px` }}>
                           <AtSignIcon
                             ref={previewAtRef}
