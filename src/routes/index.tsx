@@ -231,8 +231,14 @@ function Index() {
     // Ambient loop: autoplay everywhere, but stay paused for reduced motion.
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const applyMotion = () => {
-      if (reducedMotion.matches) video.pause();
-      else void video.play().catch(() => {});
+      if (reducedMotion.matches) {
+        video.pause();
+      } else {
+        const tryPlay = () => void video.play().catch(() => {});
+        tryPlay();
+        // If the first attempt fired before the clip was ready, retry once it can play.
+        video.addEventListener("canplay", tryPlay, { once: true });
+      }
     };
     applyMotion();
     reducedMotion.addEventListener("change", applyMotion);
