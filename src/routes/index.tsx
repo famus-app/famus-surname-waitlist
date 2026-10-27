@@ -773,6 +773,7 @@ function Index() {
                           <span className="truncate">{handle || "yourname"}</span>
                         </div>
                       </div>
+                    </div>
                   </motion.div>
                 ) : null}
               </AnimatePresence>
