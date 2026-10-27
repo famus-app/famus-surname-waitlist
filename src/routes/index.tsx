@@ -695,7 +695,7 @@ function Index() {
         </a>
       </header>
 
-      <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "px-6 pb-16 pt-16 sm:pt-24"}`}>
+      <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "min-h-[calc(100dvh-6rem)] px-6 pb-16 pt-16 sm:pt-24"}`}>
         {!claimed ? (
           <>
             <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
@@ -717,19 +717,9 @@ function Index() {
           </>
         ) : null}
 
-        <section className={claimed ? "w-full" : "mt-12 border-t border-border py-8 sm:mt-16 sm:py-10"}>
+        <section className={claimed ? "w-full" : "mt-12 py-8 sm:mt-16 sm:py-10"}>
           {!claimed ? (
             <>
-            <div className="mb-6 flex items-center justify-center gap-1 whitespace-nowrap text-[11px] tracking-[0.1em] text-muted-foreground sm:text-[13px] sm:tracking-[0.18em]">
-              <span className="font-bold uppercase">ALREADY RESERVED</span>
-              <span className="mx-2 text-primary/70">&middot;</span>
-              <span className="text-foreground/80">famus.si/</span>
-              <TextMarquee speed={2} height={26}>
-                {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
-                  <span key={sampleName} className="whitespace-nowrap font-bold text-primary">{sampleName}</span>
-                ))}
-              </TextMarquee>
-            </div>
               <ProgressiveInputStack
                 className="mx-auto w-full max-w-md"
                 onStepChange={(step) => setOnSurnameStep(step === 2)}
@@ -878,6 +868,21 @@ function Index() {
             </div>
           )}
         </section>
+
+        {!claimed ? (
+          <div className="mt-auto border-t border-border pt-8">
+            <div className="flex items-center justify-center gap-1 whitespace-nowrap text-[11px] tracking-[0.1em] text-muted-foreground sm:text-[13px] sm:tracking-[0.18em]">
+              <span className="font-bold uppercase">ALREADY RESERVED</span>
+              <span className="mx-2 text-primary/70">&middot;</span>
+              <span className="text-foreground/80">famus.si/</span>
+              <TextMarquee speed={2} height={26}>
+                {["patel", "garcia", "kimura", "okafor", "sullivan"].map((sampleName) => (
+                  <span key={sampleName} className="whitespace-nowrap font-bold text-primary">{sampleName}</span>
+                ))}
+              </TextMarquee>
+            </div>
+          </div>
+        ) : null}
 
       </main>
       </div>
