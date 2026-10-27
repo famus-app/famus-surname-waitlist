@@ -174,6 +174,7 @@ function Index() {
 
   const cardSceneRef = useRef<HTMLDivElement>(null);
   const cardTiltRaf = useRef(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const tiltCards = (e: ReactMouseEvent) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
