@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Check residual background shake, lock sky and chairs, smooth reaction motion, and replace both family and success playback sources.
+
 - [x] Keep the 30,000,000-left live inventory and refresh it while open
 - [x] Add privacy-safe popular surname status
 - [x] Assign stable family claim numbers
