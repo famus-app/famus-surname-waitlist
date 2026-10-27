@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 import { SocialFollow } from "@/components/ui/social-follow";
 import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
-import scrollVideoAsset from "@/assets/famus-scroll.webm.asset.json";
+import bgFamilyStars from "@/assets/famus-bg-family-stars.jpg.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-garden.png.asset.json";
@@ -141,7 +141,6 @@ export const Route = createFileRoute("/")({
 
 
 function Index() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [surname, setSurname] = useState("Pedapati");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
