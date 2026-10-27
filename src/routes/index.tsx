@@ -25,6 +25,8 @@ import { SocialFollow } from "@/components/ui/social-follow";
 import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
 import bgFamilyStars from "@/assets/famus-bg-family-stars.jpg.asset.json";
+import bgFamilyStarsLoop from "@/assets/famus-bg-loop.mp4.asset.json";
+import bgFamilyStarsLoopWebm from "@/assets/famus-bg-loop.webm.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-garden.png.asset.json";
@@ -173,6 +175,7 @@ function Index() {
 
   const cardSceneRef = useRef<HTMLDivElement>(null);
   const cardTiltRaf = useRef(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const tiltCards = (e: ReactMouseEvent) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
@@ -221,6 +224,27 @@ function Index() {
     return () => window.clearTimeout(timer);
   }, [onSurnameStep, handle]);
 
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Ambient loop: autoplay everywhere, but stay paused for reduced motion.
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const applyMotion = () => {
+      if (reducedMotion.matches) {
+        video.pause();
+      } else {
+        const tryPlay = () => void video.play().catch(() => {});
+        tryPlay();
+        // If the first attempt fired before the clip was ready, retry once it can play.
+        video.addEventListener("canplay", tryPlay, { once: true });
+      }
+    };
+    applyMotion();
+    reducedMotion.addEventListener("change", applyMotion);
+    return () => reducedMotion.removeEventListener("change", applyMotion);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -640,11 +664,20 @@ function Index() {
   return (
     <div className="relative min-h-screen bg-background font-body text-foreground antialiased">
       <div aria-hidden className="pointer-events-none fixed inset-0 overflow-hidden bg-background">
-        <img
-          src={bgFamilyStars.url}
-          alt=""
+        <video
+          ref={videoRef}
           className="size-full object-cover object-bottom"
-        />
+          poster={bgFamilyStars.url}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          tabIndex={-1}
+        >
+          <source src={bgFamilyStarsLoopWebm.url} type="video/webm" />
+          <source src={bgFamilyStarsLoop.url} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-background/35" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/25 via-background/35 to-background/80" />
       </div>
