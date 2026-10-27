@@ -24,9 +24,9 @@ import { Button } from "@/components/ui/button";
 import { SocialFollow } from "@/components/ui/social-follow";
 import type { Options as ConfettiOptions } from "canvas-confetti";
 import { supabase } from "@/integrations/supabase/client";
-import bgFamilyStars from "@/assets/famus-bg-family-stars.jpg.asset.json";
-import bgFamilyStarsLoop from "@/assets/famus-bg-loop.mp4.asset.json";
-import bgFamilyStarsLoopWebm from "@/assets/famus-bg-loop.webm.asset.json";
+import bgFamilyStars from "@/assets/famus-bg-clean.jpg.asset.json";
+import bgFamilyStarsLoop from "@/assets/famus-bg-loop-v4.mp4.asset.json";
+import bgFamilyStarsLoopWebm from "@/assets/famus-bg-loop-v4.webm.asset.json";
 import famusLogoAsset from "@/assets/famus-logo-transparent.png.asset.json";
 const famusLogo = famusLogoAsset.url;
 import cardFrontArt from "@/assets/famus-card-front-garden.png.asset.json";
@@ -678,8 +678,9 @@ function Index() {
           <source src={bgFamilyStarsLoopWebm.url} type="video/webm" />
           <source src={bgFamilyStarsLoop.url} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-background/35" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/25 via-background/35 to-background/80" />
+        <div className="absolute inset-0 bg-background/45" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/45 to-background/85" />
+        <div className="absolute inset-0 [background:radial-gradient(ellipse_60%_55%_at_50%_45%,hsl(var(--background)/0.55),transparent_70%)]" />
       </div>
       <div className="relative min-h-screen overflow-hidden">
       <header className="relative z-10 flex items-center justify-center px-6 py-5 sm:px-10">
