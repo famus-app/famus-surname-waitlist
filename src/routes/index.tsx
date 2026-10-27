@@ -225,6 +225,21 @@ function Index() {
 
 
   useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Ambient loop: autoplay everywhere, but stay paused for reduced motion.
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const applyMotion = () => {
+      if (reducedMotion.matches) video.pause();
+      else void video.play().catch(() => {});
+    };
+    applyMotion();
+    reducedMotion.addEventListener("change", applyMotion);
+    return () => reducedMotion.removeEventListener("change", applyMotion);
+  }, []);
+
+  useEffect(() => {
     let active = true;
 
     async function refreshPublicStatus() {
