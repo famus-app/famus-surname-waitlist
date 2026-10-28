@@ -460,12 +460,6 @@
   opacity: 0;
   transform: rotate(-22deg) translateX(0);
   transform-origin: left center;
-  animation: famus-streak 7s ease-out infinite;
-}
-@keyframes famus-streak {
-  0%, 10% { opacity: 0; transform: rotate(-22deg) translateX(0); }
-  14% { opacity: 1; }
-  30% { opacity: 0; transform: rotate(-22deg) translateX(-480px); }
-  100% { opacity: 0; transform: rotate(-22deg) translateX(-480px); }
+  /* Played from the page script in step with the background video's timeline. */
 }
 @media (prefers-reduced-motion: reduce) { .famus-streak { display: none; } }
