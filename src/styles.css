@@ -450,20 +450,22 @@
   position: absolute;
   top: 14%;
   left: 62%;
-  width: 140px;
-  height: 1.5px;
+  z-index: 5;
+  width: 220px;
+  height: 2.5px;
+  box-shadow: 0 0 8px 1px #eb5f0699;
   border-radius: 9999px;
   background: linear-gradient(90deg, transparent, #eb5f06cc 70%, #eb5f06);
   filter: blur(0.4px);
   opacity: 0;
   transform: rotate(155deg) translateX(0);
   transform-origin: right center;
-  animation: famus-streak 10s ease-out infinite;
+  animation: famus-streak 7s ease-out infinite;
 }
 @keyframes famus-streak {
-  0%, 8% { opacity: 0; transform: rotate(155deg) translateX(0); }
-  11% { opacity: 0.9; }
-  20% { opacity: 0; transform: rotate(155deg) translateX(-320px); }
-  100% { opacity: 0; transform: rotate(155deg) translateX(-320px); }
+  0%, 10% { opacity: 0; transform: rotate(155deg) translateX(0); }
+  14% { opacity: 1; }
+  30% { opacity: 0; transform: rotate(155deg) translateX(-480px); }
+  100% { opacity: 0; transform: rotate(155deg) translateX(-480px); }
 }
 @media (prefers-reduced-motion: reduce) { .famus-streak { display: none; } }
