@@ -184,6 +184,7 @@ function Index() {
   const cardSceneRef = useRef<HTMLDivElement>(null);
   const cardTiltRaf = useRef(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const streakRef = useRef<HTMLSpanElement>(null);
   const tiltCards = (e: ReactMouseEvent) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const inner = cardSceneRef.current?.firstElementChild as HTMLElement | null;
@@ -252,6 +253,39 @@ function Index() {
     applyMotion();
     reducedMotion.addEventListener("change", applyMotion);
     return () => reducedMotion.removeEventListener("change", applyMotion);
+  }, []);
+
+  // Fire the orange streak from the video's own clock so it lands just before
+  // the children point up (they start reacting at ~1.0s into each loop).
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const STREAK_AT = 0.3; // seconds into each loop
+    let raf = 0;
+    let last = -1;
+    const tick = () => {
+      const video = videoRef.current;
+      const streak = streakRef.current;
+      if (video && streak && !video.paused) {
+        const t = video.currentTime;
+        const crossed = (last < STREAK_AT && t >= STREAK_AT) || (t < last && t >= STREAK_AT);
+        if (crossed && t < STREAK_AT + 0.4) {
+          streak.getAnimations().forEach((a) => a.cancel());
+          streak.animate(
+            [
+              { opacity: 0, transform: "rotate(-22deg) translateX(0)" },
+              { opacity: 1, offset: 0.15 },
+              { opacity: 1, offset: 0.55 },
+              { opacity: 0, transform: "rotate(-22deg) translateX(-480px)" },
+            ],
+            { duration: 1100, easing: "ease-out", fill: "forwards" },
+          );
+        }
+        last = t;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   useEffect(() => {
@@ -687,7 +721,7 @@ function Index() {
           <source src={claimed && !previewing ? bgStarsLoopWebm.url : bgFamilyStarsLoopWebm.url} type="video/webm" />
           <source src={claimed && !previewing ? bgStarsLoop.url : bgFamilyStarsLoop.url} type="video/mp4" />
         </video>
-        <span className="famus-streak" />
+        <span ref={streakRef} className="famus-streak" />
         <div className="absolute inset-0 bg-background/45" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/45 to-background/85" />
         <div className="absolute inset-0 [background:radial-gradient(ellipse_60%_55%_at_50%_45%,hsl(var(--background)/0.55),transparent_70%)]" />
