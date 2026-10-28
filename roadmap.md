@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Show full heads during movement and steady the family's motion in the background video (family loop, all formats).
+
 - [x] Check residual background shake, lock sky and chairs, smooth reaction motion, and replace both family and success playback sources.
 
 - [x] Keep the 30,000,000-left live inventory and refresh it while open
