@@ -761,7 +761,7 @@ function Index() {
           {!claimed ? (
             <>
               <ProgressiveInputStack
-                className="mx-auto w-full max-w-md"
+                className="mx-auto w-full max-w-md translate-y-2"
                 onStepChange={(step) => setOnSurnameStep(step === 2)}
                 steps={[
                   { id: "email", placeholder: "Email address", type: "email", autoComplete: "email" },
@@ -792,7 +792,7 @@ function Index() {
                     transition={{ duration: 0.25, ease: "easeOut" }}
                     className="mt-[90px] flex flex-col items-center"
                   >
-                    <div className="min-w-0 max-w-full text-center">
+                    <div className="min-w-0 max-w-full translate-y-2 text-center">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
                       <div className="mx-auto mt-2 flex w-fit max-w-[min(92vw,26rem)] items-center justify-center gap-2.5 px-5 py-1.5">
                         <ThinkingOrb state={handle ? "weaving" : "breathing"} size={20} theme="dark" color="#EB5F06" className="shrink-0" aria-label="Your family agent" />
