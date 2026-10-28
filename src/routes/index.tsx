@@ -687,6 +687,7 @@ function Index() {
           <source src={claimed && !previewing ? bgStarsLoopWebm.url : bgFamilyStarsLoopWebm.url} type="video/webm" />
           <source src={claimed && !previewing ? bgStarsLoop.url : bgFamilyStarsLoop.url} type="video/mp4" />
         </video>
+        <span className="famus-streak" />
         <div className="absolute inset-0 bg-background/45" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/45 to-background/85" />
         <div className="absolute inset-0 [background:radial-gradient(ellipse_60%_55%_at_50%_45%,hsl(var(--background)/0.55),transparent_70%)]" />
