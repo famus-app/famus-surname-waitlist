@@ -50,3 +50,4 @@
 - [x] Open the site on the home screen by default, and make the famUS logo return to it from the confirmation screen
 - [x] Replace the static @ in the agent-name preview with the animated at-sign icon (draws in when the preview appears and on hover)
 - [x] Export front and back as high-resolution PNGs and verify both downloaded images (2160 × 3840, lossless PNG, no page errors).
+- [x] Sync the orange streak to the family video so it flies just before the children point (0.3s into each loop).
