@@ -790,7 +790,7 @@ function Index() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="mt-[90px] flex flex-col items-center"
+                    className="mt-[98px] flex flex-col items-center"
                   >
                     <div className="min-w-0 max-w-full text-center">
                       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Preview your family's agent name</p>
