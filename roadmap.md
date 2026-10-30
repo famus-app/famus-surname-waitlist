@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Center the share button, provide three main choices, copy the website URL, offer social destinations, and download the back card without HD wording.
 
 - [x] Show full heads during movement and steady the family's motion in the background video (family loop, all formats).
 
