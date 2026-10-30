@@ -11,6 +11,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 
 
@@ -160,6 +163,7 @@ function Index() {
   const [error, setError] = useState("");
   const [claimNumber, setClaimNumber] = useState<number | null>(1);
   const [sharing, setSharing] = useState(false);
+  const preparedBackCard = useRef<{ handle: string; number: number; blob: Blob } | null>(null);
   const [cardFlipped, setCardFlipped] = useState(true);
   const [onSurnameStep, setOnSurnameStep] = useState(false);
   const [takenHandle, setTakenHandle] = useState("");
@@ -580,26 +584,55 @@ function Index() {
     return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
   }
 
-  async function shareCard() {
-    setSharing(true);
-    try {
-      const blob = await createShareCard();
-      if (!blob) throw new Error("Card image could not be prepared");
-      const file = new File([blob], `famus-${handle}-${cardFlipped ? "details" : "welcome"}.png`, { type: "image/png" });
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({ files: [file], title: `The ${cleanSurname}s are on famUS` });
-        } catch (shareError) {
-          if (!(shareError instanceof DOMException && shareError.name === "AbortError")) downloadBlob(blob, cardFlipped ? "back" : "front");
-        }
-      } else {
-        downloadBlob(blob, cardFlipped ? "back" : "front");
+  // Prepare before the click so mobile sharing retains user activation.
+  useEffect(() => {
+    if (!claimed || claimNumber === null) return;
+    let active = true;
+    preparedBackCard.current = null;
+    void createShareCard("back").then((blob) => {
+      if (active && blob) preparedBackCard.current = { handle, number: claimNumber, blob };
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [claimed, handle, claimNumber]);
+
+  function readyBackCard() {
+    const card = preparedBackCard.current;
+    return card?.handle === handle && card.number === claimNumber ? card.blob : null;
+  }
+
+  async function shareCard(platform: "instagram" | "native" = "native") {
+    const blob = readyBackCard();
+    const file = blob ? new File([blob], `famus-${handle}-details.png`, { type: "image/png" }) : null;
+    if (navigator.share && file && navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: `The ${cleanSurname}s are on famUS`, text: `@${handle} is reserved on famUS`, url: "https://www.famus.si" });
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) toast.error("Sharing isn't available right now. Try downloading the card.");
       }
-    } catch {
-      toast.error("Your card couldn't be prepared. Please try again.");
-    } finally {
-      setSharing(false);
+      return;
     }
+    if (platform === "instagram") {
+      window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
+      if (blob) downloadBlob(blob, "back");
+      toast.info("Add the downloaded card to your Instagram story. Browser sharing can't open the story composer.");
+      return;
+    }
+    if (navigator.share) {
+      try { await navigator.share({ title: "famUS", text: `@${handle} is reserved on famUS`, url: "https://www.famus.si" }); }
+      catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) toast.error("Sharing isn't available right now.");
+      }
+    } else {
+      toast.info("Choose WhatsApp, X, or Instagram from Post to socials.");
+    }
+  }
+
+  function postToSocial(platform: "whatsapp" | "x") {
+    const text = `@${handle} is reserved on famUS. Reserve yours at https://www.famus.si`;
+    const url = platform === "whatsapp"
+      ? `https://wa.me/?text=${encodeURIComponent(text)}`
+      : `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 
   function downloadBlob(blob: Blob, side: "front" | "back" = "back") {
@@ -616,7 +649,7 @@ function Index() {
   async function downloadCard(side: "front" | "back") {
     setSharing(true);
     try {
-      const blob = await createShareCard(side);
+      const blob = side === "back" ? readyBackCard() ?? await createShareCard("back") : await createShareCard(side);
       if (!blob) throw new Error("Card image could not be prepared");
       downloadBlob(blob, side);
     } catch {
@@ -626,33 +659,8 @@ function Index() {
     }
   }
 
-  async function downloadClickableCard() {
-    setSharing(true);
-    try {
-      const blob = await createShareCard("back");
-      if (!blob) return;
-      const dataUrl: string = await new Promise((resolve) => {
-        const r = new FileReader();
-        r.onload = () => resolve(r.result as string);
-        r.readAsDataURL(blob);
-      });
-      const img = new Image();
-      await new Promise((res) => { img.onload = res; img.src = dataUrl; });
-      const { jsPDF } = await import("jspdf");
-      const w = img.width, h = img.height;
-      const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit: "px", format: [w, h], hotfixes: ["px_scaling"] });
-      pdf.addImage(dataUrl, "PNG", 0, 0, w, h);
-      pdf.link(0, 0, w, h, { url: "https://www.famus.si" });
-      pdf.save(`famus-${handle}-details.pdf`);
-    } catch {
-      toast.error("Your card couldn't be prepared. Please try again.");
-    } finally {
-      setSharing(false);
-    }
-  }
-
   async function copyCardLink() {
-    const link = "https://famus.si/register";
+    const link = "https://www.famus.si";
     try {
       await navigator.clipboard.writeText(link);
     } catch {
@@ -670,7 +678,7 @@ function Index() {
         return;
       }
     }
-    toast.success("Link copied — famus.si/register");
+    toast.success("Link copied — www.famus.si");
   }
 
 
@@ -872,26 +880,26 @@ function Index() {
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon !</h2>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your SI is live</p>
-                <div className="mt-6 flex flex-wrap gap-3">
+                <div className="mt-6 flex justify-center">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button disabled={sharing}><Share2 className="size-4" />{sharing ? "Preparing…" : "Pass the Torch"}</Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-56">
-                      <DropdownMenuItem onClick={() => void downloadCard("front")} className="gap-2">
-                        <Download className="size-4" />Download front · HD
+                    <DropdownMenuContent align="center" className="w-56">
+                      <DropdownMenuItem onClick={() => void copyCardLink()}>
+                        <Link2 className="size-4" />Copy link
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => void downloadCard("back")} className="gap-2">
-                        <Download className="size-4" />Download back · HD
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => void downloadClickableCard()} className="gap-2">
-                        <Link2 className="size-4" />Download clickable card
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => void shareCard()} className="gap-2">
-                        <Share2 className="size-4" />Post to socials
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => void copyCardLink()} className="gap-2">
-                        <Link2 className="size-4" />Share link
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger><Share2 className="size-4" />Post to socials</DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem onClick={() => postToSocial("whatsapp")}>WhatsApp</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => postToSocial("x")}>X</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => void shareCard("instagram")}>Instagram</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => void shareCard()}>More apps</DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuSub>
+                      <DropdownMenuItem onClick={() => void downloadCard("back")}>
+                        <Download className="size-4" />Download card
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
