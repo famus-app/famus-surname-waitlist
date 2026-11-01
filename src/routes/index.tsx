@@ -400,7 +400,7 @@ function Index() {
       art.decode(),
       document.fonts.load('108px "Canarina"', handle + "famUS"),
       document.fonts.load('36px "Work Sans"', "@ Reserve yours at www.famus.si"),
-      document.fonts.load('86px "Instrument Serif"', "fam #0123456789"),
+      document.fonts.load('86px "Geist Serif"', "fam #0123456789"),
       document.fonts.ready,
     ]);
     const ratio = Math.max(1080 / art.naturalWidth, 1920 / art.naturalHeight);
@@ -462,10 +462,10 @@ function Index() {
       const lead = "fam ";
       const num = "#" + String(claimNumber).padStart(4, "0");
       let fSize = numberSize(num) * q;
-      ctx.font = `${fSize}px "Instrument Serif", serif`;
+      ctx.font = `${fSize}px "Geist Serif", serif`;
       {
         const w0 = ctx.measureText(lead + num).width;
-        if (w0 > 84 * q) { fSize *= (84 * q) / w0; ctx.font = `${fSize}px "Instrument Serif", serif`; }
+        if (w0 > 84 * q) { fSize *= (84 * q) / w0; ctx.font = `${fSize}px "Geist Serif", serif`; }
       }
       y += (8 * q - fSize) / 2;
       const lw = ctx.measureText(lead).width;
