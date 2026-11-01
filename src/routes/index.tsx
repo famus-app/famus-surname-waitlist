@@ -750,7 +750,7 @@ function Index() {
               <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}<span className="align-super text-[0.55em] text-primary">*</span></span><span className="ml-2 whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
             </p>
             <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.05rem,2.6vw,2.15rem)] leading-none tracking-[-0.02em] text-foreground">
-              <span>For your family today &amp; generations tomorrow: One&nbsp;</span>
+              <span>For your family today &amp; generations tomorrow : One&nbsp;</span>
               <GradientText
                 colors={["#EB5F06", "#D8C4AB", "#f4f2f2"]}
                 animationSpeed={3}
