@@ -746,10 +746,10 @@ function Index() {
       <main className={`relative z-10 mx-auto flex w-full max-w-[1200px] flex-col sm:px-10 ${claimed ? "min-h-[calc(100dvh-6rem)] justify-center px-6 pb-12 pt-2" : "min-h-[calc(100dvh-6rem)] px-6 pb-6 pt-16 sm:pt-24"}`}>
         {!claimed ? (
           <div className="-translate-y-4">
-            <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(4rem,13vw,9rem)] leading-[0.82] tabular-nums">
+            <p key={remaining} aria-live="polite" className="famus-count text-center font-display text-[clamp(3.5rem,11vw,7.75rem)] leading-[0.85] tracking-[-0.04em] tabular-nums">
               <span className="whitespace-nowrap">{remaining.toLocaleString("en-US")}<span className="align-super text-[0.55em] text-primary">*</span></span><span className="ml-2 whitespace-nowrap text-[clamp(1.5rem,3.5vw,2.5rem)] text-muted-foreground">left</span>
             </p>
-            <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.2rem,3vw,2.5rem)] leading-none text-foreground">
+            <h1 className="mx-auto mt-16 whitespace-nowrap text-center font-display text-[clamp(1.05rem,2.6vw,2.15rem)] leading-none tracking-[-0.02em] text-foreground">
               <span>For your family today &amp; generations tomorrow: One&nbsp;</span>
               <GradientText
                 colors={["#EB5F06", "#D8C4AB", "#f4f2f2"]}
@@ -874,11 +874,11 @@ function Index() {
               <div className="min-w-0">
                 {priority ? <>
                 <p className="text-[11px] uppercase tracking-[0.22em] text-primary">You're on the priority list</p>
-                <h2 className="mt-1 font-display text-4xl leading-none">Thank you !</h2>
+                <h2 className="mt-1 font-display whitespace-nowrap text-[2rem] leading-none tracking-[-0.02em]">Thank you !</h2>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{"\n"}</p>
                 </> : <>
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
-                <h2 className="mt-1 font-display text-4xl leading-none">Coming home soon !</h2>
+                <h2 className="mt-1 font-display whitespace-nowrap text-[2rem] leading-none tracking-[-0.02em]">Coming home soon !</h2>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your SI is live</p>
                 <div className="mt-6 flex justify-center">
                   <DropdownMenu>
