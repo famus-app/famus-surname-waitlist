@@ -14,5 +14,6 @@
 - Render card PNG exports at 2160 × 3840 from the fixed logical card layout, explicitly loading fonts and original assets before drawing; this preserves sharp text and layout parity on both sides.
 - Pre-render the back-card blob before social-share clicks to preserve mobile user activation; use native file sharing where supported and explicit web composer fallbacks otherwise.
 - Keep the waitlist claim behind the validated database function, with optional preferences saved on the claim row; this avoids exposing private registrations directly.
+- Enrich successful claims through a server-only Forebears connector call and a public surname-keyed statistics cache; never send personal registration details to Forebears or let lookup failures block claiming.
 - Social icons are intentionally removed from the header until the user supplies real accounts; if they return, restore them as a dedicated header component with sample-ID previews.
 - Background footage uses a fixed scenery plate with motion-masked, flow-smoothed figure movement (no hard overlay boxes, which clip heads) and matching posters; update every playback source together so browsers cannot select an older unstabilized format.
