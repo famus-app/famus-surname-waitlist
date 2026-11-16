@@ -1,4 +1,7 @@
 # Roadmap
+- [ ] Connect Forebears OnoGraph using the owner's API key.
+- [ ] Match registered surnames to Forebears population counts and country details, preserving registration for unmatched names.
+- [ ] Save and verify surname enrichment without exposing registration details or changing the waitlist inventory.
 - [x] Center the share button, provide three main choices, copy the website URL, offer social destinations, and download the back card without HD wording.
 
 - [x] Show full heads during movement and steady the family's motion in the background video (family loop, all formats).
