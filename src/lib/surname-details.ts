@@ -25,10 +25,10 @@ export function parseForebears(surname: string, payload: unknown): SurnameDetail
   const empty: SurnameDetails = { surname, status: "unavailable", reportedCount: null, jurisdictions: [] };
   if (!payload || typeof payload !== "object") return empty;
   const record = payload as Record<string, unknown>;
-  if (Array.isArray(record.status) && record.status.some((s) => s && typeof s === "object" && s.type === "error")) return empty;
-  if (!Array.isArray(record.jurisdictions)) return empty;
+  if (Array.isArray(record['status']) && record['status'].some((s) => s && typeof s === "object" && s.type === "error")) return empty;
+  if (!Array.isArray(record['jurisdictions'])) return empty;
   const jurisdictions: SurnameJurisdiction[] = [];
-  for (const row of record.jurisdictions) {
+  for (const row of record['jurisdictions']) {
     if (!row || typeof row !== "object") return empty;
     const incidence = Number(row.incidence);
     const rank = Number(row.rank);

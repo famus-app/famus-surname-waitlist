@@ -19,7 +19,7 @@ export const getSurnameDetails = createServerFn({ method: "POST" })
       if (cached && Date.now() - Date.parse(cached.checked_at) < 30 * 24 * 60 * 60 * 1000) {
         const parsed = parseForebears(cached.surname, { jurisdictions: Array.isArray(cached.jurisdictions) ? cached.jurisdictions.map((row) => {
           if (!row || typeof row !== "object" || Array.isArray(row)) return null;
-          return { jurisdiction: row.country, iso: row.iso, incidence: row.incidence, rank: row.rank };
+          return { jurisdiction: row['country'], iso: row['iso'], incidence: row['incidence'], rank: row['rank'] };
         }) : [] });
         if (parsed.status !== "unavailable") return parsed;
       }
