@@ -1,4 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { getSurnameDetails } from "@/lib/surname-details.functions";
+import type { SurnameDetails } from "@/lib/surname-details";
 import { Download, Link2, LockKeyhole, RotateCw, Share2 } from "lucide-react";
 import { ThinkingOrb } from "@/components/agents-ui/thinking-orb";
 import { AtSignIcon, type AtSignIconHandle } from "@/components/icons/at-sign-icon";
@@ -168,6 +171,9 @@ function Index() {
   const [onSurnameStep, setOnSurnameStep] = useState(false);
   const [takenHandle, setTakenHandle] = useState("");
   const [priority, setPriority] = useState(false);
+  const lookupSurname = useServerFn(getSurnameDetails);
+  const [surnameDetails, setSurnameDetails] = useState<SurnameDetails | null>(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
 
   async function joinPriority(): Promise<boolean> {
     if (!cleanSurname || !email.includes("@")) return false;
@@ -707,6 +713,12 @@ function Index() {
     }
     setClaimNumber(Number(claim.claim_number));
     setRemaining((value) => Math.max(0, value - 1));
+    setSurnameDetails(null);
+    setDetailsLoading(true);
+    void lookupSurname({ data: { surname: cleanSurname } })
+      .then(setSurnameDetails)
+      .catch(() => setSurnameDetails({ surname: cleanSurname, status: "unavailable", reportedCount: null, jurisdictions: [] }))
+      .finally(() => setDetailsLoading(false));
     return true;
   }
   const isTaken = takenHandle !== "" && takenHandle === handle;
@@ -880,6 +892,16 @@ function Index() {
                 {!previewing && <p className="text-[11px] uppercase tracking-[0.22em] text-primary">@{handle} is yours</p>}
                 <h2 className="mt-1 font-display whitespace-nowrap text-[2rem] leading-none tracking-[-0.02em]">Coming home soon !</h2>
                 <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">Your family name is officially secured on famUS<br />We’ll be in touch as soon as your SI is live</p>
+                {detailsLoading ? <p role="status" className="mt-4 text-xs text-muted-foreground">Checking surname details…</p> : null}
+                {surnameDetails ? <div className="mt-4 border-t border-border pt-3 text-[13px] text-muted-foreground" aria-live="polite">
+                  {surnameDetails.status === "matched" ? <>
+                    <p className="font-medium text-foreground">{surnameDetails.surname} · {surnameDetails.reportedCount?.toLocaleString("en-US")} people in reported countries</p>
+                    <ul className="mt-2 space-y-1">
+                      {surnameDetails.jurisdictions.slice(0, 3).map((country) => <li key={country.iso} className="flex justify-between gap-3"><span>{country.country}{country.rank ? ` · #${country.rank}` : ""}</span><span className="tabular-nums">{country.incidence.toLocaleString("en-US")}</span></li>)}
+                    </ul>
+                    <a href="https://forebears.io" target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs underline underline-offset-4">Source: Forebears OnoGraph</a>
+                  </> : <p>{surnameDetails.status === "not_found" ? "No surname statistics found. Your reservation is secured." : "Surname statistics are unavailable. Your reservation is secured."}</p>}
+                </div> : null}
                 <div className="mt-6 flex justify-center">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
