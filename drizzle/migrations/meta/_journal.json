@@ -15,6 +15,13 @@
       "when": 1792383325194,
       "tag": "0001_restart_family_claim_numbers",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794852495048,
+      "tag": "0002_forebears_surname_details",
+      "breakpoints": true
     }
   ]
 }

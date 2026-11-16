@@ -38,6 +38,36 @@ export type Database = {
         }
         Relationships: []
       }
+      surname_details: {
+        Row: {
+          checked_at: string
+          jurisdictions: Json
+          match_status: string
+          reported_count: number | null
+          source: string
+          surname: string
+          surname_key: string
+        }
+        Insert: {
+          checked_at?: string
+          jurisdictions?: Json
+          match_status: string
+          reported_count?: number | null
+          source?: string
+          surname: string
+          surname_key: string
+        }
+        Update: {
+          checked_at?: string
+          jurisdictions?: Json
+          match_status?: string
+          reported_count?: number | null
+          source?: string
+          surname?: string
+          surname_key?: string
+        }
+        Relationships: []
+      }
       waitlist_claims: {
         Row: {
           claim_number: number
